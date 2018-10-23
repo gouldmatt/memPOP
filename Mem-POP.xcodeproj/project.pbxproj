@@ -1,0 +1,602 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EBBB7D25217F964200B26AE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBB7D24217F964200B26AE5 /* AppDelegate.swift */; };
+		EBBB7D27217F964200B26AE5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBB7D26217F964200B26AE5 /* ViewController.swift */; };
+		EBBB7D2A217F964200B26AE5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBB7D28217F964200B26AE5 /* Main.storyboard */; };
+		EBBB7D2D217F964200B26AE5 /* Mem_POP.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EBBB7D2B217F964200B26AE5 /* Mem_POP.xcdatamodeld */; };
+		EBBB7D2F217F964200B26AE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBBB7D2E217F964200B26AE5 /* Assets.xcassets */; };
+		EBBB7D32217F964200B26AE5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBB7D30217F964200B26AE5 /* LaunchScreen.storyboard */; };
+		EBBB7D3D217F964200B26AE5 /* Mem_POPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBB7D3C217F964200B26AE5 /* Mem_POPTests.swift */; };
+		EBBB7D48217F964200B26AE5 /* Mem_POPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBB7D47217F964200B26AE5 /* Mem_POPUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EBBB7D39217F964200B26AE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBBB7D19217F964100B26AE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBBB7D20217F964100B26AE5;
+			remoteInfo = "Mem-POP";
+		};
+		EBBB7D44217F964200B26AE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBBB7D19217F964100B26AE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBBB7D20217F964100B26AE5;
+			remoteInfo = "Mem-POP";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EBBB7D21217F964100B26AE5 /* Mem-POP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mem-POP.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBBB7D24217F964200B26AE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EBBB7D26217F964200B26AE5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EBBB7D29217F964200B26AE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EBBB7D2C217F964200B26AE5 /* Mem_POP.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mem_POP.xcdatamodel; sourceTree = "<group>"; };
+		EBBB7D2E217F964200B26AE5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EBBB7D31217F964200B26AE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EBBB7D33217F964200B26AE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EBBB7D38217F964200B26AE5 /* Mem-POPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mem-POPTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBBB7D3C217F964200B26AE5 /* Mem_POPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mem_POPTests.swift; sourceTree = "<group>"; };
+		EBBB7D3E217F964200B26AE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EBBB7D43217F964200B26AE5 /* Mem-POPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mem-POPUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBBB7D47217F964200B26AE5 /* Mem_POPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mem_POPUITests.swift; sourceTree = "<group>"; };
+		EBBB7D49217F964200B26AE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EBBB7D1E217F964100B26AE5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBBB7D35217F964200B26AE5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBBB7D40217F964200B26AE5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EBBB7D18217F964100B26AE5 = {
+			isa = PBXGroup;
+			children = (
+				EBBB7D23217F964100B26AE5 /* Mem-POP */,
+				EBBB7D3B217F964200B26AE5 /* Mem-POPTests */,
+				EBBB7D46217F964200B26AE5 /* Mem-POPUITests */,
+				EBBB7D22217F964100B26AE5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EBBB7D22217F964100B26AE5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EBBB7D21217F964100B26AE5 /* Mem-POP.app */,
+				EBBB7D38217F964200B26AE5 /* Mem-POPTests.xctest */,
+				EBBB7D43217F964200B26AE5 /* Mem-POPUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EBBB7D23217F964100B26AE5 /* Mem-POP */ = {
+			isa = PBXGroup;
+			children = (
+				EBBB7D24217F964200B26AE5 /* AppDelegate.swift */,
+				EBBB7D26217F964200B26AE5 /* ViewController.swift */,
+				EBBB7D28217F964200B26AE5 /* Main.storyboard */,
+				EBBB7D2E217F964200B26AE5 /* Assets.xcassets */,
+				EBBB7D30217F964200B26AE5 /* LaunchScreen.storyboard */,
+				EBBB7D33217F964200B26AE5 /* Info.plist */,
+				EBBB7D2B217F964200B26AE5 /* Mem_POP.xcdatamodeld */,
+			);
+			path = "Mem-POP";
+			sourceTree = "<group>";
+		};
+		EBBB7D3B217F964200B26AE5 /* Mem-POPTests */ = {
+			isa = PBXGroup;
+			children = (
+				EBBB7D3C217F964200B26AE5 /* Mem_POPTests.swift */,
+				EBBB7D3E217F964200B26AE5 /* Info.plist */,
+			);
+			path = "Mem-POPTests";
+			sourceTree = "<group>";
+		};
+		EBBB7D46217F964200B26AE5 /* Mem-POPUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EBBB7D47217F964200B26AE5 /* Mem_POPUITests.swift */,
+				EBBB7D49217F964200B26AE5 /* Info.plist */,
+			);
+			path = "Mem-POPUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EBBB7D20217F964100B26AE5 /* Mem-POP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBBB7D4C217F964200B26AE5 /* Build configuration list for PBXNativeTarget "Mem-POP" */;
+			buildPhases = (
+				EBBB7D1D217F964100B26AE5 /* Sources */,
+				EBBB7D1E217F964100B26AE5 /* Frameworks */,
+				EBBB7D1F217F964100B26AE5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Mem-POP";
+			productName = "Mem-POP";
+			productReference = EBBB7D21217F964100B26AE5 /* Mem-POP.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EBBB7D37217F964200B26AE5 /* Mem-POPTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBBB7D4F217F964200B26AE5 /* Build configuration list for PBXNativeTarget "Mem-POPTests" */;
+			buildPhases = (
+				EBBB7D34217F964200B26AE5 /* Sources */,
+				EBBB7D35217F964200B26AE5 /* Frameworks */,
+				EBBB7D36217F964200B26AE5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EBBB7D3A217F964200B26AE5 /* PBXTargetDependency */,
+			);
+			name = "Mem-POPTests";
+			productName = "Mem-POPTests";
+			productReference = EBBB7D38217F964200B26AE5 /* Mem-POPTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EBBB7D42217F964200B26AE5 /* Mem-POPUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBBB7D52217F964200B26AE5 /* Build configuration list for PBXNativeTarget "Mem-POPUITests" */;
+			buildPhases = (
+				EBBB7D3F217F964200B26AE5 /* Sources */,
+				EBBB7D40217F964200B26AE5 /* Frameworks */,
+				EBBB7D41217F964200B26AE5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EBBB7D45217F964200B26AE5 /* PBXTargetDependency */,
+			);
+			name = "Mem-POPUITests";
+			productName = "Mem-POPUITests";
+			productReference = EBBB7D43217F964200B26AE5 /* Mem-POPUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EBBB7D19217F964100B26AE5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = "Iota Inc.";
+				TargetAttributes = {
+					EBBB7D20217F964100B26AE5 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					EBBB7D37217F964200B26AE5 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = EBBB7D20217F964100B26AE5;
+					};
+					EBBB7D42217F964200B26AE5 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = EBBB7D20217F964100B26AE5;
+					};
+				};
+			};
+			buildConfigurationList = EBBB7D1C217F964100B26AE5 /* Build configuration list for PBXProject "Mem-POP" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EBBB7D18217F964100B26AE5;
+			productRefGroup = EBBB7D22217F964100B26AE5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EBBB7D20217F964100B26AE5 /* Mem-POP */,
+				EBBB7D37217F964200B26AE5 /* Mem-POPTests */,
+				EBBB7D42217F964200B26AE5 /* Mem-POPUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EBBB7D1F217F964100B26AE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBBB7D32217F964200B26AE5 /* LaunchScreen.storyboard in Resources */,
+				EBBB7D2F217F964200B26AE5 /* Assets.xcassets in Resources */,
+				EBBB7D2A217F964200B26AE5 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBBB7D36217F964200B26AE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBBB7D41217F964200B26AE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EBBB7D1D217F964100B26AE5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBBB7D2D217F964200B26AE5 /* Mem_POP.xcdatamodeld in Sources */,
+				EBBB7D27217F964200B26AE5 /* ViewController.swift in Sources */,
+				EBBB7D25217F964200B26AE5 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBBB7D34217F964200B26AE5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBBB7D3D217F964200B26AE5 /* Mem_POPTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBBB7D3F217F964200B26AE5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBBB7D48217F964200B26AE5 /* Mem_POPUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EBBB7D3A217F964200B26AE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBBB7D20217F964100B26AE5 /* Mem-POP */;
+			targetProxy = EBBB7D39217F964200B26AE5 /* PBXContainerItemProxy */;
+		};
+		EBBB7D45217F964200B26AE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBBB7D20217F964100B26AE5 /* Mem-POP */;
+			targetProxy = EBBB7D44217F964200B26AE5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EBBB7D28217F964200B26AE5 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EBBB7D29217F964200B26AE5 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EBBB7D30217F964200B26AE5 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EBBB7D31217F964200B26AE5 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EBBB7D4A217F964200B26AE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EBBB7D4B217F964200B26AE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EBBB7D4D217F964200B26AE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Mem-POP/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Group-9.Mem-POP";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EBBB7D4E217F964200B26AE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Mem-POP/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Group-9.Mem-POP";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EBBB7D50217F964200B26AE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Mem-POPTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Group-9.Mem-POPTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mem-POP.app/Mem-POP";
+			};
+			name = Debug;
+		};
+		EBBB7D51217F964200B26AE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Mem-POPTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Group-9.Mem-POPTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mem-POP.app/Mem-POP";
+			};
+			name = Release;
+		};
+		EBBB7D53217F964200B26AE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Mem-POPUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Group-9.Mem-POPUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Mem-POP";
+			};
+			name = Debug;
+		};
+		EBBB7D54217F964200B26AE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Mem-POPUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Group-9.Mem-POPUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Mem-POP";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EBBB7D1C217F964100B26AE5 /* Build configuration list for PBXProject "Mem-POP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBBB7D4A217F964200B26AE5 /* Debug */,
+				EBBB7D4B217F964200B26AE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBBB7D4C217F964200B26AE5 /* Build configuration list for PBXNativeTarget "Mem-POP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBBB7D4D217F964200B26AE5 /* Debug */,
+				EBBB7D4E217F964200B26AE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBBB7D4F217F964200B26AE5 /* Build configuration list for PBXNativeTarget "Mem-POPTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBBB7D50217F964200B26AE5 /* Debug */,
+				EBBB7D51217F964200B26AE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBBB7D52217F964200B26AE5 /* Build configuration list for PBXNativeTarget "Mem-POPUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBBB7D53217F964200B26AE5 /* Debug */,
+				EBBB7D54217F964200B26AE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EBBB7D2B217F964200B26AE5 /* Mem_POP.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EBBB7D2C217F964200B26AE5 /* Mem_POP.xcdatamodel */,
+			);
+			currentVersion = EBBB7D2C217F964200B26AE5 /* Mem_POP.xcdatamodel */;
+			path = Mem_POP.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = EBBB7D19217F964100B26AE5 /* Project object */;
+}
