@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2567218016F3004F5E7E /* mainDisplayViewController.swift */; };
+		742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2569218021A8004F5E7E /* AddHotspotViewController.swift */; };
+		742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */; };
 		A0B63CB9217F9C560072A82F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CB8217F9C560072A82F /* AppDelegate.swift */; };
-		A0B63CBB217F9C560072A82F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CBA217F9C560072A82F /* ViewController.swift */; };
+		A0B63CBB217F9C560072A82F /* startViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CBA217F9C560072A82F /* startViewController.swift */; };
 		A0B63CBE217F9C560072A82F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CBC217F9C560072A82F /* Main.storyboard */; };
 		A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CBF217F9C560072A82F /* memPOP.xcdatamodeld */; };
 		A0B63CC3217F9C560072A82F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CC2217F9C560072A82F /* Assets.xcassets */; };
@@ -35,9 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		742E2567218016F3004F5E7E /* mainDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainDisplayViewController.swift; sourceTree = "<group>"; };
+		742E2569218021A8004F5E7E /* AddHotspotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHotspotViewController.swift; sourceTree = "<group>"; };
+		742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotspotOverviewViewController.swift; sourceTree = "<group>"; };
 		A0B63CB5217F9C560072A82F /* memPOP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memPOP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B63CB8217F9C560072A82F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A0B63CBA217F9C560072A82F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A0B63CBA217F9C560072A82F /* startViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = startViewController.swift; sourceTree = "<group>"; };
 		A0B63CBD217F9C560072A82F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A0B63CC0217F9C560072A82F /* memPOP.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = memPOP.xcdatamodel; sourceTree = "<group>"; };
 		A0B63CC2217F9C560072A82F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -100,7 +106,10 @@
 			isa = PBXGroup;
 			children = (
 				A0B63CB8217F9C560072A82F /* AppDelegate.swift */,
-				A0B63CBA217F9C560072A82F /* ViewController.swift */,
+				A0B63CBA217F9C560072A82F /* startViewController.swift */,
+				742E2567218016F3004F5E7E /* mainDisplayViewController.swift */,
+				742E2569218021A8004F5E7E /* AddHotspotViewController.swift */,
+				742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
 				A0B63CC4217F9C560072A82F /* LaunchScreen.storyboard */,
@@ -259,8 +268,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0B63CBB217F9C560072A82F /* ViewController.swift in Sources */,
+				742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */,
+				742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */,
+				A0B63CBB217F9C560072A82F /* startViewController.swift in Sources */,
 				A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */,
+				742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */,
 				A0B63CB9217F9C560072A82F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
