@@ -111,9 +111,8 @@
 				A0B63CBA217F9C560072A82F /* startViewController.swift */,
 				742E2567218016F3004F5E7E /* mainDisplayViewController.swift */,
 				EB481227218243CB00E932AB /* Models */,
-				742E2569218021A8004F5E7E /* AddHotspotViewController.swift */,
 				742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */,
-				742E257121810918004F5E7E /* settingsViewController.swift */,
+				EB481229218244B100E932AB /* Controllers */,
 				742E2573218109C6004F5E7E /* personInfoViewController.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
@@ -147,6 +146,16 @@
 			);
 			name = Models;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		EB481229218244B100E932AB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				742E257121810918004F5E7E /* settingsViewController.swift */,
+				742E2569218021A8004F5E7E /* AddHotspotViewController.swift */,
+			);
+			name = Controllers;
+			path = "New Group1";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
