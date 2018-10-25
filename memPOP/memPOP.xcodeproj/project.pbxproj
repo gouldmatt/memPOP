@@ -110,6 +110,7 @@
 				A0B63CB8217F9C560072A82F /* AppDelegate.swift */,
 				A0B63CBA217F9C560072A82F /* startViewController.swift */,
 				742E2567218016F3004F5E7E /* mainDisplayViewController.swift */,
+				EB481227218243CB00E932AB /* Models */,
 				742E2569218021A8004F5E7E /* AddHotspotViewController.swift */,
 				742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */,
 				742E257121810918004F5E7E /* settingsViewController.swift */,
@@ -138,6 +139,14 @@
 				A0B63CDD217F9C560072A82F /* Info.plist */,
 			);
 			path = memPOPUITests;
+			sourceTree = "<group>";
+		};
+		EB481227218243CB00E932AB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
