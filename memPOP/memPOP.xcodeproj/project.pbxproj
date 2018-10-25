@@ -17,7 +17,6 @@
 		A0B63CBE217F9C560072A82F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CBC217F9C560072A82F /* Main.storyboard */; };
 		A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CBF217F9C560072A82F /* memPOP.xcdatamodeld */; };
 		A0B63CC3217F9C560072A82F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CC2217F9C560072A82F /* Assets.xcassets */; };
-		A0B63CC6217F9C560072A82F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CC4217F9C560072A82F /* LaunchScreen.storyboard */; };
 		A0B63CD1217F9C560072A82F /* memPOPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CD0217F9C560072A82F /* memPOPTests.swift */; };
 		A0B63CDC217F9C560072A82F /* memPOPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CDB217F9C560072A82F /* memPOPUITests.swift */; };
 /* End PBXBuildFile section */
@@ -51,7 +50,6 @@
 		A0B63CBD217F9C560072A82F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A0B63CC0217F9C560072A82F /* memPOP.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = memPOP.xcdatamodel; sourceTree = "<group>"; };
 		A0B63CC2217F9C560072A82F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A0B63CC5217F9C560072A82F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0B63CC7217F9C560072A82F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0B63CCC217F9C560072A82F /* memPOPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = memPOPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B63CD0217F9C560072A82F /* memPOPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memPOPTests.swift; sourceTree = "<group>"; };
@@ -118,7 +116,6 @@
 				742E2573218109C6004F5E7E /* personInfoViewController.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
-				A0B63CC4217F9C560072A82F /* LaunchScreen.storyboard */,
 				A0B63CC7217F9C560072A82F /* Info.plist */,
 				A0B63CBF217F9C560072A82F /* memPOP.xcdatamodeld */,
 			);
@@ -247,7 +244,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0B63CC6217F9C560072A82F /* LaunchScreen.storyboard in Resources */,
 				A0B63CC3217F9C560072A82F /* Assets.xcassets in Resources */,
 				A0B63CBE217F9C560072A82F /* Main.storyboard in Resources */,
 			);
@@ -323,14 +319,6 @@
 				A0B63CBD217F9C560072A82F /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		A0B63CC4217F9C560072A82F /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A0B63CC5217F9C560072A82F /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
