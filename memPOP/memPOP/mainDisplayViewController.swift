@@ -7,13 +7,47 @@
 //
 
 import UIKit
+import CoreData
 
-class mainDisplayViewController: UIViewController {
-
+class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    var arrLabel = [String]()
+    var arrImg = [UIImage]()
+    
+    var hotspots = [HotspotMO]()
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    let fetchRequest: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        load()
+    }
+    
+    func load () {
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        do {
+            let hotspots = try PersistenceService.context.fetch(fetchRequest)
+            self.hotspots = hotspots
+            for data in hotspots as [NSManagedObject]{
+                if(data.value(forKey: "name") != nil) {
+                    arrLabel.append(data.value(forKey: "name") as! String)
+                }
+                
+                if(data.value(forKey: "picture") != nil) {
+                    let image = data.value(forKey: "picture") as? NSData
+                    arrImg.append(UIImage(data: image! as Data)!)
+                    // arrImg.append(data.value(forKey: "picture") as! UIImage)
+                } else {
+                    arrImg.append(UIImage(named: "home")!)
+                }
+            }
+        } catch {
+            print("failed fetching")
+        }
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -25,6 +59,18 @@ class mainDisplayViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return hotspots.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        
+        cell.image.image = arrImg[indexPath.row]
+        cell.label.text = arrLabel[indexPath.row]
+        
+        return cell
+    }
 
     /*
     // MARK: - Navigation
@@ -35,5 +81,8 @@ class mainDisplayViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    
 
 }

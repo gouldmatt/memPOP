@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260E321852DD6003AF531 /* PersistenceService.swift */; };
+		47C260F221856278003AF531 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260F121856278003AF531 /* CollectionViewCell.swift */; };
+		47C26100218573B8003AF531 /* HotspotMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260FF218573B8003AF531 /* HotspotMO+CoreDataProperties.swift */; };
+		47C2610221857405003AF531 /* HotspotMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C2610121857405003AF531 /* HotspotMO+CoreDataClass.swift */; };
 		742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2567218016F3004F5E7E /* mainDisplayViewController.swift */; };
 		742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2569218021A8004F5E7E /* AddHotspotViewController.swift */; };
 		742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */; };
@@ -39,6 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		47C260E321852DD6003AF531 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		47C260F121856278003AF531 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		47C260FF218573B8003AF531 /* HotspotMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		47C2610121857405003AF531 /* HotspotMO+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		742E2567218016F3004F5E7E /* mainDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainDisplayViewController.swift; sourceTree = "<group>"; };
 		742E2569218021A8004F5E7E /* AddHotspotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHotspotViewController.swift; sourceTree = "<group>"; };
 		742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotspotOverviewViewController.swift; sourceTree = "<group>"; };
@@ -107,7 +115,10 @@
 		A0B63CB7217F9C560072A82F /* memPOP */ = {
 			isa = PBXGroup;
 			children = (
+				47C2610121857405003AF531 /* HotspotMO+CoreDataClass.swift */,
+				47C260FF218573B8003AF531 /* HotspotMO+CoreDataProperties.swift */,
 				A0B63CB8217F9C560072A82F /* AppDelegate.swift */,
+				47C260E321852DD6003AF531 /* PersistenceService.swift */,
 				A0B63CBA217F9C560072A82F /* startViewController.swift */,
 				742E2567218016F3004F5E7E /* mainDisplayViewController.swift */,
 				742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */,
@@ -115,6 +126,7 @@
 				742E2569218021A8004F5E7E /* AddHotspotViewController.swift */,
 				742E2573218109C6004F5E7E /* personInfoViewController.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
+				47C260F121856278003AF531 /* CollectionViewCell.swift */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
 				A0B63CC7217F9C560072A82F /* Info.plist */,
 				A0B63CBF217F9C560072A82F /* memPOP.xcdatamodeld */,
@@ -272,11 +284,15 @@
 			files = (
 				742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */,
 				742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */,
+				47C260F221856278003AF531 /* CollectionViewCell.swift in Sources */,
 				A0B63CBB217F9C560072A82F /* startViewController.swift in Sources */,
 				742E2574218109C6004F5E7E /* personInfoViewController.swift in Sources */,
 				A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */,
 				742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */,
 				A0B63CB9217F9C560072A82F /* AppDelegate.swift in Sources */,
+				47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */,
+				47C2610221857405003AF531 /* HotspotMO+CoreDataClass.swift in Sources */,
+				47C26100218573B8003AF531 /* HotspotMO+CoreDataProperties.swift in Sources */,
 				742E257221810918004F5E7E /* settingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
