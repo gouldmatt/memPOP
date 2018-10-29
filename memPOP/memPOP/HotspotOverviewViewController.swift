@@ -5,30 +5,14 @@
 //  Created by Emily on 2018-10-23.
 //  Copyright © 2018 Iota Inc. All rights reserved.
 //
-import CoreData
+
 import UIKit
 
 class HotspotOverviewViewController: UIViewController {
-    
-    @IBOutlet var hotspotName: UILabel!
-    @IBOutlet var hotspotTransportation: UILabel!
-    @IBOutlet var hotspotDescription: UILabel!
-    @IBOutlet var hotspotImage: UIImageView!
-    
-    
-    var selectedHotspot: NSManagedObject?
-  
+
     override func viewDidLoad() {
-        
-       
-        hotspotName.text = ((selectedHotspot?.value(forKey: "name")) as? String)
-        hotspotTransportation.text = ((selectedHotspot?.value(forKey: "transportation")) as? String)
-        hotspotDescription.text = ((selectedHotspot?.value(forKey: "info")) as? String)
-        
-        // get image
-        let image = selectedHotspot?.value(forKey: "picture") as? NSData
-        hotspotImage.image = (UIImage(data: image! as Data)!)
-        
+        super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
     
