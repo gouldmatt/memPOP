@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
+class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var imageView: UIImageView!
@@ -27,8 +27,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     var hotspots = [HotspotMO]()
 
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var todoItem: UITextField!
     
-    @IBAction func ImportPhoto(_ sender: Any) {
+    /*@IBAction func ImportPhoto(_ sender: Any) {
         let image = UIImagePickerController()
         image.delegate = self
         image.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -50,22 +52,20 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             
         }
         self.dismiss(animated: true, completion: nil)
-    }
+    }*/
     
+    //==================================================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Add a border around the description UI textfield, and image view
         descriptionTextView.layer.borderWidth = 1
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
-        imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.black.cgColor
+        //imageView.layer.borderWidth = 1
+        //imageView.layer.borderColor = UIColor.black.cgColor
         
         hotspotName.delegate = self
         hotspotAddress.delegate = self
-        
-        
-    
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -77,17 +77,42 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    //==================================================================================================
+    var list = ["My To-Do List"]
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return (list.count)
     }
-    */
     
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+        cell.textLabel?.text = list[indexPath.row]
+        return(cell)
+    }
     
+    // delete an item by a left swipe
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
+    {
+        if editingStyle == UITableViewCellEditingStyle.delete
+        {
+            self.list.remove(at:indexPath.row)
+            tableView.reloadData()
+        }
+        
+    }
+    
+    @IBAction func addToDo(_ sender: Any)
+    {
+        if (todoItem.text != "")
+        {
+            list.append("- " + todoItem.text!)
+            todoItem.text = ""
+            tableView.reloadData()
+        }
+    }
+    //==================================================================================================
     @IBAction func donePressed(_ sender: UIButton) {
         let name = hotspotName.text!
         let address = hotspotAddress.text!
@@ -137,7 +162,4 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         textField.resignFirstResponder()
         return true
     }
-
-    
-
 }
