@@ -71,6 +71,16 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         
         return cell
     }
+    
+    // checks which hotspot user selected
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(String(indexPath.row))
+        print("tapped")
+        
+        let overviewVC = storyboard?.instantiateViewController(withIdentifier: "HotspotOverviewViewController") as! HotspotOverviewViewController
+        overviewVC.selectedHotspot = hotspots[indexPath.row]
+        navigationController?.pushViewController(overviewVC, animated: true)
+    }
 
     /*
     // MARK: - Navigation

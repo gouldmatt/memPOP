@@ -121,6 +121,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         newHotspot.name = name
         newHotspot.address = address
         
+        /*
         if(hotspotCategory.selectedSegmentIndex == 1) {
             newHotspot.category = hotspotCategory.titleForSegment(at: 1)!
         }
@@ -151,7 +152,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
 
         if(hotspotImage.image != nil) {
             newHotspot.picture = UIImageJPEGRepresentation(hotspotImage.image!, 1)! as NSData
-        }  
+        }
+        */
         
         PersistenceService.saveContext()
         
