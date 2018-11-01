@@ -1,5 +1,5 @@
 //
-//  HotspotMO+CoreDataClass.swift
+//  PhotosMO+CoreDataClass.swift
 //  memPOP
 //
 //  Created by Matthew Gould   on 2018-11-01.
@@ -11,6 +11,6 @@ import Foundation
 import CoreData
 
 
-public class HotspotMO: NSManagedObject {
+public class PhotosMO: NSManagedObject {
 
 }

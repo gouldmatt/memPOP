@@ -5,13 +5,13 @@
 //  Created by Emily on 2018-10-23.
 //  Copyright © 2018 Iota Inc. All rights reserved.
 //
-
+import CoreData
 import UIKit
 
-class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UICollectionViewDelegate,UICollectionViewDataSource, UITableViewDataSource {
 
     @IBOutlet weak var descriptionTextView: UITextView!
-    @IBOutlet weak var imageView: UIImageView!
+    
     @IBOutlet weak var doneButton: UIButton!
     
     @IBOutlet weak var hotspotName: UITextField!
@@ -20,39 +20,44 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var hotspotCategory: UISegmentedControl!
     @IBOutlet weak var hotspotInfo: UITextView!
     @IBOutlet weak var hotspotTodoList: UITextView!
-    @IBOutlet weak var hotspotImage: UIImageView!
+    @IBOutlet var collectionView: UICollectionView!
+    
     
     var categoryChosen:String = ""
     var transportationChosen:String = ""
     
+    var addedImages = [UIImage]()
     var hotspots = [HotspotMO]()
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var todoItem: UITextField!
     
-    /*@IBAction func ImportPhoto(_ sender: Any) {
-        let image = UIImagePickerController()
+    let image = UIImagePickerController()
+    
+    @IBAction func ImportPhoto(_ sender: Any) {
+    
         image.delegate = self
-        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
         image.allowsEditing = false
-        self.present(image, animated: true)
-        {
-            
-        }
+        self.present(image, animated: true, completion: nil)
+        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        
+        if let imagePicked = info[UIImagePickerControllerOriginalImage] as? UIImage
         {
-            imageView.image = image
+            addedImages.append(imagePicked)
+            print("picked pass")
         }
         else
         {
-            
+            print("fail")
         }
+        collectionView.reloadData()
         self.dismiss(animated: true, completion: nil)
-    }*/
+    }
     
     //==================================================================================================
     override func viewDidLoad() {
@@ -63,7 +68,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
         //imageView.layer.borderWidth = 1
         //imageView.layer.borderColor = UIColor.black.cgColor
-        
         hotspotName.delegate = self
         hotspotAddress.delegate = self
     }
@@ -118,6 +122,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         let address = hotspotAddress.text!
         
         let newHotspot = HotspotMO(context: PersistenceService.context)
+        let newPhotos = PhotosMO(context: PersistenceService.context)
         newHotspot.name = name
         newHotspot.address = address
         
@@ -149,15 +154,31 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         if(hotspotInfo.text != nil) {
             newHotspot.info = hotspotInfo.text! as String
         }
-
+         
         if(hotspotImage.image != nil) {
             newHotspot.picture = UIImageJPEGRepresentation(hotspotImage.image!, 1)! as NSData
         }
         */
+        newPhotos.photo = UIImageJPEGRepresentation(addedImages[0], 1)! as NSData
         
+        newHotspot.addToPhotos(newPhotos)
+    
         PersistenceService.saveContext()
         
         self.hotspots.append(newHotspot)
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+         return addedImages.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell:  CollectionViewPhotos = collectionView.dequeueReusableCell(withReuseIdentifier: "cellPhotos", for: indexPath) as! CollectionViewPhotos
+        
+        cell.image.image = addedImages[indexPath.row]
+
+        return cell
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
