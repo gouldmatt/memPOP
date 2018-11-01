@@ -22,7 +22,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var hotspotTodoList: UITextView!
     @IBOutlet var collectionView: UICollectionView!
     
-    
+    var descriptionPlaceholder: UILabel!
     var categoryChosen:String = ""
     var transportationChosen:String = ""
     
@@ -70,6 +70,25 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         //imageView.layer.borderColor = UIColor.black.cgColor
         hotspotName.delegate = self
         hotspotAddress.delegate = self
+        
+        //------------------------------------------------------------------------------------------------
+        // Add placeholder text for text view
+        // https://stackoverflow.com/questions/27652227/text-view-placeholder-swift
+        descriptionTextView.delegate = self
+        descriptionPlaceholder = UILabel()
+        descriptionPlaceholder.text = "Who did you go with? What did you do?"
+        descriptionPlaceholder.sizeToFit()
+        descriptionTextView.addSubview(descriptionPlaceholder)
+        descriptionPlaceholder.frame.origin = CGPoint(x: 5, y: (descriptionTextView.font?.pointSize)! / 2)
+        descriptionPlaceholder.textColor = UIColor.lightGray
+        descriptionPlaceholder.isHidden = !descriptionTextView.text.isEmpty
+        //------------------------------------------------------------------------------------------------
+        
+        //------------------------------------------------------------------------------------------------
+        // Done button should only be enabled when the hotspot and address is filed
+        doneButton.isEnabled = false
+        [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
+
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -79,6 +98,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func textViewDidChange(_ descriptionTextView: UITextView) {
+        descriptionPlaceholder.isHidden = !descriptionTextView.text.isEmpty
     }
     
     //==================================================================================================
@@ -168,6 +191,27 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         self.hotspots.append(newHotspot)
     }
     
+    //==================================================================================================
+    // The name and address fields must be filed before the done button is enabled
+    //https://stackoverflow.com/questions/34941069/enable-a-button-in-swift-only-if-all-text-fields-have-been-filled-out
+    @objc func editChanged(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            if textField.text?.first == " " {
+                textField.text = ""
+                return
+            }
+        }
+        guard
+            let name = hotspotName.text, !name.isEmpty,
+            let address = hotspotAddress.text, !address.isEmpty
+            else {
+                doneButton.isEnabled = false
+                return
+        }
+        doneButton.isEnabled = true
+    }
+    //==================================================================================================
+
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          return addedImages.count
