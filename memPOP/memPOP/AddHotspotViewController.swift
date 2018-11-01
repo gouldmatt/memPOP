@@ -49,7 +49,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         if let imagePicked = info[UIImagePickerControllerOriginalImage] as? UIImage
         {
             addedImages.append(imagePicked)
-            addedImages.append(UIImage(named: "home")!)
             print("picked pass")
         }
         else
