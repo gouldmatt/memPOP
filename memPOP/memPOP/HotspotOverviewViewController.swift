@@ -15,7 +15,7 @@ class HotspotOverviewViewController: UIViewController {
     @IBOutlet var hotspotDescription: UILabel!
     //@IBOutlet var hotspotImage: UIImageView!
     
-    
+    var addedImages = [NSManagedObject]()
     var selectedHotspot: NSManagedObject?
     
     override func viewDidLoad() {
@@ -28,6 +28,8 @@ class HotspotOverviewViewController: UIViewController {
         // get image
         //let image = selectedHotspot?.value(forKey: "picture") as? NSData
         //hotspotImage.image = (UIImage(data: image! as Data)!)
+      
+        
         
         // Do any additional setup after loading the view.
     }

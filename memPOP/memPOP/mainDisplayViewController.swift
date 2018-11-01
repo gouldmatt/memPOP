@@ -13,6 +13,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     var arrLabel = [String]()
     var arrImg = [UIImage]()
+    var addedImages = [NSManagedObject]()
     
     var hotspots = [HotspotMO]()
     
@@ -22,8 +23,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         load()
+        self.collectionView.reloadData()
     }
     
     func load () {
@@ -79,6 +80,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         
         let overviewVC = storyboard?.instantiateViewController(withIdentifier: "HotspotOverviewViewController") as! HotspotOverviewViewController
         overviewVC.selectedHotspot = hotspots[indexPath.row]
+        
         navigationController?.pushViewController(overviewVC, animated: true)
     }
 
