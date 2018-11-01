@@ -24,8 +24,8 @@ extension HotspotMO {
     @NSManaged public var picture: NSData?
     @NSManaged public var todoList: String?
     @NSManaged public var transportation: String?
-    @NSManaged public var photos: NSSet?
-    @NSManaged public var toDo: NSSet?
+    @NSManaged public var photos: NSSet
+    @NSManaged public var toDo: NSSet
 
 }
 

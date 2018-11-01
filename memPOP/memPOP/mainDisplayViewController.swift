@@ -16,6 +16,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     var addedImages = [NSManagedObject]()
     
     var hotspots = [HotspotMO]()
+    var photo: PhotosMO?
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -30,10 +31,11 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     func load () {
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.relationshipKeyPathsForPrefetching = ["photos"]
-        
+
         do {
             let hotspots = try PersistenceService.context.fetch(fetchRequest)
             self.hotspots = hotspots
+
             for data in hotspots as [NSManagedObject]{
                 if(data.value(forKey: "name") != nil) {
                     arrLabel.append(data.value(forKey: "name") as! String)
@@ -48,7 +50,6 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
                 }
             
             }
- 
         } catch {
             print("failed fetching")
         }
@@ -70,7 +71,9 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
-        cell.image.image = arrImg[indexPath.row]
+        let photosMO = hotspots[indexPath.row].photos.allObjects
+        let photo = (photosMO[0] as AnyObject).value(forKey: "photo")
+        cell.image.image = (UIImage(data: photo as! Data))
         cell.label.text = arrLabel[indexPath.row]
         
         return cell
@@ -83,6 +86,13 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         
         let overviewVC = storyboard?.instantiateViewController(withIdentifier: "HotspotOverviewViewController") as! HotspotOverviewViewController
         overviewVC.selectedHotspot = hotspots[indexPath.row]
+        
+   
+        for photos in hotspots[indexPath.row].photos {
+            addedImages.append(photos as! NSManagedObject)
+        }
+        
+        overviewVC.addedImages = addedImages
         
         navigationController?.pushViewController(overviewVC, animated: true)
     }

@@ -55,7 +55,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         else
         {
             print("fail")
-            addedImages.append(UIImage(named: "home")!)
         }
         collectionView.reloadData()
         self.dismiss(animated: true, completion: nil)
@@ -161,7 +160,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             newHotspot.picture = UIImageJPEGRepresentation(hotspotImage.image!, 1)! as NSData
         }
         */
-        newPhotos.photo = UIImageJPEGRepresentation(addedImages[0], 1)! as Data
+        newPhotos.photo = UIImageJPEGRepresentation(addedImages[0], 1)! as NSData
         
         newHotspot.addToPhotos(newPhotos)
     
@@ -172,9 +171,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("added hotspots:")
-        print(addedImages.count)
-        return addedImages.count
+         return addedImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

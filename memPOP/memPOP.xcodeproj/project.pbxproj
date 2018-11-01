@@ -21,8 +21,12 @@
 		A0B63CC3217F9C560072A82F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CC2217F9C560072A82F /* Assets.xcassets */; };
 		A0B63CD1217F9C560072A82F /* memPOPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CD0217F9C560072A82F /* memPOPTests.swift */; };
 		A0B63CDC217F9C560072A82F /* memPOPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CDB217F9C560072A82F /* memPOPUITests.swift */; };
-		EBE8F4A2218B7633006A5806 /* HotspotMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F49C218B7633006A5806 /* HotspotMO+CoreDataClass.swift */; };
-		EBE8F4A3218B7633006A5806 /* HotspotMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F49D218B7633006A5806 /* HotspotMO+CoreDataProperties.swift */; };
+		EBE8F4BE218B8BFC006A5806 /* HotspotMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4B8218B8BFC006A5806 /* HotspotMO+CoreDataClass.swift */; };
+		EBE8F4BF218B8BFC006A5806 /* HotspotMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4B9218B8BFC006A5806 /* HotspotMO+CoreDataProperties.swift */; };
+		EBE8F4C0218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */; };
+		EBE8F4C1218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */; };
+		EBE8F4C2218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */; };
+		EBE8F4C3218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BD218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,8 +67,12 @@
 		A0B63CD7217F9C560072A82F /* memPOPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = memPOPUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B63CDB217F9C560072A82F /* memPOPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memPOPUITests.swift; sourceTree = "<group>"; };
 		A0B63CDD217F9C560072A82F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EBE8F49C218B7633006A5806 /* HotspotMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EBE8F49D218B7633006A5806 /* HotspotMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EBE8F4B8218B8BFC006A5806 /* HotspotMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EBE8F4B9218B8BFC006A5806 /* HotspotMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotosMO+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotosMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoMO+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EBE8F4BD218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,8 +123,12 @@
 		A0B63CB7217F9C560072A82F /* memPOP */ = {
 			isa = PBXGroup;
 			children = (
-				EBE8F49C218B7633006A5806 /* HotspotMO+CoreDataClass.swift */,
-				EBE8F49D218B7633006A5806 /* HotspotMO+CoreDataProperties.swift */,
+				EBE8F4B8218B8BFC006A5806 /* HotspotMO+CoreDataClass.swift */,
+				EBE8F4B9218B8BFC006A5806 /* HotspotMO+CoreDataProperties.swift */,
+				EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */,
+				EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */,
+				EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */,
+				EBE8F4BD218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift */,
 				A0B63CB8217F9C560072A82F /* AppDelegate.swift */,
 				47C260E321852DD6003AF531 /* PersistenceService.swift */,
 				A0B63CBA217F9C560072A82F /* startViewController.swift */,
@@ -286,11 +298,15 @@
 				742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */,
 				47C260F221856278003AF531 /* CollectionViewCell.swift in Sources */,
 				A0B63CBB217F9C560072A82F /* startViewController.swift in Sources */,
+				EBE8F4C0218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift in Sources */,
+				EBE8F4C2218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift in Sources */,
 				742E2574218109C6004F5E7E /* personInfoViewController.swift in Sources */,
-				EBE8F4A3218B7633006A5806 /* HotspotMO+CoreDataProperties.swift in Sources */,
+				EBE8F4C3218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift in Sources */,
+				EBE8F4BF218B8BFC006A5806 /* HotspotMO+CoreDataProperties.swift in Sources */,
 				A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */,
-				EBE8F4A2218B7633006A5806 /* HotspotMO+CoreDataClass.swift in Sources */,
+				EBE8F4BE218B8BFC006A5806 /* HotspotMO+CoreDataClass.swift in Sources */,
 				742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */,
+				EBE8F4C1218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift in Sources */,
 				A0B63CB9217F9C560072A82F /* AppDelegate.swift in Sources */,
 				47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */,
 				742E257221810918004F5E7E /* settingsViewController.swift in Sources */,

@@ -13,6 +13,8 @@ class HotspotOverviewViewController: UIViewController {
     @IBOutlet var hotspotName: UILabel!
     @IBOutlet var hotspotTransportation: UILabel!
     @IBOutlet var hotspotDescription: UILabel!
+    @IBOutlet var imageView: UIImageView!
+    
     //@IBOutlet var hotspotImage: UIImageView!
     
     var addedImages = [NSManagedObject]()
@@ -24,7 +26,15 @@ class HotspotOverviewViewController: UIViewController {
         hotspotName.text = ((selectedHotspot?.value(forKey: "name")) as? String)
         hotspotTransportation.text = ((selectedHotspot?.value(forKey: "transportation")) as? String)
         hotspotDescription.text = ((selectedHotspot?.value(forKey: "info")) as? String)
+        print(addedImages.count)
         
+        for addedImage in addedImages {
+            let image = addedImage.value(forKey: "photo")
+            imageView.image = (UIImage(data: image! as! Data)!)
+        }
+        
+        //let image = addedImages[0].value(forKey: "photo")
+
         // get image
         //let image = selectedHotspot?.value(forKey: "picture") as? NSData
         //hotspotImage.image = (UIImage(data: image! as Data)!)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="HotspotMO" representedClassName="HotspotMO" syncable="YES">
+    <entity name="HotspotMO" representedClassName=".HotspotMO" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="info" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,17 +11,17 @@
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PhotosMO" inverseName="hotspot" inverseEntity="PhotosMO" syncable="YES"/>
         <relationship name="toDo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ToDoMO" inverseName="hotspot" inverseEntity="ToDoMO" syncable="YES"/>
     </entity>
-    <entity name="PhotosMO" representedClassName="PhotosMO" syncable="YES" codeGenerationType="class">
+    <entity name="PhotosMO" representedClassName=".PhotosMO" syncable="YES">
         <attribute name="photo" optional="YES" attributeType="Binary" syncable="YES"/>
         <relationship name="hotspot" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HotspotMO" inverseName="photos" inverseEntity="HotspotMO" syncable="YES"/>
     </entity>
-    <entity name="ToDoMO" representedClassName="ToDoMO" syncable="YES" codeGenerationType="class">
+    <entity name="ToDoMO" representedClassName=".ToDoMO" syncable="YES">
         <attribute name="toDoItem" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="hotspot" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HotspotMO" inverseName="toDo" inverseEntity="HotspotMO" syncable="YES"/>
     </entity>
     <elements>
         <element name="HotspotMO" positionX="-297" positionY="-162" width="128" height="178"/>
-        <element name="PhotosMO" positionX="-63" positionY="36" width="128" height="73"/>
-        <element name="ToDoMO" positionX="-65" positionY="-72" width="128" height="58"/>
+        <element name="PhotosMO" positionX="-74" positionY="-162" width="128" height="73"/>
+        <element name="ToDoMO" positionX="-74" positionY="-4" width="128" height="58"/>
     </elements>
 </model>
