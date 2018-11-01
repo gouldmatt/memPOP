@@ -2,7 +2,7 @@
 //  HotspotMO+CoreDataClass.swift
 //  memPOP
 //
-//  Created by Diego Martin on 2018-10-27.
+//  Created by Matthew Gould   on 2018-11-01.
 //  Copyright © 2018 Iota Inc. All rights reserved.
 //
 //

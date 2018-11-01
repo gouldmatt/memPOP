@@ -162,7 +162,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         */
         newPhotos.photo = UIImageJPEGRepresentation(addedImages[0], 1)! as Data
-        newPhotos.hotspot = newHotspot
+        
+        newHotspot.addToPhotos(newPhotos)
     
         PersistenceService.saveContext()
         

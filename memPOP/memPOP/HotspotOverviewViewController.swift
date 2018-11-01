@@ -28,7 +28,7 @@ class HotspotOverviewViewController: UIViewController {
         // get image
         //let image = selectedHotspot?.value(forKey: "picture") as? NSData
         //hotspotImage.image = (UIImage(data: image! as Data)!)
-      
+        
         
         
         // Do any additional setup after loading the view.

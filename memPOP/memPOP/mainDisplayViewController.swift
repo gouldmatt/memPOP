@@ -29,6 +29,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func load () {
         fetchRequest.returnsObjectsAsFaults = false
+        fetchRequest.relationshipKeyPathsForPrefetching = ["photos"]
         
         do {
             let hotspots = try PersistenceService.context.fetch(fetchRequest)
@@ -45,7 +46,9 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
                 } else {
                     arrImg.append(UIImage(named: "home")!)
                 }
+            
             }
+ 
         } catch {
             print("failed fetching")
         }
