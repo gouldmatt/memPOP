@@ -12,10 +12,16 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var label: UILabel!
     
+    @IBOutlet weak var cellEditButton: UIButton!
+    
+    
+    
+    
 }
 
+/*
 class CollectionViewPhotos: UICollectionViewCell{
     @IBOutlet var image: UIImageView!
     @IBOutlet weak var deletePhotoButton: UIButton!
     
-}
+}*/
