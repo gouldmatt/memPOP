@@ -85,7 +85,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         descriptionPlaceholder.isHidden = !descriptionTextView.text.isEmpty
         //------------------------------------------------------------------------------------------------
         
-        //------------------------------------------------------------------------------------------------
         // Done button should only be enabled when the hotspot and address is filed
         doneButton.isEnabled = false
         [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
@@ -94,6 +93,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.setHidesBackButton(true, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -190,6 +190,17 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         PersistenceService.saveContext()
         
         self.hotspots.append(newHotspot)
+        
+        // Update the navigation bar back button so that when back is pressed on the main display screen
+        // it will take the user to the start screen instead of the add hotspot form again
+        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+        for aViewController in viewControllers
+        {
+            if aViewController is AddHotspotViewController
+            {
+                self.navigationController!.popViewController(animated: true)
+            }
+        }
     }
     
     //==================================================================================================
