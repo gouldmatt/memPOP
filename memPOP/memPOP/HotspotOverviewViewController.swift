@@ -14,6 +14,8 @@ class HotspotOverviewViewController: UIViewController {
     @IBOutlet var hotspotTransportation: UILabel!
     @IBOutlet var hotspotDescription: UILabel!
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var imageView2: UIImageView!
+    @IBOutlet var imageView3: UIImageView!
     
     //@IBOutlet var hotspotImage: UIImageView!
     
@@ -28,10 +30,15 @@ class HotspotOverviewViewController: UIViewController {
         hotspotDescription.text = ((selectedHotspot?.value(forKey: "info")) as? String)
         print(addedImages.count)
         
-        for addedImage in addedImages {
-            let image = addedImage.value(forKey: "photo")
-            imageView.image = (UIImage(data: image! as! Data)!)
-        }
+        
+        let image = addedImages[0].value(forKey: "photo")
+        imageView.image = (UIImage(data: image! as! Data)!)
+        
+        let image2 = addedImages[1].value(forKeyPath: "photo")
+        imageView2.image = (UIImage(data: image2! as! Data)!)
+        
+        let image3 = addedImages[2].value(forKeyPath: "photo")
+        imageView3.image = (UIImage(data: image3! as! Data)!)
         
         //let image = addedImages[0].value(forKey: "photo")
 

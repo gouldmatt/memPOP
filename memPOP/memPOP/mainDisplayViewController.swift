@@ -40,15 +40,6 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
                 if(data.value(forKey: "name") != nil) {
                     arrLabel.append(data.value(forKey: "name") as! String)
                 }
-                
-                if(data.value(forKey: "picture") != nil) {
-                    let image = data.value(forKey: "picture") as? NSData
-                    arrImg.append(UIImage(data: image! as Data)!)
-                    // arrImg.append(data.value(forKey: "picture") as! UIImage)
-                } else {
-                    arrImg.append(UIImage(named: "home")!)
-                }
-            
             }
         } catch {
             print("failed fetching")
@@ -70,12 +61,18 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-        
-        let photosMO = hotspots[indexPath.row].photos.allObjects
-        let photo = (photosMO[0] as AnyObject).value(forKey: "photo")
-        cell.image.image = (UIImage(data: photo as! Data))
+        if(hotspots[indexPath.row].photos?.anyObject() != nil){
+            let photosMO = hotspots[indexPath.row].photos?.allObjects
+            let photo = photosMO![0] as! PhotosMO
+            if(photo.photo != nil){
+                cell.image.image = (UIImage(data: photo.photo! as Data))
+            } else {
+                cell.image.image = (UIImage(named: "defaultPhoto"))
+            }
+        } else {
+            cell.image.image = (UIImage(named: "defaultPhoto"))
+        }
         cell.label.text = arrLabel[indexPath.row]
-        
         return cell
     }
     
@@ -88,11 +85,13 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         overviewVC.selectedHotspot = hotspots[indexPath.row]
         
    
-        for photos in hotspots[indexPath.row].photos {
-            addedImages.append(photos as! NSManagedObject)
+        for photo in (hotspots[indexPath.row].photos?.allObjects)! {
+            addedImages.append(photo as! NSManagedObject)
         }
         
         overviewVC.addedImages = addedImages
+        
+        addedImages.removeAll()
         
         navigationController?.pushViewController(overviewVC, animated: true)
     }
