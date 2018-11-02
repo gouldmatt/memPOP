@@ -110,26 +110,38 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zT1-gj-DdB">
-                                                    <rect key="frame" x="0.0" y="200" width="321" height="21"/>
+                                                    <rect key="frame" x="0.0" y="208" width="321" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EJd-dP-jRW">
                                                     <rect key="frame" x="0.0" y="0.0" width="321" height="192"/>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3f-dD-ehI">
+                                                    <rect key="frame" x="281" y="0.0" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="UIO-kJ-1HD"/>
+                                                        <constraint firstAttribute="width" constant="40" id="vx3-t3-MBg"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button" image="gearNoBG"/>
+                                                </button>
                                             </subviews>
                                         </view>
                                         <constraints>
                                             <constraint firstItem="EJd-dP-jRW" firstAttribute="leading" secondItem="s9d-Ti-0cH" secondAttribute="leading" id="0Vs-6y-nFt"/>
-                                            <constraint firstAttribute="bottomMargin" secondItem="zT1-gj-DdB" secondAttribute="bottom" constant="20" id="4Vk-dN-J7Y"/>
+                                            <constraint firstItem="n3f-dD-ehI" firstAttribute="trailing" secondItem="EJd-dP-jRW" secondAttribute="trailing" id="2p0-q5-DaA"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="zT1-gj-DdB" secondAttribute="bottom" constant="12" id="4Vk-dN-J7Y"/>
                                             <constraint firstItem="EJd-dP-jRW" firstAttribute="trailing" secondItem="zT1-gj-DdB" secondAttribute="trailing" id="C0y-GJ-5IS"/>
                                             <constraint firstItem="EJd-dP-jRW" firstAttribute="leading" secondItem="zT1-gj-DdB" secondAttribute="leading" id="IUo-sg-UDo"/>
-                                            <constraint firstItem="zT1-gj-DdB" firstAttribute="top" secondItem="EJd-dP-jRW" secondAttribute="bottom" constant="8" symbolic="YES" id="YAw-1X-LTr"/>
+                                            <constraint firstItem="n3f-dD-ehI" firstAttribute="top" secondItem="EJd-dP-jRW" secondAttribute="top" id="KL1-R2-61E"/>
+                                            <constraint firstItem="zT1-gj-DdB" firstAttribute="top" secondItem="EJd-dP-jRW" secondAttribute="bottom" constant="16" id="YAw-1X-LTr"/>
                                             <constraint firstAttribute="trailing" secondItem="EJd-dP-jRW" secondAttribute="trailing" id="l4q-7M-lMh"/>
                                             <constraint firstItem="EJd-dP-jRW" firstAttribute="top" secondItem="s9d-Ti-0cH" secondAttribute="top" id="o1V-R6-WRV"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="cellEditButton" destination="n3f-dD-ehI" id="xCV-Ql-u2b"/>
                                             <outlet property="image" destination="EJd-dP-jRW" id="GNT-0a-Eqt"/>
                                             <outlet property="label" destination="zT1-gj-DdB" id="Ghr-l0-UNt"/>
                                         </connections>
@@ -157,6 +169,9 @@
                                         <color key="backgroundColor" red="1" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Edit Hotspot"/>
+                                        <connections>
+                                            <action selector="mainEditTapped:" destination="ndt-Kl-qBU" eventType="touchUpInside" id="l2V-lr-Nbu"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -186,7 +201,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JLj-gW-z5B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1241" y="33"/>
+            <point key="canvasLocation" x="1240.8" y="32.833583208395808"/>
         </scene>
         <!--Overview-->
         <scene sceneID="vee-KN-fPD">
@@ -636,6 +651,7 @@
     </scenes>
     <resources>
         <image name="gear" width="2048" height="2048"/>
+        <image name="gearNoBG" width="2048" height="2048"/>
         <image name="logo" width="2048" height="2048"/>
         <image name="plus" width="4096" height="4096"/>
     </resources>
