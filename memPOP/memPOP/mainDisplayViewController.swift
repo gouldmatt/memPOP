@@ -21,13 +21,11 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     var mainEditIsTapped : Bool = false;
     let headerID = "headerID"
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionView: UICollectionView! // = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout.init())
     
     let fetchRequest: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
-    
-    
+   
     override func viewDidLoad() {
-        collectionView?.register(UICollectionView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
         super.viewDidLoad()
         load()
     }
@@ -65,6 +63,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         if(mainEditIsTapped) {
             collectionView.reloadData()
         }
+        mainEditIsTapped = false
 
     }
 
@@ -79,6 +78,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         mainEditIsTapped = !mainEditIsTapped
         collectionView.reloadData()
         print("MainEditTapped")
+        
+    
     }
     
     
@@ -109,19 +110,6 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         
         return cell
     }
-    
-    // trying to add a header
-    /*
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)
-        header.backgroundColor = .blue
-        return header
-    }
-    
-    func collectionView(_CollectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
-    }
- */
  
     // checks which hotspot user selected
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

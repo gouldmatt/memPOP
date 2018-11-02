@@ -468,6 +468,9 @@
                                                 <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                 <state key="normal" title="Delete"/>
+                                                <connections>
+                                                    <action selector="deleteButtonIsTapped:" destination="ahN-ZB-9zy" eventType="touchUpInside" id="wfG-zj-jdk"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -486,7 +489,7 @@
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SbT-tf-0IE">
                                         <rect key="frame" x="15" y="849" width="347" height="154"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Oqm-wk-7im">
+                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Oqm-wk-7im">
                                             <size key="itemSize" width="300" height="150"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -494,7 +497,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cellPhotos" id="6R7-NC-AOh" customClass="CollectionViewPhotos" customModule="memPOP" customModuleProvider="target">
-                                                <rect key="frame" x="23.5" y="0.0" width="300" height="150"/>
+                                                <rect key="frame" x="0.0" y="2" width="300" height="150"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                     <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
