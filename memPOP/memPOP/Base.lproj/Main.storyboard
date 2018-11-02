@@ -233,7 +233,15 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xE0-JW-68Q">
-                                <rect key="frame" x="29" y="271" width="316" height="168"/>
+                                <rect key="frame" x="29" y="271" width="190" height="101"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vyR-9w-1H1">
+                                <rect key="frame" x="29" y="380" width="189" height="113"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lw4-bS-tRi">
+                                <rect key="frame" x="30" y="510" width="189" height="113"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -245,6 +253,8 @@
                         <outlet property="hotspotName" destination="kVc-fo-ISH" id="WRh-6L-bLN"/>
                         <outlet property="hotspotTransportation" destination="nQC-E8-GfN" id="UaW-E3-bIK"/>
                         <outlet property="imageView" destination="xE0-JW-68Q" id="Q45-fc-7Ai"/>
+                        <outlet property="imageView2" destination="vyR-9w-1H1" id="kjA-Hf-1gU"/>
+                        <outlet property="imageView3" destination="lw4-bS-tRi" id="Th5-d6-lnB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Iw-r4-qTV" userLabel="First Responder" sceneMemberID="firstResponder"/>

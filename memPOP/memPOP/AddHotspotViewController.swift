@@ -144,9 +144,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBAction func donePressed(_ sender: UIButton) {
         let name = hotspotName.text!
         let address = hotspotAddress.text!
-        
         let newHotspot = HotspotMO(context: PersistenceService.context)
-        let newPhotos = PhotosMO(context: PersistenceService.context)
+        var newPhotos = [PhotosMO(context: PersistenceService.context)]
+        var index: Int = 0
         newHotspot.name = name
         newHotspot.address = address
         
@@ -183,9 +183,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             newHotspot.picture = UIImageJPEGRepresentation(hotspotImage.image!, 1)! as NSData
         }
         */
-        newPhotos.photo = UIImageJPEGRepresentation(addedImages[0], 1)! as NSData
+        for image in addedImages{
+            newPhotos.append(PhotosMO(context: PersistenceService.context))
+            newPhotos[index].photo = UIImageJPEGRepresentation(image, 1)! as NSData
+            newHotspot.addToPhotos(newPhotos[index])
+            index = index + 1
+        }
         
-        newHotspot.addToPhotos(newPhotos)
     
         PersistenceService.saveContext()
         
