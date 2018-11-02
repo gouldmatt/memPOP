@@ -14,9 +14,6 @@ class CollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var cellEditButton: UIButton!
     
-    
-    
-    
 }
 
 /*

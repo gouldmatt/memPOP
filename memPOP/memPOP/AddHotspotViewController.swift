@@ -94,6 +94,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = false
+        //self.navigationItem .setHidesBackButton(true, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -183,6 +184,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             newHotspot.picture = UIImageJPEGRepresentation(hotspotImage.image!, 1)! as NSData
         }
         */
+        
         newPhotos.photo = UIImageJPEGRepresentation(addedImages[0], 1)! as NSData
         
         newHotspot.addToPhotos(newPhotos)
@@ -191,6 +193,32 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         
         self.hotspots.append(newHotspot)
     }
+    
+    // Show an alert when the user wants to delete a hotspot
+    @IBAction func deleteButtonIsTapped(_ sender: UIButton) {
+        // Create the alert
+        let alert = UIAlertController(title: "Deleting Hotspot", message: "Are you sure you wish to delete this Hotspot? Changes will not be saved.", preferredStyle: .alert)
+        
+        // Create the actions
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) {
+            (action:UIAlertAction) in
+            print ("pressed Delete")
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {
+            (action:UIAlertAction) in
+            print ("pressed Cancel")
+        }
+        
+        // Add actions to alert
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        // Show the alert
+        self.present(alert,animated: true, completion: nil)
+    }
+    
     
     //==================================================================================================
     // The name and address fields must be filed before the done button is enabled
