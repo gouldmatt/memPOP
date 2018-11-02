@@ -488,6 +488,12 @@
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6pt-Ay-Sr4" userLabel="Image">
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
                                                         </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rBm-QH-34a" userLabel="deleteButton">
+                                                            <rect key="frame" x="252" y="0.0" width="48" height="40"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                            <state key="normal" title="X"/>
+                                                        </button>
                                                     </subviews>
                                                 </view>
                                                 <constraints>
@@ -498,6 +504,7 @@
                                                 </constraints>
                                                 <size key="customSize" width="300" height="150"/>
                                                 <connections>
+                                                    <outlet property="deletePhotoButton" destination="rBm-QH-34a" id="dId-w5-nMY"/>
                                                     <outlet property="image" destination="6pt-Ay-Sr4" id="tq3-gM-PAt"/>
                                                 </connections>
                                             </collectionViewCell>

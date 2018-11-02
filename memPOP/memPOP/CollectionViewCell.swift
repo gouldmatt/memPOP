@@ -16,5 +16,6 @@ class CollectionViewCell: UICollectionViewCell {
 
 class CollectionViewPhotos: UICollectionViewCell{
     @IBOutlet var image: UIImageView!
+    @IBOutlet weak var deletePhotoButton: UIButton!
     
 }
