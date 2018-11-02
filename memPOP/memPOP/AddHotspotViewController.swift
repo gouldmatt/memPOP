@@ -20,6 +20,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var hotspotCategory: UISegmentedControl!
     @IBOutlet weak var hotspotInfo: UITextView!
     @IBOutlet weak var hotspotTodoList: UITextView!
+    
     @IBOutlet var collectionView: UICollectionView!
     
     var descriptionPlaceholder: UILabel!
@@ -212,7 +213,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
     //==================================================================================================
 
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          return addedImages.count
     }
@@ -221,8 +221,22 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         let cell:  CollectionViewPhotos = collectionView.dequeueReusableCell(withReuseIdentifier: "cellPhotos", for: indexPath) as! CollectionViewPhotos
         
         cell.image.image = addedImages[indexPath.row]
-
+        
+        // Set the value of the index at which the image is added to key "index"
+        cell.deletePhotoButton?.layer.setValue(indexPath.row, forKey: "index")
+        // Call the deletePhoto to delete the image at a particular index
+        cell.deletePhotoButton?.addTarget(self, action: #selector((deletePhoto(sender:))), for: UIControlEvents.touchUpInside)
+        
         return cell
+    }
+    
+    // Delete image from CollectionView Object
+    @objc func deletePhoto(sender:UIButton) {
+        let i : Int = (sender.layer.value(forKey: "index")) as! Int
+        addedImages.remove(at: i)
+        print("Removed image.")
+        collectionView.reloadData()
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
