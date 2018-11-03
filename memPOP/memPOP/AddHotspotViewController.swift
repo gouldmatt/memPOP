@@ -84,7 +84,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         descriptionPlaceholder.isHidden = !descriptionTextView.text.isEmpty
         //------------------------------------------------------------------------------------------------
         
-        //------------------------------------------------------------------------------------------------
         // Done button should only be enabled when the hotspot and address is filed
         doneButton.isEnabled = false
         [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
@@ -93,6 +92,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.setHidesBackButton(true, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -192,7 +192,44 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         PersistenceService.saveContext()
         
         self.hotspots.append(newHotspot)
+        
+        // Update the navigation bar back button so that when back is pressed on the main display screen
+        // it will take the user to the start screen instead of the add hotspot form again
+        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+        for aViewController in viewControllers
+        {
+            if aViewController is AddHotspotViewController
+            {
+                self.navigationController!.popViewController(animated: true)
+            }
+        }
     }
+    
+    // Show an alert when the user wants to delete a hotspot
+    @IBAction func deleteButtonIsTapped(_ sender: UIButton) {
+        // Create the alert
+        let alert = UIAlertController(title: "Deleting Hotspot", message: "Are you sure you wish to delete this Hotspot? Changes will not be saved.", preferredStyle: .alert)
+        
+        // Create the actions
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) {
+            (action:UIAlertAction) in
+            print ("pressed Delete")
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {
+            (action:UIAlertAction) in
+            print ("pressed Cancel")
+        }
+        
+        // Add actions to alert
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        // Show the alert
+        self.present(alert,animated: true, completion: nil)
+    }
+    
     
     //==================================================================================================
     // The name and address fields must be filed before the done button is enabled

@@ -22,15 +22,13 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     var mainEditIsTapped : Bool = false;
     let headerID = "headerID"
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionView: UICollectionView! // = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout.init())
     
     let fetchRequest: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
-    
-    
+   
     override func viewDidLoad() {
-        collectionView?.register(UICollectionView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
         super.viewDidLoad()
-        load()
+        
     }
     
     func load () {
@@ -40,24 +38,25 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         do {
             let hotspots = try PersistenceService.context.fetch(fetchRequest)
             self.hotspots = hotspots
-
-            for data in hotspots as [NSManagedObject]{
-                if(data.value(forKey: "name") != nil) {
-                    arrLabel.append(data.value(forKey: "name") as! String)
-                }
-            }
         } catch {
             print("failed fetching")
         }
     }
     
     override func viewWillAppear(_ animated:Bool) {
+        super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
+       
         if(mainEditIsTapped) {
             collectionView.reloadData()
         }
-
+        mainEditIsTapped = false
+        
+        load()
+        self.collectionView.reloadData()
+        
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -70,9 +69,9 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         mainEditIsTapped = !mainEditIsTapped
         collectionView.reloadData()
         print("MainEditTapped")
+        
+    
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hotspots.count
@@ -81,6 +80,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        /*
         if(hotspots[indexPath.row].photos?.anyObject() != nil){
             let photosMO = hotspots[indexPath.row].photos?.allObjects
             let photo = photosMO![0] as! PhotosMO
@@ -93,6 +93,13 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             cell.image.image = (UIImage(named: "defaultPhoto"))
         }
         cell.label.text = arrLabel[indexPath.row]
+        */
+        
+        let photosMO = hotspots[indexPath.row].photos.allObjects
+        let photo = (photosMO[0] as AnyObject).value(forKey: "photo")
+        cell.image.image = (UIImage(data: photo as! Data))
+        cell.label.text = hotspots[indexPath.row].name
+        //cell.label.text = arrLabel[indexPath.row]
 
 
         // Check if editing is enabled, if it is, show a white border around all hotspots and show a gear icon
@@ -108,19 +115,6 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         
         return cell
     }
-    
-    // trying to add a header
-    /*
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath)
-        header.backgroundColor = .blue
-        return header
-    }
-    
-    func collectionView(_CollectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
-    }
- */
  
     // checks which hotspot user selected
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
