@@ -14,6 +14,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     var arrLabel = [String]()
     var arrImg = [UIImage]()
     var addedImages = [NSManagedObject]()
+    var addedToDos = [NSManagedObject]()
     
     var hotspots = [HotspotMO]()
     var photo: PhotosMO?
@@ -79,12 +80,27 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        /*
+        if(hotspots[indexPath.row].photos?.anyObject() != nil){
+            let photosMO = hotspots[indexPath.row].photos?.allObjects
+            let photo = photosMO![0] as! PhotosMO
+            if(photo.photo != nil){
+                cell.image.image = (UIImage(data: photo.photo! as Data))
+            } else {
+                cell.image.image = (UIImage(named: "defaultPhoto"))
+            }
+        } else {
+            cell.image.image = (UIImage(named: "defaultPhoto"))
+        }
+        cell.label.text = arrLabel[indexPath.row]
+        */
         
         let photosMO = hotspots[indexPath.row].photos.allObjects
         let photo = (photosMO[0] as AnyObject).value(forKey: "photo")
         cell.image.image = (UIImage(data: photo as! Data))
         cell.label.text = hotspots[indexPath.row].name
         //cell.label.text = arrLabel[indexPath.row]
+
 
         // Check if editing is enabled, if it is, show a white border around all hotspots and show a gear icon
         if(mainEditIsTapped) {
@@ -109,11 +125,20 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         overviewVC.selectedHotspot = hotspots[indexPath.row]
         
    
-        for photos in hotspots[indexPath.row].photos {
-            addedImages.append(photos as! NSManagedObject)
+        for photo in (hotspots[indexPath.row].photos?.allObjects)! {
+            addedImages.append(photo as! NSManagedObject)
+        }
+        
+        for toDoItem in (hotspots[indexPath.row].toDo?.allObjects)! {
+            addedToDos.append(toDoItem as! NSManagedObject)
         }
         
         overviewVC.addedImages = addedImages
+        overviewVC.addedToDos = addedToDos
+        
+        // remove all so that previous selections objects are not also passed 
+        addedImages.removeAll()
+        addedToDos.removeAll()
         
         navigationController?.pushViewController(overviewVC, animated: true)
     }

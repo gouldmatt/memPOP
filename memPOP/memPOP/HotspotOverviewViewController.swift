@@ -9,39 +9,30 @@ import CoreData
 import UIKit
 
 class HotspotOverviewViewController: UIViewController {
+    @IBOutlet var overviewNavControl: UISegmentedControl!
+    @IBOutlet var toDoTable: UITableView!
     
-    @IBOutlet var hotspotName: UILabel!
-    @IBOutlet var hotspotTransportation: UILabel!
-    @IBOutlet var hotspotDescription: UILabel!
-    @IBOutlet var imageView: UIImageView!
-    
-    //@IBOutlet var hotspotImage: UIImageView!
-    
+    var addedToDos = [NSManagedObject]()
     var addedImages = [NSManagedObject]()
     var selectedHotspot: NSManagedObject?
     
     override func viewDidLoad() {
         
-        
-        hotspotName.text = ((selectedHotspot?.value(forKey: "name")) as? String)
-        hotspotTransportation.text = ((selectedHotspot?.value(forKey: "transportation")) as? String)
-        hotspotDescription.text = ((selectedHotspot?.value(forKey: "info")) as? String)
-        print(addedImages.count)
-        
-        for addedImage in addedImages {
-            let image = addedImage.value(forKey: "photo")
-            imageView.image = (UIImage(data: image! as! Data)!)
-        }
-        
-        //let image = addedImages[0].value(forKey: "photo")
-
-        // get image
-        //let image = selectedHotspot?.value(forKey: "picture") as? NSData
-        //hotspotImage.image = (UIImage(data: image! as Data)!)
+        print("added to do:")
+        print(addedToDos.count)
         
         
+        overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .normal)
         
-        // Do any additional setup after loading the view.
+        overviewNavControl.setTitleTextAttributes([
+            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),
+            NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .selected)
+        
+        // change navigation bar title
+        self.title = ((selectedHotspot?.value(forKey: "name")) as? String)
+        
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -53,14 +44,17 @@ class HotspotOverviewViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    public func tableView(_ toDoTable: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        print(addedToDos.count)
+        return addedToDos.count
+    }
     
-    /*
-     // MARK: - Navigation
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+    public func tableView(_ toDoTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+        cell.textLabel?.text = addedToDos[indexPath.row].value(forKey: "toDoItem") as? String
+
+        return(cell)
+    }
 }

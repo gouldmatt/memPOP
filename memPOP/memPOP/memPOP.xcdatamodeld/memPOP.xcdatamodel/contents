@@ -5,7 +5,6 @@
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="info" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="picture" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="todoList" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="transportation" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PhotosMO" inverseName="hotspot" inverseEntity="PhotosMO" syncable="YES"/>
@@ -20,7 +19,7 @@
         <relationship name="hotspot" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HotspotMO" inverseName="toDo" inverseEntity="HotspotMO" syncable="YES"/>
     </entity>
     <elements>
-        <element name="HotspotMO" positionX="-297" positionY="-162" width="128" height="178"/>
+        <element name="HotspotMO" positionX="-297" positionY="-162" width="128" height="165"/>
         <element name="PhotosMO" positionX="-74" positionY="-162" width="128" height="73"/>
         <element name="ToDoMO" positionX="-74" positionY="-4" width="128" height="58"/>
     </elements>

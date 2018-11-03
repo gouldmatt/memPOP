@@ -2,7 +2,7 @@
 //  HotspotMO+CoreDataProperties.swift
 //  memPOP
 //
-//  Created by Matthew Gould   on 2018-11-01.
+//  Created by Matthew Gould   on 2018-11-02.
 //  Copyright © 2018 Iota Inc. All rights reserved.
 //
 //
@@ -21,11 +21,10 @@ extension HotspotMO {
     @NSManaged public var category: String?
     @NSManaged public var info: String?
     @NSManaged public var name: String?
-    @NSManaged public var picture: NSData?
     @NSManaged public var todoList: String?
     @NSManaged public var transportation: String?
-    @NSManaged public var photos: NSSet
-    @NSManaged public var toDo: NSSet
+    @NSManaged public var photos: NSSet?
+    @NSManaged public var toDo: NSSet?
 
 }
 
