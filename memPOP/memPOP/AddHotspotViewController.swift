@@ -19,14 +19,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var hotspotTransportation: UISegmentedControl!
     @IBOutlet weak var hotspotCategory: UISegmentedControl!
     @IBOutlet weak var hotspotInfo: UITextView!
-    @IBOutlet weak var hotspotTodoList: UITextView!
     
     @IBOutlet var collectionView: UICollectionView!
     
     var descriptionPlaceholder: UILabel!
     var categoryChosen:String = ""
     var transportationChosen:String = ""
-    
+    var list = ["My To-Do List"]
     var addedImages = [UIImage]()
     var hotspots = [HotspotMO]()
 
@@ -106,7 +105,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
     
     //==================================================================================================
-    var list = ["My To-Do List"]
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
@@ -146,11 +144,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         let address = hotspotAddress.text!
         let newHotspot = HotspotMO(context: PersistenceService.context)
         var newPhotos = [PhotosMO(context: PersistenceService.context)]
+        var newToDos = [ToDoMO(context: PersistenceService.context)]
         var index: Int = 0
         newHotspot.name = name
         newHotspot.address = address
         
-        /*
+        
         if(hotspotCategory.selectedSegmentIndex == 1) {
             newHotspot.category = hotspotCategory.titleForSegment(at: 1)!
         }
@@ -171,18 +170,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             newHotspot.transportation = hotspotTransportation.titleForSegment(at: 0)!
         }
         
-        if(hotspotTodoList.text != nil) {
-            newHotspot.todoList = hotspotTodoList.text! as String
-        }
-        
         if(hotspotInfo.text != nil) {
             newHotspot.info = hotspotInfo.text! as String
         }
-         
-        if(hotspotImage.image != nil) {
-            newHotspot.picture = UIImageJPEGRepresentation(hotspotImage.image!, 1)! as NSData
-        }
-        */
+        
         for image in addedImages{
             newPhotos.append(PhotosMO(context: PersistenceService.context))
             newPhotos[index].photo = UIImageJPEGRepresentation(image, 1)! as NSData
@@ -190,7 +181,14 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             index = index + 1
         }
         
-    
+        index = 0
+        for listItem in list{
+            newToDos.append(ToDoMO(context: PersistenceService.context))
+            newToDos[index].toDoItem = listItem
+            newHotspot.addToToDo(newToDos[index])
+            index = index + 1
+        }
+        
         PersistenceService.saveContext()
         
         self.hotspots.append(newHotspot)

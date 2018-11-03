@@ -14,6 +14,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     var arrLabel = [String]()
     var arrImg = [UIImage]()
     var addedImages = [NSManagedObject]()
+    var addedToDos = [NSManagedObject]()
     
     var hotspots = [HotspotMO]()
     var photo: PhotosMO?
@@ -134,9 +135,16 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             addedImages.append(photo as! NSManagedObject)
         }
         
-        overviewVC.addedImages = addedImages
+        for toDoItem in (hotspots[indexPath.row].toDo?.allObjects)! {
+            addedToDos.append(toDoItem as! NSManagedObject)
+        }
         
+        overviewVC.addedImages = addedImages
+        overviewVC.addedToDos = addedToDos
+        
+        // remove all so that previous selections objects are not also passed 
         addedImages.removeAll()
+        addedToDos.removeAll()
         
         navigationController?.pushViewController(overviewVC, animated: true)
     }
