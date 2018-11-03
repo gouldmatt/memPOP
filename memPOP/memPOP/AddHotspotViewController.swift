@@ -183,10 +183,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         
         index = 0
         for listItem in list{
-            newToDos.append(ToDoMO(context: PersistenceService.context))
-            newToDos[index].toDoItem = listItem
-            newHotspot.addToToDo(newToDos[index])
-            index = index + 1
+            if(listItem != "My To-Do List"){
+                newToDos.append(ToDoMO(context: PersistenceService.context))
+                newToDos[index].toDoItem = listItem
+                newHotspot.addToToDo(newToDos[index])
+                index = index + 1
+            }
         }
         
         PersistenceService.saveContext()
