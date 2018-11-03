@@ -80,7 +80,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-        /*
+        
         if(hotspots[indexPath.row].photos?.anyObject() != nil){
             let photosMO = hotspots[indexPath.row].photos?.allObjects
             let photo = photosMO![0] as! PhotosMO
@@ -92,12 +92,12 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         } else {
             cell.image.image = (UIImage(named: "defaultPhoto"))
         }
-        cell.label.text = arrLabel[indexPath.row]
-        */
+       // cell.label.text = arrLabel[indexPath.row]
+ 
         
-        let photosMO = hotspots[indexPath.row].photos.allObjects
-        let photo = (photosMO[0] as AnyObject).value(forKey: "photo")
-        cell.image.image = (UIImage(data: photo as! Data))
+       // let photosMO = hotspots[indexPath.row].photos?.allObjects
+       // let photo = (photosMO[0] as AnyObject).value(forKey: "photo")
+        //cell.image.image = (UIImage(data: photo as! Data))
         cell.label.text = hotspots[indexPath.row].name
         //cell.label.text = arrLabel[indexPath.row]
 
