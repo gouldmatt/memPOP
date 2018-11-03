@@ -27,7 +27,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        load()
+        
     }
     
     func load () {
@@ -37,35 +37,25 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         do {
             let hotspots = try PersistenceService.context.fetch(fetchRequest)
             self.hotspots = hotspots
-
-            for data in hotspots as [NSManagedObject]{
-                if(data.value(forKey: "name") != nil) {
-                    arrLabel.append(data.value(forKey: "name") as! String)
-                }
-                // pictures obtained in collection view
-                /*
-                if(data.value(forKey: "picture") != nil) {
-                    let image = data.value(forKey: "picture") as? NSData
-                    arrImg.append(UIImage(data: image! as Data)!)
-                    // arrImg.append(data.value(forKey: "picture") as! UIImage)
-                } else {
-                    arrImg.append(UIImage(named: "home")!)
-                }*/
-            
-            }
         } catch {
             print("failed fetching")
         }
     }
     
     override func viewWillAppear(_ animated:Bool) {
+        super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
+       
         if(mainEditIsTapped) {
             collectionView.reloadData()
         }
         mainEditIsTapped = false
-
+        
+        load()
+        self.collectionView.reloadData()
+        
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -82,8 +72,6 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     }
     
-    
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hotspots.count
     }
@@ -95,7 +83,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         let photosMO = hotspots[indexPath.row].photos.allObjects
         let photo = (photosMO[0] as AnyObject).value(forKey: "photo")
         cell.image.image = (UIImage(data: photo as! Data))
-        cell.label.text = arrLabel[indexPath.row]
+        cell.label.text = hotspots[indexPath.row].name
+        //cell.label.text = arrLabel[indexPath.row]
 
         // Check if editing is enabled, if it is, show a white border around all hotspots and show a gear icon
         if(mainEditIsTapped) {
