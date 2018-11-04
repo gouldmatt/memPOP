@@ -1,10 +1,9 @@
 //
 //  PersistenceService.swift
 //  memPOP
-//
+//  Group 9, Iota Inc.
 //  Created by Diego Martin on 2018-10-27.
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
 
 import Foundation
 import CoreData

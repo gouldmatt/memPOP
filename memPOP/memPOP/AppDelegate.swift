@@ -1,7 +1,8 @@
 //
 //  AppDelegate.swift
 //  memPOP
-//
+//  Group 9, Iota Inc.
+
 //  Created by nla52 on 10/23/18.
 //  Copyright © 2018 Iota Inc. All rights reserved.
 //
@@ -39,7 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:
+        
         // Saves changes in the application's managed object context before the application terminates.
         PersistenceService.saveContext()
     }

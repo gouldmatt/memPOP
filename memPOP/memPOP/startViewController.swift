@@ -1,10 +1,14 @@
 //
 //  ViewController.swift
 //  memPOP
-//
+//  Group 9, Iota Inc.
 //  Created by nla52 on 10/23/18.
 //  Copyright © 2018 Iota Inc. All rights reserved.
 //
+
+//===============================================================
+// App entry point
+//===============================================================
 
 import UIKit
 
@@ -12,7 +16,6 @@ class startViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -21,9 +24,6 @@ class startViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-
 }
 

@@ -104,6 +104,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7477DF96218F835D00D90ECD /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				EBA9D826218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift */,
+				EBA9D827218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift */,
+				EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */,
+				EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */,
+				EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */,
+				EBE8F4BD218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		A0B63CAC217F9C550072A82F = {
 			isa = PBXGroup;
 			children = (
@@ -127,12 +140,7 @@
 		A0B63CB7217F9C560072A82F /* memPOP */ = {
 			isa = PBXGroup;
 			children = (
-				EBA9D826218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift */,
-				EBA9D827218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift */,
-				EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */,
-				EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */,
-				EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */,
-				EBE8F4BD218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift */,
+				7477DF96218F835D00D90ECD /* CoreData */,
 				A0B63CB8217F9C560072A82F /* AppDelegate.swift */,
 				47C260E321852DD6003AF531 /* PersistenceService.swift */,
 				A0B63CBA217F9C560072A82F /* startViewController.swift */,
@@ -141,10 +149,10 @@
 				742E257121810918004F5E7E /* settingsViewController.swift */,
 				742E2569218021A8004F5E7E /* AddHotspotViewController.swift */,
 				742E2573218109C6004F5E7E /* personInfoViewController.swift */,
-				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				4788F2B6218CBA870041BE71 /* CollectionViewPhotos.swift */,
 				EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */,
 				47C260F121856278003AF531 /* CollectionViewCell.swift */,
+				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
 				A0B63CC7217F9C560072A82F /* Info.plist */,
 				A0B63CBF217F9C560072A82F /* memPOP.xcdatamodeld */,
