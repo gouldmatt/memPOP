@@ -22,6 +22,7 @@
 		A0B63CC3217F9C560072A82F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CC2217F9C560072A82F /* Assets.xcassets */; };
 		A0B63CD1217F9C560072A82F /* memPOPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CD0217F9C560072A82F /* memPOPTests.swift */; };
 		A0B63CDC217F9C560072A82F /* memPOPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CDB217F9C560072A82F /* memPOPUITests.swift */; };
+		EB7423F9218E5695005836A2 /* CollectionViewPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */; };
 		EBA9D828218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA9D826218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift */; };
 		EBA9D829218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA9D827218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift */; };
 		EBE8F4C0218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */; };
@@ -69,6 +70,7 @@
 		A0B63CD7217F9C560072A82F /* memPOPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = memPOPUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B63CDB217F9C560072A82F /* memPOPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memPOPUITests.swift; sourceTree = "<group>"; };
 		A0B63CDD217F9C560072A82F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhoto.swift; sourceTree = "<group>"; };
 		EBA9D826218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EBA9D827218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotosMO+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				742E2573218109C6004F5E7E /* personInfoViewController.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				4788F2B6218CBA870041BE71 /* CollectionViewPhotos.swift */,
+				EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */,
 				47C260F121856278003AF531 /* CollectionViewCell.swift */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
 				A0B63CC7217F9C560072A82F /* Info.plist */,
@@ -314,6 +317,7 @@
 				A0B63CB9217F9C560072A82F /* AppDelegate.swift in Sources */,
 				47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */,
 				742E257221810918004F5E7E /* settingsViewController.swift in Sources */,
+				EB7423F9218E5695005836A2 /* CollectionViewPhoto.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

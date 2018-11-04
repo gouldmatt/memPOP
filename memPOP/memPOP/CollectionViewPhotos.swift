@@ -9,7 +9,7 @@
 import UIKit
 
 class CollectionViewPhotos: UICollectionViewCell {
-    @IBOutlet var image: UIImageView!
+    @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var deletePhotoButton: UIButton!
     
 }
