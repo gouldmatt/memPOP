@@ -13,7 +13,10 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     @IBOutlet var toDoTable: UITableView!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var toDoHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var collectionViewHeightConstraint: NSLayoutConstraint!
     
+
+    @IBOutlet var descriptionView: UILabel!
     @IBOutlet var collectionView: UICollectionView!
     var addedToDos = [NSManagedObject]()
     var addedImages = [NSManagedObject]()
@@ -23,6 +26,7 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         
         //toDoTable.isScrollEnabled = false;
         toDoTable.bounces = false;
+    
         
         overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
             ], for: .normal)
@@ -34,6 +38,9 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         
         // change navigation bar title
         self.title = ((selectedHotspot?.value(forKey: "name")) as? String)
+        
+        // add description
+        descriptionView.text = ((selectedHotspot?.value(forKey: "info")) as? String)
         
     }
     

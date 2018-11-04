@@ -46,15 +46,14 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewWillAppear(_ animated:Bool) {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
+        
+        load()
+        self.collectionView.reloadData()
        
         if(mainEditIsTapped) {
             collectionView.reloadData()
         }
         mainEditIsTapped = false
-        
-        load()
-        self.collectionView.reloadData()
-        
     }
     
 

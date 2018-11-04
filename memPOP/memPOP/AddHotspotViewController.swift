@@ -70,6 +70,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         //imageView.layer.borderColor = UIColor.black.cgColor
         hotspotName.delegate = self
         hotspotAddress.delegate = self
+        todoItem.delegate = self 
         
         //------------------------------------------------------------------------------------------------
         // Add placeholder text for text view
@@ -283,5 +284,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n"){
+            textView.resignFirstResponder()
+            return false
+        }
+        return true 
     }
 }
