@@ -4,6 +4,11 @@ Project Website: https://sites.google.com/view/mempop/home
 
 All code used to develop Mem-POP will be available in this repository.
 
+### Compiliation Configuration
+- Project is built using XCode 9.4.1 with Swift 4.2
+- Target Deployment: iOS 11.4
+- Simulator build tests performed on iPhone 8
+
 ### Coding Guidelines
 (coding guidelines follow sections of https://www.mono-project.com/community/contributing/coding-guidelines/)
 - Indentation
