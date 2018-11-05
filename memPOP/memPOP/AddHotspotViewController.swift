@@ -267,7 +267,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell:  CollectionViewPhotos = collectionView.dequeueReusableCell(withReuseIdentifier: "cellPhotos", for: indexPath) as! CollectionViewPhotos
+        let cell:  CollectionViewPhotoDelete = collectionView.dequeueReusableCell(withReuseIdentifier: "cellPhotos", for: indexPath) as! CollectionViewPhotoDelete
         
         cell.image.image = addedImages[indexPath.row]
         

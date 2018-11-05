@@ -98,7 +98,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        let cell: CollectionViewPhotoLabel = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewPhotoLabel
         
         // Check if user has inputted an image, if not, use the default image
         if(hotspots[indexPath.row].photos?.anyObject() != nil){
