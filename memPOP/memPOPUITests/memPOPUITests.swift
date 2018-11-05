@@ -8,6 +8,18 @@
 
 import XCTest
 
+extension XCUIElement {
+    func forceTapElement() {
+        if self.isHittable {
+            self.tap()
+        }
+        else {
+            let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.0, dy: 0.0))
+            coordinate.tap()
+        }
+    }
+}
+
 class memPOPUITests: XCTestCase {
     
         
@@ -50,7 +62,7 @@ class memPOPUITests: XCTestCase {
         aKey.tap()
         aKey.tap()
         
-        let app2 = app
+        let app2 = XCUIApplication()
         app2/*@START_MENU_TOKEN@*/.textFields["address"]/*[[".scrollViews.textFields[\"address\"]",".textFields[\"address\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
         let pKey = app2/*@START_MENU_TOKEN@*/.keys["p"]/*[[".keyboards.keys[\"p\"]",".keys[\"p\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
@@ -74,7 +86,7 @@ class memPOPUITests: XCTestCase {
         let returnButton = app/*@START_MENU_TOKEN@*/.buttons["Return"]/*[[".keyboards",".buttons[\"return\"]",".buttons[\"Return\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/
         returnButton.tap()
         
-        let app2 = app
+        let app2 = XCUIApplication()
         app2/*@START_MENU_TOKEN@*/.textFields["address"]/*[[".scrollViews.textFields[\"address\"]",".textFields[\"address\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
         let bKey = app2/*@START_MENU_TOKEN@*/.keys["b"]/*[[".keyboards.keys[\"b\"]",".keys[\"b\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
@@ -99,7 +111,7 @@ class memPOPUITests: XCTestCase {
         aKey.tap()
         aKey.tap()
         
-        let app2 = app
+        let app2 = XCUIApplication()
         app2/*@START_MENU_TOKEN@*/.textFields["address"]/*[[".scrollViews.textFields[\"address\"]",".textFields[\"address\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
         let bKey = app2/*@START_MENU_TOKEN@*/.keys["b"]/*[[".keyboards.keys[\"b\"]",".keys[\"b\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
@@ -131,6 +143,16 @@ class memPOPUITests: XCTestCase {
     }
     
     func testHotspotOverview() {
+        
+        let app = XCUIApplication()
+        app.buttons["Start"].tap()
+        app.collectionViews.cells.otherElements.containing(.staticText, identifier:"trees").images["defaultPhoto"].tap()
+        
+        let app2 = XCUIApplication()
+        app2/*@START_MENU_TOKEN@*/.collectionViews.children(matching: .other).element.swipeRight()/*[[".scrollViews.collectionViews.children(matching: .other).element",".swipeUp()",".swipeRight()",".collectionViews.children(matching: .other).element"],[[[-1,3,1],[-1,0,1]],[[-1,2],[-1,1]]],[0,0]]@END_MENU_TOKEN@*/
+        app2/*@START_MENU_TOKEN@*/.staticTexts["     Photos"]/*[[".scrollViews.staticTexts[\"     Photos\"]",".staticTexts[\"     Photos\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.swipeDown()
+        app.navigationBars["trees"].buttons["Memories"].tap()
+        
         
     }
     
