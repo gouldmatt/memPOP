@@ -39,6 +39,7 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     override func viewDidLoad() {
         toDoTable.bounces = false;
         
+        // change appearance for segmented control
         overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
             ], for: .normal)
         
