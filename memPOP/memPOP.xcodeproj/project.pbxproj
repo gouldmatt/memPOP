@@ -10,6 +10,8 @@
 		4788F2B7218CBA870041BE71 /* CollectionViewPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4788F2B6218CBA870041BE71 /* CollectionViewPhotos.swift */; };
 		47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260E321852DD6003AF531 /* PersistenceService.swift */; };
 		47C260F221856278003AF531 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260F121856278003AF531 /* CollectionViewCell.swift */; };
+		741A133A218FFB9800C203FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CBC217F9C560072A82F /* Main.storyboard */; };
+		741A133B218FFB9F00C203FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CBC217F9C560072A82F /* Main.storyboard */; };
 		742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2567218016F3004F5E7E /* mainDisplayViewController.swift */; };
 		742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2569218021A8004F5E7E /* AddHotspotViewController.swift */; };
 		742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */; };
@@ -291,6 +293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				741A133B218FFB9F00C203FD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				741A133A218FFB9800C203FD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
