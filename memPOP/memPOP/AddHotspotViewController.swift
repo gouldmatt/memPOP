@@ -70,6 +70,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
     }
     
+    // Action needed to save all the attributes for a single hotspot and their relationships
     @IBAction func donePressed(_ sender: UIButton) {
         let name = hotspotName.text!
         let address = hotspotAddress.text!
@@ -77,9 +78,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         var newPhotos = [PhotosMO(context: PersistenceService.context)]
         var newToDos = [ToDoMO(context: PersistenceService.context)]
         var index: Int = 0
+        
+        // Update the attribute values of the hotspot object
         newHotspot.name = name
         newHotspot.address = address
         
+        // Check the category selected
         if(hotspotCategory.selectedSegmentIndex == 1) {
             newHotspot.category = hotspotCategory.titleForSegment(at: 1)!
         }
@@ -93,6 +97,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             newHotspot.category = hotspotCategory.titleForSegment(at: 0)!
         }
         
+        // Check the method of transportation selected
         if(hotspotTransportation.selectedSegmentIndex == 1) {
             newHotspot.transportation = hotspotTransportation.titleForSegment(at: 1)!
         }
@@ -100,10 +105,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             newHotspot.transportation = hotspotTransportation.titleForSegment(at: 0)!
         }
         
+        // Check that the description is not an empty string
         if(hotspotInfo.text != nil) {
             newHotspot.info = hotspotInfo.text! as String
         }
         
+        // Pass all the images to the Photos object
         for image in addedImages{
             newPhotos.append(PhotosMO(context: PersistenceService.context))
             newPhotos[index].photo = UIImageJPEGRepresentation(image, 1)! as NSData
@@ -112,6 +119,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         
         index = 0
+        
+        // Pass all the todo list items to the ToDo object
         for listItem in list{
             if(listItem != "My To-Do List"){
                 newToDos.append(ToDoMO(context: PersistenceService.context))
@@ -121,8 +130,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             }
         }
         
+        // Once all changes have been checked, save the hotspot object with all its relationships
         PersistenceService.saveContext()
         
+        // Add to the list of created hotspots
         self.hotspots.append(newHotspot)
         
         // Update the navigation bar back button so that when back is pressed on the main display screen
@@ -229,6 +240,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         descriptionPlaceholder.isHidden = !descriptionTextView.text.isEmpty
     }
     
+    // Choosing an image from pictures library
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let imagePicked = info[UIImagePickerControllerOriginalImage] as? UIImage {
             addedImages.append(imagePicked)
@@ -287,13 +299,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         collectionView.reloadData()
     }
     
-    // Close the keyboard on return
+    // Close the keyboard on return for a textField
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    // Close the keyboard on return
+    // Close the keyboard on return for a textView
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if(text == "\n"){
             textView.resignFirstResponder()

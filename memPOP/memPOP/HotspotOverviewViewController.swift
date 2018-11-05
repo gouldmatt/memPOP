@@ -37,6 +37,8 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     //===================================================================================================
     
     override func viewDidLoad() {
+        
+        // Setup for how the overview view controller will look like
         toDoTable.bounces = false;
         
         overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
@@ -66,6 +68,7 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     //===================================================================================================
     // Functions
     //===================================================================================================
+    
     public func tableView(_ toDoTable: UITableView, numberOfRowsInSection section: Int) -> Int {
         return addedToDos.count
     }

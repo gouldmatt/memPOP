@@ -60,12 +60,17 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
         
+        // Fetch all the hotspots
         load()
+        
+        // Everytime the view appears, reload data stored in the collection view
         self.collectionView.reloadData()
         
         if(mainEditIsTapped) {
             collectionView.reloadData()
         }
+        
+        // By default Edit button should not be tapped
         mainEditIsTapped = false
     }
     
@@ -81,16 +86,18 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     func load () {
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.relationshipKeyPathsForPrefetching = ["photos"]
-
+        
+        // Do-try block to fetch all the hotspot entities
         do {
             let hotspots = try PersistenceService.context.fetch(fetchRequest)
             self.hotspots = hotspots
         }
-        
         catch {
             print("failed fetching")
         }
     }
+    
+    // Collection view shows all the hotpots in mainDisplay //
     
     // Returns the number of hotspots
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -98,6 +105,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        // Use the single "cell" created in the storyboard as a template for every hotspot added
         let cell: CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
         // Check if user has inputted an image, if not, use the default image
@@ -112,9 +121,10 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             cell.image.image = (UIImage(named: "defaultPhoto"))
         }
        
+        // Update the label of the cell with the name of the hotspot entity
         cell.label.text = hotspots[indexPath.row].name
 
-        // Check if editing is enabled, if it is, show a white border around all hotspots and show a gear icon
+        // Check if editing is enabled, if it is, show a red border around all hotspots and show a gear icon
         if(mainEditIsTapped) {
             cell.cellEditButton.isHidden = false
             let borderColor : UIColor = UIColor(red: 255/255, green: 97/255, blue: 110/255, alpha: 1.0)
@@ -139,20 +149,24 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         let overviewVC = storyboard?.instantiateViewController(withIdentifier: "HotspotOverviewViewController") as! HotspotOverviewViewController
         overviewVC.selectedHotspot = hotspots[indexPath.row]
         
+        // Fetch all the images for the specific hotspot object selected
         for photo in (hotspots[indexPath.row].photos?.allObjects)! {
             addedImages.append(photo as! NSManagedObject)
         }
         
+        // Fetch all the todo items for the specific hotspot object selected
         for toDoItem in (hotspots[indexPath.row].toDo?.allObjects)! {
             addedToDos.append(toDoItem as! NSManagedObject)
         }
         
+        // Pass both arrays to the overview view controller to display them
         overviewVC.addedImages = addedImages
         overviewVC.addedToDos = addedToDos
         
         // Remove all so that previous selections objects are not also passed
         addedImages.removeAll()
         addedToDos.removeAll()
+        
         
         navigationController?.pushViewController(overviewVC, animated: true)
     }
