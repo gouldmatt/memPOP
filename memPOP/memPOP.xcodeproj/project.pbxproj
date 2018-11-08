@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4788F2B7218CBA870041BE71 /* CollectionViewPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4788F2B6218CBA870041BE71 /* CollectionViewPhotos.swift */; };
+		4788F2B7218CBA870041BE71 /* CollectionViewPhotoDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4788F2B6218CBA870041BE71 /* CollectionViewPhotoDelete.swift */; };
 		47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260E321852DD6003AF531 /* PersistenceService.swift */; };
-		47C260F221856278003AF531 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260F121856278003AF531 /* CollectionViewCell.swift */; };
-		741A133A218FFB9800C203FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CBC217F9C560072A82F /* Main.storyboard */; };
+		47C260F221856278003AF531 /* CollectionViewPhotoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260F121856278003AF531 /* CollectionViewPhotoLabel.swift */; };
 		741A133B218FFB9F00C203FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CBC217F9C560072A82F /* Main.storyboard */; };
+		741A133A218FFB9800C203FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CBC217F9C560072A82F /* Main.storyboard */; };
 		742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2567218016F3004F5E7E /* mainDisplayViewController.swift */; };
 		742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E2569218021A8004F5E7E /* AddHotspotViewController.swift */; };
 		742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */; };
@@ -51,9 +51,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4788F2B6218CBA870041BE71 /* CollectionViewPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhotos.swift; sourceTree = "<group>"; };
+		4788F2B6218CBA870041BE71 /* CollectionViewPhotoDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhotoDelete.swift; sourceTree = "<group>"; };
 		47C260E321852DD6003AF531 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
-		47C260F121856278003AF531 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		47C260F121856278003AF531 /* CollectionViewPhotoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhotoLabel.swift; sourceTree = "<group>"; };
 		742E2567218016F3004F5E7E /* mainDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainDisplayViewController.swift; sourceTree = "<group>"; };
 		742E2569218021A8004F5E7E /* AddHotspotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHotspotViewController.swift; sourceTree = "<group>"; };
 		742E256B218021DB004F5E7E /* HotspotOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotspotOverviewViewController.swift; sourceTree = "<group>"; };
@@ -151,9 +151,9 @@
 				742E257121810918004F5E7E /* settingsViewController.swift */,
 				742E2569218021A8004F5E7E /* AddHotspotViewController.swift */,
 				742E2573218109C6004F5E7E /* personInfoViewController.swift */,
-				4788F2B6218CBA870041BE71 /* CollectionViewPhotos.swift */,
+				4788F2B6218CBA870041BE71 /* CollectionViewPhotoDelete.swift */,
 				EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */,
-				47C260F121856278003AF531 /* CollectionViewCell.swift */,
+				47C260F121856278003AF531 /* CollectionViewPhotoLabel.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
 				A0B63CC7217F9C560072A82F /* Info.plist */,
@@ -315,8 +315,8 @@
 				EBA9D828218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift in Sources */,
 				742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */,
 				742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */,
-				47C260F221856278003AF531 /* CollectionViewCell.swift in Sources */,
-				4788F2B7218CBA870041BE71 /* CollectionViewPhotos.swift in Sources */,
+				47C260F221856278003AF531 /* CollectionViewPhotoLabel.swift in Sources */,
+				4788F2B7218CBA870041BE71 /* CollectionViewPhotoDelete.swift in Sources */,
 				A0B63CBB217F9C560072A82F /* startViewController.swift in Sources */,
 				EBE8F4C0218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift in Sources */,
 				EBE8F4C2218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift in Sources */,
