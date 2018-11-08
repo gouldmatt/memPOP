@@ -41,6 +41,7 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         // Setup for how the overview view controller will look like
         toDoTable.bounces = false;
         
+        // change appearance for segmented control
         overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
             ], for: .normal)
         
