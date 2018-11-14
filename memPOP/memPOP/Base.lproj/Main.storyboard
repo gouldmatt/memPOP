@@ -124,7 +124,7 @@
                                                         <bool key="isElement" value="YES"/>
                                                     </accessibility>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3f-dD-ehI">
+                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3f-dD-ehI">
                                                     <rect key="frame" x="139" y="58" width="70" height="70"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Button" image="gear"/>
@@ -405,7 +405,7 @@
         <!--Add Hotspot-->
         <scene sceneID="NVe-M6-MKj">
             <objects>
-                <viewController title="Add Hotspot" id="ahN-ZB-9zy" customClass="AddHotspotViewController" customModule="memPOP" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddHotspotViewController" title="Add Hotspot" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ahN-ZB-9zy" customClass="AddHotspotViewController" customModule="memPOP" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dEG-6b-VUf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -765,6 +765,7 @@
                     <size key="freeformSize" width="375" height="1200"/>
                     <connections>
                         <outlet property="collectionView" destination="SbT-tf-0IE" id="T9Y-Yt-Vd6"/>
+                        <outlet property="deleteButton" destination="gJd-nr-8r3" id="bom-w0-eAp"/>
                         <outlet property="descriptionTextView" destination="p0c-HB-2m6" id="fUY-Wc-vtv"/>
                         <outlet property="doneButton" destination="gbf-Xg-gZp" id="hWp-3Q-hsJ"/>
                         <outlet property="hotspotAddress" destination="E8y-jg-E4h" id="pNY-Ks-WQ6"/>
@@ -778,7 +779,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Phm-gJ-Raf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2128.8000000000002" y="272.56371814092955"/>
+            <point key="canvasLocation" x="2047" y="273"/>
         </scene>
         <!--Navigation-->
         <scene sceneID="F43-cd-fAR">
