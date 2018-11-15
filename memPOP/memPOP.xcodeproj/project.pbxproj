@@ -24,6 +24,7 @@
 		A0B63CC3217F9C560072A82F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0B63CC2217F9C560072A82F /* Assets.xcassets */; };
 		A0B63CD1217F9C560072A82F /* memPOPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CD0217F9C560072A82F /* memPOPTests.swift */; };
 		A0B63CDC217F9C560072A82F /* memPOPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CDB217F9C560072A82F /* memPOPUITests.swift */; };
+		E1D31053219D004D0094C445 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D31052219D004D0094C445 /* CoreLocation.framework */; };
 		EB7423F9218E5695005836A2 /* CollectionViewPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */; };
 		EB93AE1521972F9F00B4B486 /* navigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1421972F9F00B4B486 /* navigationViewController.swift */; };
 		EB93AE1721972FD000B4B486 /* overviewNavMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */; };
@@ -74,6 +75,7 @@
 		A0B63CD7217F9C560072A82F /* memPOPUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = memPOPUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B63CDB217F9C560072A82F /* memPOPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memPOPUITests.swift; sourceTree = "<group>"; };
 		A0B63CDD217F9C560072A82F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E1D31052219D004D0094C445 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhoto.swift; sourceTree = "<group>"; };
 		EB93AE1421972F9F00B4B486 /* navigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = navigationViewController.swift; sourceTree = "<group>"; };
 		EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = overviewNavMasterViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1D31053219D004D0094C445 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +133,7 @@
 				A0B63CCF217F9C560072A82F /* memPOPTests */,
 				A0B63CDA217F9C560072A82F /* memPOPUITests */,
 				A0B63CB6217F9C560072A82F /* Products */,
+				E1D31051219D004C0094C445 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -184,6 +188,14 @@
 				A0B63CDD217F9C560072A82F /* Info.plist */,
 			);
 			path = memPOPUITests;
+			sourceTree = "<group>";
+		};
+		E1D31051219D004C0094C445 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E1D31052219D004D0094C445 /* CoreLocation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -407,8 +407,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="587"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Zoz-a9-t3l">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zoz-a9-t3l">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                                <connections>
+                                    <outlet property="delegate" destination="1Oi-AX-OUe" id="dEX-WJ-zdu"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -420,6 +423,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uma-gG-LFb"/>
                     </view>
+                    <connections>
+                        <outlet property="mapOutlet" destination="Zoz-a9-t3l" id="RXx-Ew-Nz8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gig-hB-wkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
