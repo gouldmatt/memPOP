@@ -58,6 +58,8 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = false
+        collectionView.reloadData()
+        toDoTable.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,7 +94,13 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         let photoOnlyCell:  CollectionViewPhoto = collectionView.dequeueReusableCell(withReuseIdentifier: "photoOnlyCell", for: indexPath) as! CollectionViewPhoto
         
         let imageData = addedImages[indexPath.row].value(forKey: "photo")
-        photoOnlyCell.image.image = UIImage(data: imageData as! Data)
+        if(imageData != nil){
+            let image = UIImage(data: imageData as! Data)
+            photoOnlyCell.image.image = image
+        } else {
+            photoOnlyCell.image.image = (UIImage(named: "defaultPhoto"))
+        }
+        
         return photoOnlyCell
     }
 }

@@ -160,7 +160,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
               addedImages.append(photo as! NSManagedObject)
             }
           
-            for toDoItem in (hotspots[indexPath.row].toDo?.allObjects)! {
+            for toDoItem in (hotspots[indexPath.row].toDo)! {
                 addedToDos.append(toDoItem as! NSManagedObject)
             }
             
@@ -205,6 +205,11 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         let overviewNavVC = storyboard?.instantiateViewController(withIdentifier: "overviewNavMasterViewController") as! overviewNavMasterViewController
         overviewNavVC.selectedHotspot = hotspots[indexPath.row]
         
+        for photo in (hotspots[indexPath.row].photos)! {
+            addedImages.append(photo as! NSManagedObject)
+        }
+            
+        
         // Fetch all the todo items for the specific hotspot object selected
         for toDoItem in (hotspots[indexPath.row].toDo)! {
             addedToDos.append(toDoItem as! NSManagedObject)
@@ -220,5 +225,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         
         
         navigationController?.pushViewController(overviewNavVC, animated: true)
+        }
     }
 }
+

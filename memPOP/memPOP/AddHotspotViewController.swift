@@ -153,8 +153,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         else {
             print("Updating one")
             let updateHotspot = selectedHotspot as! HotspotMO
-            var newToDos = updateHotspot.toDo?.allObjects as! [ToDoMO]
-            var newPhotos = updateHotspot.photos?.allObjects as! [PhotosMO]
+            var newToDos = updateHotspot.toDo as! [ToDoMO]
+            var newPhotos = updateHotspot.photos as! [PhotosMO]
             var index: Int = 0
             
             updateHotspot.name = hotspotName.text!
@@ -346,8 +346,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             deleteButton.setTitle("Delete", for: UIControlState.normal)
             
             let updateHotspot = selectedHotspot as! HotspotMO
-            let todoItems = updateHotspot.toDo?.allObjects as! [ToDoMO]
-            let photoItems = updateHotspot.photos?.allObjects as! [PhotosMO]
+            let todoItems = updateHotspot.toDo as! [ToDoMO]
+            let photoItems = updateHotspot.photos as! [PhotosMO]
             
             // Change the navigation title to match the action desired, in this case to "Editing <HotspotName>"
             self.title = ("Editing " + updateHotspot.name!)
