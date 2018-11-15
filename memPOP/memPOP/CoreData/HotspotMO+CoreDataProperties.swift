@@ -30,8 +30,8 @@ extension HotspotMO {
     @NSManaged public var name: String?
     @NSManaged public var todoList: String?
     @NSManaged public var transportation: String?
-    @NSManaged public var photos: NSSet?
-    @NSManaged public var toDo: NSSet?
+    @NSManaged public var photos: NSArray?
+    @NSManaged public var toDo: NSArray?
 }
 
 // MARK: Generated accessors for photos

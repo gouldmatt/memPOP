@@ -26,44 +26,44 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     //===================================================================================================
     // Outlets
     //===================================================================================================
-    @IBOutlet var overviewNavControl: UISegmentedControl!
     @IBOutlet var toDoTable: UITableView!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var descriptionView: UILabel!
     @IBOutlet var collectionView: UICollectionView!
-    
+    @IBOutlet var toDoTableHeight: NSLayoutConstraint!
+    @IBOutlet var collectionViewHeight: NSLayoutConstraint!
+   // @IBOutlet var descriptionViewHeight: NSLayoutConstraint!
     //===================================================================================================
     // Override Functions
     //===================================================================================================
     
     override func viewDidLoad() {
         
-        // Setup for how the overview view controller will look like
-        toDoTable.bounces = false;
+        // Set up to do table, description label and collection view with dynamic height
         
-        // change appearance for segmented control
-        overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
-            ], for: .normal)
+        toDoTable.bounces = false
+        toDoTable.isScrollEnabled = false
+        toDoTable.reloadData()
+        toDoTable.layoutIfNeeded()
+        toDoTableHeight.constant = toDoTable.contentSize.height
         
-        overviewNavControl.setTitleTextAttributes([
-            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),
-            NSAttributedStringKey.foregroundColor: UIColor.white
-            ], for: .selected)
-        
-        // Update navigation bar title
-        self.title = ((selectedHotspot?.value(forKey: "name")) as? String)
-        
-        // Add description
         descriptionView.text = ((selectedHotspot?.value(forKey: "info")) as? String)
+        
+        collectionView.bounces = false
+        collectionView.isScrollEnabled = false
+        collectionView.reloadData()
+        collectionView.layoutIfNeeded()
+        collectionViewHeight.constant =  collectionView.contentSize.height
     }
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = false
+        collectionView.reloadData()
+        toDoTable.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     //===================================================================================================
@@ -78,7 +78,9 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     public func tableView(_ toDoTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let photoCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "photoCell")
         photoCell.textLabel?.text = (addedToDos[indexPath.row].value(forKey: "toDoItem") as! String)
-
+        photoCell.backgroundColor = UIColor(red:0.16, green:0.19, blue:0.21, alpha:1.0)
+        photoCell.textLabel?.textColor = UIColor.white
+        
         return(photoCell)
     }
 
@@ -92,7 +94,13 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         let photoOnlyCell:  CollectionViewPhoto = collectionView.dequeueReusableCell(withReuseIdentifier: "photoOnlyCell", for: indexPath) as! CollectionViewPhoto
         
         let imageData = addedImages[indexPath.row].value(forKey: "photo")
-        photoOnlyCell.image.image = UIImage(data: imageData as! Data)
+        if(imageData != nil){
+            let image = UIImage(data: imageData as! Data)
+            photoOnlyCell.image.image = image
+        } else {
+            photoOnlyCell.image.image = (UIImage(named: "defaultPhoto"))
+        }
+        
         return photoOnlyCell
     }
 }
