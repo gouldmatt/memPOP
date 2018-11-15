@@ -494,14 +494,19 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     // Delete ToDo items from database
     func deleteTodo (index : Int) {
         
+        let chosenHotspot = selectedHotspot as! HotspotMO
+        var toDosToDelete = chosenHotspot.toDo as! [ToDoMO]
+        
         if(index > fetchedToDos.count) {
             // This means that we have not yet saved any changes to the toDo list
         }
         else {
-            let toDos = fetchedToDos as? [ToDoMO]
+            //let toDos = fetchedToDos as? [ToDoMO]
             
             // '-1' to ignore the first line of the array
-            let toDoToDelete = toDos![index-1]
+            // let toDoToDelete = toDos![index-1]
+            
+            let toDoToDelete = toDosToDelete[index-1]
             
             // Delete specific item from database
             PersistenceService.context.delete(toDoToDelete)
@@ -511,15 +516,19 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     // Delete Photo items from database
     func deletePhoto (index : Int) {
-    
+
+        let chosenHotspot = selectedHotspot as! HotspotMO
+        var photosToDelete = chosenHotspot.photos as! [PhotosMO]
+        
         if(index > fetchedImages.count) {
             // This means that we have not yet saved any changes to the photos list
         }
         else {
-            let photos = fetchedImages as? [PhotosMO]
+            //let photos = fetchedImages as? [PhotosMO]
         
-            let photoToDelete = photos![index]
+            //let photoToDelete = photos![index]
             
+            let photoToDelete = photosToDelete[index]
             
             // Delete specific item from database
             PersistenceService.context.delete(photoToDelete)
@@ -537,7 +546,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         deletePhoto(index: i)
         
         print(i)
-        
+    
         print("Removed image")
         collectionView.reloadData()
     }
