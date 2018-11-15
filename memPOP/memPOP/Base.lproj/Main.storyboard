@@ -808,6 +808,12 @@
                                             <outlet property="delegate" destination="ahN-ZB-9zy" id="l9B-jy-RlB"/>
                                         </connections>
                                     </collectionView>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Please complete the highlighted fields" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="swM-PN-tpS">
+                                        <rect key="frame" x="10" y="1045" width="357" height="30"/>
+                                        <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="QVU-dr-zh4" firstAttribute="leading" secondItem="TiJ-Xs-5Oq" secondAttribute="leading" id="0Db-eX-rh5"/>
@@ -815,8 +821,10 @@
                                     <constraint firstItem="v8j-sv-2qP" firstAttribute="top" secondItem="SbT-tf-0IE" secondAttribute="bottom" constant="8" symbolic="YES" id="1uR-IA-ZHr"/>
                                     <constraint firstAttribute="trailing" secondItem="E8y-jg-E4h" secondAttribute="trailing" constant="7" id="27b-xq-WjX"/>
                                     <constraint firstAttribute="trailing" secondItem="6NE-LB-jlS" secondAttribute="trailing" id="2Sd-8w-r7K"/>
+                                    <constraint firstItem="swM-PN-tpS" firstAttribute="leading" secondItem="q7x-25-BWL" secondAttribute="leading" id="2cP-zA-BmT"/>
                                     <constraint firstItem="JmA-ZB-gaY" firstAttribute="width" secondItem="BPV-my-a9I" secondAttribute="width" id="2gQ-mo-Z2t"/>
                                     <constraint firstItem="v8j-sv-2qP" firstAttribute="leading" secondItem="BPV-my-a9I" secondAttribute="leading" constant="11" id="3o3-Ob-KbK"/>
+                                    <constraint firstItem="swM-PN-tpS" firstAttribute="trailing" secondItem="QVU-dr-zh4" secondAttribute="trailing" id="6mj-SZ-4Mc"/>
                                     <constraint firstItem="QVU-dr-zh4" firstAttribute="top" secondItem="TiJ-Xs-5Oq" secondAttribute="bottom" constant="15" id="6rh-oJ-H7C"/>
                                     <constraint firstItem="JmA-ZB-gaY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BPV-my-a9I" secondAttribute="leading" id="6uo-QY-Bpm"/>
                                     <constraint firstItem="Mbu-fW-4V9" firstAttribute="top" secondItem="BPV-my-a9I" secondAttribute="top" constant="1076" id="B2q-U4-5GF"/>
@@ -839,6 +847,7 @@
                                     <constraint firstItem="7Hd-9u-pg6" firstAttribute="top" secondItem="WZx-T6-HlW" secondAttribute="bottom" constant="18" id="XpX-uo-mrR"/>
                                     <constraint firstItem="HgQ-2g-o3N" firstAttribute="leading" secondItem="7Hd-9u-pg6" secondAttribute="leading" id="aE9-2J-RFd"/>
                                     <constraint firstItem="p0c-HB-2m6" firstAttribute="top" secondItem="0RT-BU-Ete" secondAttribute="bottom" constant="16" id="bbN-i2-Lg2"/>
+                                    <constraint firstItem="Mbu-fW-4V9" firstAttribute="top" secondItem="swM-PN-tpS" secondAttribute="bottom" constant="1" id="cgN-b9-lRy"/>
                                     <constraint firstItem="WZx-T6-HlW" firstAttribute="top" secondItem="8Yb-Fy-BCg" secondAttribute="bottom" constant="18" id="d9H-fl-cvk"/>
                                     <constraint firstItem="6NE-LB-jlS" firstAttribute="leading" secondItem="BPV-my-a9I" secondAttribute="leading" id="eQ7-YJ-LAF"/>
                                     <constraint firstItem="8Yb-Fy-BCg" firstAttribute="top" secondItem="BPV-my-a9I" secondAttribute="top" constant="44" id="eSl-qm-UgP"/>
@@ -882,6 +891,7 @@
                         <outlet property="collectionView" destination="SbT-tf-0IE" id="T9Y-Yt-Vd6"/>
                         <outlet property="deleteButton" destination="gJd-nr-8r3" id="bom-w0-eAp"/>
                         <outlet property="descriptionTextView" destination="p0c-HB-2m6" id="fUY-Wc-vtv"/>
+                        <outlet property="dialogCheck" destination="swM-PN-tpS" id="7KI-Wb-wFM"/>
                         <outlet property="doneButton" destination="gbf-Xg-gZp" id="hWp-3Q-hsJ"/>
                         <outlet property="hotspotAddress" destination="E8y-jg-E4h" id="pNY-Ks-WQ6"/>
                         <outlet property="hotspotCategory" destination="HgQ-2g-o3N" id="Ptb-6s-09i"/>
@@ -894,7 +904,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Phm-gJ-Raf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2047" y="273"/>
+            <point key="canvasLocation" x="2045.5999999999999" y="272.56371814092955"/>
         </scene>
         <!--Navigation-->
         <scene sceneID="F43-cd-fAR">

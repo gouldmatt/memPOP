@@ -60,6 +60,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var todoItem: UITextField!
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var dialogCheck: UITextField!
     
     //===================================================================================================
     // Actions
@@ -82,161 +83,186 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     // Action needed to save all the attributes for a single hotspot and their relationships
     @IBAction func donePressed(_ sender: UIButton) {
-       
-        if( selectedHotspot == nil) {
-            let name = hotspotName.text!
-            let address = hotspotAddress.text!
-            let newHotspot = HotspotMO(context: PersistenceService.context)
-            var newPhotos = [PhotosMO(context: PersistenceService.context)]
-            var newToDos = [ToDoMO(context: PersistenceService.context)]
- 
-            var index: Int = 0
-            
-            // Update the attribute values of the hotspot object
-            newHotspot.name = name
-            newHotspot.address = address
-            
-            // Check the category selected
-            if(hotspotCategory.selectedSegmentIndex == 1) {
-                newHotspot.category = hotspotCategory.titleForSegment(at: 1)!
-            }
-            else if (hotspotCategory.selectedSegmentIndex == 2) {
-                newHotspot.category = hotspotCategory.titleForSegment(at: 2)!
-            }
-            else if (hotspotCategory.selectedSegmentIndex == 3) {
-                newHotspot.category = hotspotCategory.titleForSegment(at: 3)!
-            }
-            else {
-                newHotspot.category = hotspotCategory.titleForSegment(at: 0)!
-            }
-            
-            // Check the method of transportation selected
-            if(hotspotTransportation.selectedSegmentIndex == 1) {
-                newHotspot.transportation = hotspotTransportation.titleForSegment(at: 1)!
-            }
-            else {
-                newHotspot.transportation = hotspotTransportation.titleForSegment(at: 0)!
-            }
-            
-            // Check that the description is not an empty string
-            if(hotspotInfo.text != nil) {
-                newHotspot.info = hotspotInfo.text! as String
-            }
-            
-            // Pass all the images to the Photos object
-            for image in addedImages{
-                newPhotos.append(PhotosMO(context: PersistenceService.context))
-                newPhotos[index].photo = UIImageJPEGRepresentation(image, 1)! as NSData
-                newHotspot.addToPhotos(newPhotos[index])
-                index = index + 1
-            }
-            
-            index = 0
-            
-            // Pass all the todo list items to the ToDo object
-            for listItem in list{
-                if(listItem != "My To-Do List"){
-                    newToDos.append(ToDoMO(context: PersistenceService.context))
-                    newToDos[index].toDoItem = listItem
-                    newHotspot.addToToDo(newToDos[index])
-                    index = index + 1
-                }
-            }
         
-            // Once all changes have been checked, save the hotspot object with all its relationships
-            print("Creating new one")
-            PersistenceService.saveContext()
+        if (hotspotName.text!.isEmpty || hotspotAddress.text!.isEmpty)
+        {
+            dialogCheck.isHidden = false
+            if (hotspotName.text!.isEmpty) {
+                hotspotName.layer.borderWidth = 1.0
+                let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
+                hotspotName.layer.borderColor = layerColor.cgColor
+                
+            }
+            else {
+                hotspotName.layer.borderWidth = 0.0
+            }
             
-            // Add to the list of created hotspots
-            self.hotspots.append(newHotspot)
+            if (hotspotAddress.text!.isEmpty) {
+                hotspotAddress.layer.borderWidth = 1.0
+                let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
+                hotspotAddress.layer.borderColor = layerColor.cgColor
+            }
+            else {
+                hotspotAddress.layer.borderWidth = 0.0
+            }
         }
         else {
-            print("Updating one")
-            let updateHotspot = selectedHotspot as! HotspotMO
-            var newToDos = updateHotspot.toDo as! [ToDoMO]
-            var newPhotos = updateHotspot.photos as! [PhotosMO]
-            var index: Int = 0
-            
-            updateHotspot.name = hotspotName.text!
-            updateHotspot.address = hotspotAddress.text!
-            
-            // Check the category selected
-            if(hotspotCategory.selectedSegmentIndex == 1) {
-                updateHotspot.category = hotspotCategory.titleForSegment(at: 1)
-            }
-            else if (hotspotCategory.selectedSegmentIndex == 2) {
-                updateHotspot.category = hotspotCategory.titleForSegment(at: 2)
-            }
-            else if (hotspotCategory.selectedSegmentIndex == 3) {
-                updateHotspot.category = hotspotCategory.titleForSegment(at: 3)
-            }
-            else {
-                updateHotspot.category = hotspotCategory.titleForSegment(at: 0)
-            }
-            
-            // Check the method of transportation selected
-            if(hotspotTransportation.selectedSegmentIndex == 1) {
-                updateHotspot.transportation = hotspotTransportation.titleForSegment(at: 1)
-            }
-            else {
-                updateHotspot.transportation = hotspotTransportation.titleForSegment(at: 0)
-            }
-            
-            // Check that the description is not an empty string
-            if(hotspotInfo.text != nil) {
-                updateHotspot.info = hotspotInfo.text
-            }
-            
-            // Update or append Todo list
-            for listItem in list{
-                if(listItem != "My To-Do List"){
-                    print(list.count)
-                    
-                    // If our index is less than the number of todos fetched, we update the existing todos
-                    if(index < newToDos.count) {
-                        newToDos[index].toDoItem = listItem
-                    }
-                    else {
-                        // If it is greater than, then we are creating new ToDoMOs
-                        newToDos.append(ToDoMO(context: PersistenceService.context))
-                        newToDos[index].toDoItem = listItem
-                    }
-                    updateHotspot.addToToDo(newToDos[index])
-                    index = index + 1
-            
+            dialogCheck.isHidden = true
+
+            if( selectedHotspot == nil) {
+                let name = hotspotName.text!
+                let address = hotspotAddress.text!
+                let newHotspot = HotspotMO(context: PersistenceService.context)
+                var newPhotos = [PhotosMO(context: PersistenceService.context)]
+                var newToDos = [ToDoMO(context: PersistenceService.context)]
+     
+                var index: Int = 0
+                
+                // Update the attribute values of the hotspot object
+                newHotspot.name = name
+                newHotspot.address = address
+                
+                // Check the category selected
+                if(hotspotCategory.selectedSegmentIndex == 1) {
+                    newHotspot.category = hotspotCategory.titleForSegment(at: 1)!
                 }
-            }
-            
-            index = 0
-            
-            // Update or append Photos
-            for photoItem in addedImagesNSData{
-                // If our index is less than the number of photos fetched, we update the existing photos
-                if(index < newPhotos.count) {
-                    newPhotos[index].photo = photoItem
+                else if (hotspotCategory.selectedSegmentIndex == 2) {
+                    newHotspot.category = hotspotCategory.titleForSegment(at: 2)!
+                }
+                else if (hotspotCategory.selectedSegmentIndex == 3) {
+                    newHotspot.category = hotspotCategory.titleForSegment(at: 3)!
                 }
                 else {
-                    // If it is greater than, then we are creating new PhotoMOs
-                    newPhotos.append(PhotosMO(context: PersistenceService.context))
-                    newPhotos[index].photo = photoItem
+                    newHotspot.category = hotspotCategory.titleForSegment(at: 0)!
                 }
-                updateHotspot.addToPhotos(newPhotos[index])
-                index = index + 1
+                
+                // Check the method of transportation selected
+                if(hotspotTransportation.selectedSegmentIndex == 1) {
+                    newHotspot.transportation = hotspotTransportation.titleForSegment(at: 1)!
+                }
+                else {
+                    newHotspot.transportation = hotspotTransportation.titleForSegment(at: 0)!
+                }
+                
+                // Check that the description is not an empty string
+                if(hotspotInfo.text != nil) {
+                    newHotspot.info = hotspotInfo.text! as String
+                }
+                
+                // Pass all the images to the Photos object
+                for image in addedImages{
+                    newPhotos.append(PhotosMO(context: PersistenceService.context))
+                    newPhotos[index].photo = UIImageJPEGRepresentation(image, 1)! as NSData
+                    newHotspot.addToPhotos(newPhotos[index])
+                    index = index + 1
+                }
+                
+                index = 0
+                
+                // Pass all the todo list items to the ToDo object
+                for listItem in list{
+                    if(listItem != "My To-Do List"){
+                        newToDos.append(ToDoMO(context: PersistenceService.context))
+                        newToDos[index].toDoItem = listItem
+                        newHotspot.addToToDo(newToDos[index])
+                        index = index + 1
+                    }
+                }
+            
+                // Once all changes have been checked, save the hotspot object with all its relationships
+                print("Creating new one")
+                PersistenceService.saveContext()
+                
+                // Add to the list of created hotspots
+                self.hotspots.append(newHotspot)
+            }
+            else {
+                print("Updating one")
+                let updateHotspot = selectedHotspot as! HotspotMO
+                var newToDos = updateHotspot.toDo as! [ToDoMO]
+                var newPhotos = updateHotspot.photos as! [PhotosMO]
+                var index: Int = 0
+                
+                updateHotspot.name = hotspotName.text!
+                updateHotspot.address = hotspotAddress.text!
+                
+                // Check the category selected
+                if(hotspotCategory.selectedSegmentIndex == 1) {
+                    updateHotspot.category = hotspotCategory.titleForSegment(at: 1)
+                }
+                else if (hotspotCategory.selectedSegmentIndex == 2) {
+                    updateHotspot.category = hotspotCategory.titleForSegment(at: 2)
+                }
+                else if (hotspotCategory.selectedSegmentIndex == 3) {
+                    updateHotspot.category = hotspotCategory.titleForSegment(at: 3)
+                }
+                else {
+                    updateHotspot.category = hotspotCategory.titleForSegment(at: 0)
+                }
+                
+                // Check the method of transportation selected
+                if(hotspotTransportation.selectedSegmentIndex == 1) {
+                    updateHotspot.transportation = hotspotTransportation.titleForSegment(at: 1)
+                }
+                else {
+                    updateHotspot.transportation = hotspotTransportation.titleForSegment(at: 0)
+                }
+                
+                // Check that the description is not an empty string
+                if(hotspotInfo.text != nil) {
+                    updateHotspot.info = hotspotInfo.text
+                }
+                
+                // Update or append Todo list
+                for listItem in list{
+                    if(listItem != "My To-Do List"){
+                        print(list.count)
+                        
+                        // If our index is less than the number of todos fetched, we update the existing todos
+                        if(index < newToDos.count) {
+                            newToDos[index].toDoItem = listItem
+                        }
+                        else {
+                            // If it is greater than, then we are creating new ToDoMOs
+                            newToDos.append(ToDoMO(context: PersistenceService.context))
+                            newToDos[index].toDoItem = listItem
+                        }
+                        updateHotspot.addToToDo(newToDos[index])
+                        index = index + 1
+                
+                    }
+                }
+                
+                index = 0
+                
+                // Update or append Photos
+                for photoItem in addedImagesNSData{
+                    // If our index is less than the number of photos fetched, we update the existing photos
+                    if(index < newPhotos.count) {
+                        newPhotos[index].photo = photoItem
+                    }
+                    else {
+                        // If it is greater than, then we are creating new PhotoMOs
+                        newPhotos.append(PhotosMO(context: PersistenceService.context))
+                        newPhotos[index].photo = photoItem
+                    }
+                    updateHotspot.addToPhotos(newPhotos[index])
+                    index = index + 1
+                }
+                
+                PersistenceService.saveContext()
             }
             
-            PersistenceService.saveContext()
-        }
-        
-        // Update the navigation bar back button so that when back is pressed on the main display screen
-        // it will take the user to the start screen instead of the add hotspot form again
-        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-        for aViewController in viewControllers {
-            if aViewController is AddHotspotViewController {
-                self.navigationController!.popViewController(animated: true)
+            // Update the navigation bar back button so that when back is pressed on the main display screen
+            // it will take the user to the start screen instead of the add hotspot form again
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+            for aViewController in viewControllers {
+                if aViewController is AddHotspotViewController {
+                    self.navigationController!.popViewController(animated: true)
+                }
             }
         }
     }
-    
     
     // Show an alert when the user wants to delete a hotspot
     @IBAction func deleteButtonIsTapped(_ sender: UIButton) {
@@ -290,14 +316,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 return
             }
         }
-        guard
-            let name = hotspotName.text, !name.isEmpty,
-            let address = hotspotAddress.text, !address.isEmpty
-            else {
-                doneButton.isEnabled = false
-                return
-        }
-        doneButton.isEnabled = true
     }
     //---------------------------------------------------------------------------------------------------
 
@@ -308,6 +326,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        dialogCheck.isHidden = true
+
         // Add a border around the description UI textfield, and image view
         descriptionTextView.layer.borderWidth = 1
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
@@ -336,7 +356,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             descriptionPlaceholder.isHidden = !descriptionTextView.text.isEmpty
             
             // Done button should only be enabled when the hotspot and address is filled
-            doneButton.isEnabled = false
+            doneButton.isEnabled = true
             [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
         }
         else {
