@@ -38,7 +38,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     // Outlets
     //===================================================================================================
     @IBOutlet weak var collectionView: UICollectionView!
-    
+    @IBOutlet weak var selectedCategory: UISegmentedControl!
     //===================================================================================================
     // Actions
     //===================================================================================================
@@ -47,6 +47,12 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         collectionView.reloadData()
         print("MainEditTapped")
     }
+    
+    @IBAction func categoryChanged(_ sender: UISegmentedControl) {
+        load()
+        collectionView.reloadData()
+        print("category changed")
+    }
    
     //===================================================================================================
     // Override Functions
@@ -54,7 +60,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.sendSubview(toBack: collectionView)        
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -88,17 +94,44 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.relationshipKeyPathsForPrefetching = ["photos"]
         
-        // Do-try block to fetch all the hotspot entities
+        // Do-try block to fetch all the hotspot entities that correspond to the category selected
         do {
-            let hotspots = try PersistenceService.context.fetch(fetchRequest)
-            self.hotspots = hotspots
+                let hotspots = try PersistenceService.context.fetch(fetchRequest)
+                var sortedHotspots = [HotspotMO]()
+                if (selectedCategory.selectedSegmentIndex == 1) {
+                    for hotspotItem in (hotspots) {
+                        if (hotspotItem.category == "Food") {
+                            sortedHotspots.append(hotspotItem)
+                        }
+                    }
+                }
+                else if (selectedCategory.selectedSegmentIndex == 2) {
+                    for hotspotItem in (hotspots) {
+                        if (hotspotItem.category == "Fun") {
+                            sortedHotspots.append(hotspotItem)
+                        }
+                    }
+                }
+                else if (selectedCategory.selectedSegmentIndex == 3) {
+                    for hotspotItem in (hotspots) {
+                        if (hotspotItem.category == "Task") {
+                            sortedHotspots.append(hotspotItem)
+                        }
+                    }
+                }
+                else {
+                    for hotspotItem in (hotspots) {
+                        sortedHotspots.append(hotspotItem)
+                    }
+                }
+                self.hotspots = sortedHotspots
         }
         catch {
             print("failed fetching")
         }
     }
     
-    // Collection view shows all the hotpots in mainDisplay //
+    // Collection view shows all the hotpots in mainDisplay
     
     // Returns the number of hotspots
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
