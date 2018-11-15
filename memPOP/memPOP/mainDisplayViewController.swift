@@ -28,10 +28,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     //===================================================================================================
     var arrLabel = [String]()
     var arrImg = [UIImage]()
-    var addedImages = [NSManagedObject]()
-    var addedToDos = [NSManagedObject]()
     var hotspots = [HotspotMO]()
-    var photo: PhotosMO?
+    //var photo: PhotosMO?
     var mainEditIsTapped : Bool = false;
     
     //===================================================================================================
@@ -182,80 +180,21 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             let editHotspotVC = storyboard?.instantiateViewController(withIdentifier: "AddHotspotViewController") as! AddHotspotViewController
             editHotspotVC.selectedHotspot = hotspots[indexPath.row]
             
-          /*
-            for photo in (hotspots[indexPath.row].photos?.allObjects)! {
-                addedImages.append(photo as! NSManagedObject)
-                
-            }*/
-          
-            // Fetch all the images for the specific hotspot object selected
-            for photo in (hotspots[indexPath.row].photos)! {
-              addedImages.append(photo as! NSManagedObject)
-            }
-          
-            for toDoItem in (hotspots[indexPath.row].toDo)! {
-                addedToDos.append(toDoItem as! NSManagedObject)
-            }
-            
-            editHotspotVC.fetchedToDos = addedToDos
-            editHotspotVC.fetchedImages = addedImages
-            
-            addedToDos.removeAll()
-            addedToDos.removeAll()
+            editHotspotVC.fetchedToDos = hotspots[indexPath.row].toDo as! [NSManagedObject]
+            editHotspotVC.fetchedImages = hotspots[indexPath.row].photos as! [NSManagedObject]
             
             navigationController?.pushViewController(editHotspotVC, animated: true)
             
         }
         else {
-          /*
-            // Takes hotspot that the user has selected and creates the overview view controller
-            let overviewVC = storyboard?.instantiateViewController(withIdentifier: "HotspotOverviewViewController") as! HotspotOverviewViewController
-            overviewVC.selectedHotspot = hotspots[indexPath.row]
-            
-            // Fetch all the images for the specific hotspot object selected
-            for photo in (hotspots[indexPath.row].photos?.allObjects)! {
-                addedImages.append(photo as! NSManagedObject)
-            }
-            
-            // Fetch all the todo items for the specific hotspot object selected
-            for toDoItem in (hotspots[indexPath.row].toDo?.allObjects)! {
-                addedToDos.append(toDoItem as! NSManagedObject)
-            }
-            
-            // Pass both arrays to the overview view controller to display them
-            overviewVC.addedImages = addedImages
-            overviewVC.addedToDos = addedToDos
-            
-            // Remove all so that previous selections objects are not also passed
-            addedImages.removeAll()
-            addedToDos.removeAll()
-            
-            navigationController?.pushViewController(overviewVC, animated: true)
-        }
-        */
         
         // Takes hotspot that the user has selected and creates the overview view controller
         let overviewNavVC = storyboard?.instantiateViewController(withIdentifier: "overviewNavMasterViewController") as! overviewNavMasterViewController
         overviewNavVC.selectedHotspot = hotspots[indexPath.row]
-        
-        for photo in (hotspots[indexPath.row].photos)! {
-            addedImages.append(photo as! NSManagedObject)
-        }
-            
-        
-        // Fetch all the todo items for the specific hotspot object selected
-        for toDoItem in (hotspots[indexPath.row].toDo)! {
-            addedToDos.append(toDoItem as! NSManagedObject)
-        }
-        
+
         // Pass both arrays to the overview view controller to display them
-        overviewNavVC.addedImages = addedImages
-        overviewNavVC.addedToDos = addedToDos
-        
-        // Remove all so that previous selections objects are not also passed
-        addedImages.removeAll()
-        addedToDos.removeAll()
-        
+        overviewNavVC.addedImages = hotspots[indexPath.row].photos as! [NSManagedObject]
+        overviewNavVC.addedToDos = hotspots[indexPath.row].toDo as! [NSManagedObject]
         
         navigationController?.pushViewController(overviewNavVC, animated: true)
         }

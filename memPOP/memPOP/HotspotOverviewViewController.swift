@@ -54,6 +54,7 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         collectionViewHeight.constant =  collectionView.contentSize.height
+
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -77,6 +78,8 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     // Load To-Do List
     public func tableView(_ toDoTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let photoCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "photoCell")
+        
+        
         photoCell.textLabel?.text = (addedToDos[indexPath.row].value(forKey: "toDoItem") as! String)
         photoCell.backgroundColor = UIColor(red:0.16, green:0.19, blue:0.21, alpha:1.0)
         photoCell.textLabel?.textColor = UIColor.white
