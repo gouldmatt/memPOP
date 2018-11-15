@@ -8,6 +8,9 @@
 // 
 import CoreData
 import UIKit
+import CoreLocation
+import MapKit
+
 
 class overviewNavMasterViewController: UIViewController {
     
@@ -17,6 +20,8 @@ class overviewNavMasterViewController: UIViewController {
     var addedToDos = [NSManagedObject]()
     var addedImages = [NSManagedObject]()
     var selectedHotspot: NSManagedObject?
+    
+    //let locationManager = CLLocationManager()
 
     //===================================================================================================
     // Outlets
@@ -24,6 +29,7 @@ class overviewNavMasterViewController: UIViewController {
     @IBOutlet var overviewNavControl: UISegmentedControl!
     @IBOutlet weak var overviewContainer: UIView!
     @IBOutlet var navigationContainer: UIView!
+    
     
     //===================================================================================================
     // Actions
@@ -44,6 +50,7 @@ class overviewNavMasterViewController: UIViewController {
     //===================================================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
+   
         
         // change appearance for segmented control
         overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
@@ -68,5 +75,6 @@ class overviewNavMasterViewController: UIViewController {
         }
         
     }
+    
 
 }

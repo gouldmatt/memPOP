@@ -59,8 +59,8 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = false
-        collectionView.reloadData()
-        toDoTable.reloadData()
+        //collectionView.reloadData()
+        //toDoTable.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
