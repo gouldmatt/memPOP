@@ -481,8 +481,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         if editingStyle == UITableViewCellEditingStyle.delete {
             print("removed todo")
             
-            // Delete the specific toDo item at the specified index
-            deleteTodo(index: indexPath.row)
+            if (selectedHotspot != nil){
+                // Delete the specific toDo item at the specified index
+                deleteTodo(index: indexPath.row)
+            }
             
             // Then remove it from the list array
             self.list.remove(at:indexPath.row)
@@ -563,7 +565,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         
         addedImagesNSData.remove(at: i)
         
-        deletePhoto(index: i)
+        if (selectedHotspot != nil ){
+            deletePhoto(index: i)
+        }
         
         print(i)
     
