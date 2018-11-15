@@ -110,8 +110,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         // Use the single "cell" created in the storyboard as a template for every hotspot added
         
         // Check if user has inputted an image, if not, use the default image
-        if(hotspots[indexPath.row].photos?.anyObject() != nil) {
-            let photosMO = hotspots[indexPath.row].photos?.allObjects
+        if(hotspots[indexPath.row].photos?.firstObject != nil){
+            let photosMO = hotspots[indexPath.row].photos
             let photo = photosMO![0] as! PhotosMO
             if(photo.photo != nil){
                 cell.image.image = (UIImage(data: photo.photo! as Data))
@@ -149,11 +149,17 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             let editHotspotVC = storyboard?.instantiateViewController(withIdentifier: "AddHotspotViewController") as! AddHotspotViewController
             editHotspotVC.selectedHotspot = hotspots[indexPath.row]
             
+          /*
             for photo in (hotspots[indexPath.row].photos?.allObjects)! {
                 addedImages.append(photo as! NSManagedObject)
                 
+            }*/
+          
+            // Fetch all the images for the specific hotspot object selected
+            for photo in (hotspots[indexPath.row].photos)! {
+              addedImages.append(photo as! NSManagedObject)
             }
-            
+          
             for toDoItem in (hotspots[indexPath.row].toDo?.allObjects)! {
                 addedToDos.append(toDoItem as! NSManagedObject)
             }
@@ -168,7 +174,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             
         }
         else {
-        
+          /*
             // Takes hotspot that the user has selected and creates the overview view controller
             let overviewVC = storyboard?.instantiateViewController(withIdentifier: "HotspotOverviewViewController") as! HotspotOverviewViewController
             overviewVC.selectedHotspot = hotspots[indexPath.row]
@@ -193,8 +199,26 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             
             navigationController?.pushViewController(overviewVC, animated: true)
         }
+        */
+        
+        // Takes hotspot that the user has selected and creates the overview view controller
+        let overviewNavVC = storyboard?.instantiateViewController(withIdentifier: "overviewNavMasterViewController") as! overviewNavMasterViewController
+        overviewNavVC.selectedHotspot = hotspots[indexPath.row]
+        
+        // Fetch all the todo items for the specific hotspot object selected
+        for toDoItem in (hotspots[indexPath.row].toDo)! {
+            addedToDos.append(toDoItem as! NSManagedObject)
+        }
+        
+        // Pass both arrays to the overview view controller to display them
+        overviewNavVC.addedImages = addedImages
+        overviewNavVC.addedToDos = addedToDos
+        
+        // Remove all so that previous selections objects are not also passed
+        addedImages.removeAll()
+        addedToDos.removeAll()
         
         
-        
+        navigationController?.pushViewController(overviewNavVC, animated: true)
     }
 }

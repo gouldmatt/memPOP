@@ -7,8 +7,8 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="todoList" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="transportation" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PhotosMO" inverseName="hotspot" inverseEntity="PhotosMO" syncable="YES"/>
-        <relationship name="toDo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ToDoMO" inverseName="hotspot" inverseEntity="ToDoMO" syncable="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="PhotosMO" inverseName="hotspot" inverseEntity="PhotosMO" syncable="YES"/>
+        <relationship name="toDo" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ToDoMO" inverseName="hotspot" inverseEntity="ToDoMO" syncable="YES"/>
     </entity>
     <entity name="PhotosMO" representedClassName=".PhotosMO" syncable="YES">
         <attribute name="photo" optional="YES" attributeType="Binary" syncable="YES"/>
