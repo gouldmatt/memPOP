@@ -10,8 +10,11 @@
 import UIKit
 import CoreLocation
 import MapKit
+import CoreData
+
 
 class navigationViewController: UIViewController, CLLocationManagerDelegate {
+    
     
     //===================================================================================================
     // Constants
@@ -26,7 +29,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setUpLocationManager()
-    
+
     }
 
     override func didReceiveMemoryWarning() {
