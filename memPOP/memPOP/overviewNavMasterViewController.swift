@@ -68,9 +68,14 @@ class overviewNavMasterViewController: UIViewController {
     
     // Pass the selected hotspot information to the hotspot overview 
     override func prepare(for segue: UIStoryboardSegue, sender: (Any)?) {
+        
         if let controller = segue.destination as? HotspotOverviewViewController, segue.identifier == "showOverview" {
             controller.addedToDos = addedToDos
             controller.addedImages = addedImages
+            controller.selectedHotspot = selectedHotspot
+        }
+        
+        if let controller = segue.destination as? HotspotOverviewViewController, segue.identifier == "showNav" {
             controller.selectedHotspot = selectedHotspot
         }
         
