@@ -424,7 +424,7 @@
                         <viewLayoutGuide key="safeArea" id="uma-gG-LFb"/>
                     </view>
                     <connections>
-                        <outlet property="mapOutlet" destination="Zoz-a9-t3l" id="RXx-Ew-Nz8"/>
+                        <outlet property="mapkitView" destination="Zoz-a9-t3l" id="Uff-6q-VUc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gig-hB-wkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
