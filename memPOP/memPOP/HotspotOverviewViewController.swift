@@ -33,6 +33,9 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     @IBOutlet var toDoTableHeight: NSLayoutConstraint!
     @IBOutlet var collectionViewHeight: NSLayoutConstraint!
    // @IBOutlet var descriptionViewHeight: NSLayoutConstraint!
+    @IBOutlet var toDoListLabel: UILabel!
+    @IBOutlet var photosLabel: UILabel!
+    @IBOutlet var descriptionLabel: UILabel!
     //===================================================================================================
     // Override Functions
     //===================================================================================================
@@ -47,13 +50,28 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         toDoTable.layoutIfNeeded()
         toDoTableHeight.constant = toDoTable.contentSize.height
         
+        // Hide the label if there is no to dos
+        if (toDoTableHeight.constant == 0){
+            toDoListLabel.isHidden = true
+        }
+        
         descriptionView.text = ((selectedHotspot?.value(forKey: "info")) as? String)
+        
+        if(descriptionView.text == nil){
+            descriptionLabel.isHidden = true
+        } else if(descriptionView.text?.isEmpty)!{
+            descriptionLabel.isHidden = true
+        }
         
         collectionView.bounces = false
         collectionView.isScrollEnabled = false
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         collectionViewHeight.constant =  collectionView.contentSize.height
+        
+        if (collectionView.numberOfItems(inSection: 0) == 0){
+            photosLabel.isHidden = true 
+        }
 
     }
     

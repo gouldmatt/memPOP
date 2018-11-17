@@ -32,6 +32,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     var list = ["My To-Do List"]
     var addedImages = [UIImage]()
     var hotspots = [HotspotMO]()
+    var isHomeHotspot = false
 
     // For editing hotpost
     var fetchedToDos = [NSManagedObject]()
@@ -361,6 +362,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         else {
             print("Editing")
+            
+            // Check if editing the home hotspot, if so, disable change for the title and delete button
+            if(isHomeHotspot){
+                 hotspotName.isEnabled = false
+                 deleteButton.isHidden = true 
+            }
+            
             
             // When we are editting a hotspot, change the button title to "Delete"
             deleteButton.setTitle("Delete", for: UIControlState.normal)

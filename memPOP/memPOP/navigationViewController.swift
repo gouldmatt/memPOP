@@ -43,7 +43,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate {
         if CLLocationManager.locationServicesEnabled(){
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation // accuracy using gps
             
-            //locationManager.distanceFilter = 10.0
+            locationManager.distanceFilter = 10.0
             // meters update when past cetain distance using other methods
             //but realtime is better for navigation related purposes
             
