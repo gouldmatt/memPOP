@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		475ECB84219F65D20046C400 /* HotspotMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475ECB82219F65D20046C400 /* HotspotMO+CoreDataClass.swift */; };
+		475ECB85219F65D20046C400 /* HotspotMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475ECB83219F65D20046C400 /* HotspotMO+CoreDataProperties.swift */; };
 		4788F2B7218CBA870041BE71 /* CollectionViewPhotoDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4788F2B6218CBA870041BE71 /* CollectionViewPhotoDelete.swift */; };
 		47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260E321852DD6003AF531 /* PersistenceService.swift */; };
 		47C260F221856278003AF531 /* CollectionViewPhotoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C260F121856278003AF531 /* CollectionViewPhotoLabel.swift */; };
@@ -28,8 +30,6 @@
 		EB7423F9218E5695005836A2 /* CollectionViewPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */; };
 		EB93AE1521972F9F00B4B486 /* navigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1421972F9F00B4B486 /* navigationViewController.swift */; };
 		EB93AE1721972FD000B4B486 /* overviewNavMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */; };
-		EBA9D828218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA9D826218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift */; };
-		EBA9D829218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA9D827218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift */; };
 		EBE8F4C0218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */; };
 		EBE8F4C1218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */; };
 		EBE8F4C2218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */; };
@@ -54,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		475ECB82219F65D20046C400 /* HotspotMO+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataClass.swift"; sourceTree = "<group>"; };
+		475ECB83219F65D20046C400 /* HotspotMO+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4788F2B6218CBA870041BE71 /* CollectionViewPhotoDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhotoDelete.swift; sourceTree = "<group>"; };
 		47C260E321852DD6003AF531 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		47C260F121856278003AF531 /* CollectionViewPhotoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhotoLabel.swift; sourceTree = "<group>"; };
@@ -79,8 +81,6 @@
 		EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhoto.swift; sourceTree = "<group>"; };
 		EB93AE1421972F9F00B4B486 /* navigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = navigationViewController.swift; sourceTree = "<group>"; };
 		EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = overviewNavMasterViewController.swift; sourceTree = "<group>"; };
-		EBA9D826218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EBA9D827218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HotspotMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotosMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotosMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoMO+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 		7477DF96218F835D00D90ECD /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				EBA9D826218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift */,
-				EBA9D827218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift */,
+				475ECB82219F65D20046C400 /* HotspotMO+CoreDataClass.swift */,
+				475ECB83219F65D20046C400 /* HotspotMO+CoreDataProperties.swift */,
 				EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */,
 				EBE8F4BB218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift */,
 				EBE8F4BC218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift */,
@@ -330,18 +330,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBA9D828218CF44A00B1C7ED /* HotspotMO+CoreDataClass.swift in Sources */,
 				742E2568218016F3004F5E7E /* mainDisplayViewController.swift in Sources */,
 				742E256C218021DB004F5E7E /* HotspotOverviewViewController.swift in Sources */,
+				475ECB84219F65D20046C400 /* HotspotMO+CoreDataClass.swift in Sources */,
 				47C260F221856278003AF531 /* CollectionViewPhotoLabel.swift in Sources */,
 				4788F2B7218CBA870041BE71 /* CollectionViewPhotoDelete.swift in Sources */,
 				A0B63CBB217F9C560072A82F /* startViewController.swift in Sources */,
 				EBE8F4C0218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift in Sources */,
 				EBE8F4C2218B8BFC006A5806 /* ToDoMO+CoreDataClass.swift in Sources */,
+				475ECB85219F65D20046C400 /* HotspotMO+CoreDataProperties.swift in Sources */,
 				EB93AE1521972F9F00B4B486 /* navigationViewController.swift in Sources */,
 				742E2574218109C6004F5E7E /* personInfoViewController.swift in Sources */,
 				EBE8F4C3218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift in Sources */,
-				EBA9D829218CF44A00B1C7ED /* HotspotMO+CoreDataProperties.swift in Sources */,
 				A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */,
 				742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */,
 				EBE8F4C1218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift in Sources */,

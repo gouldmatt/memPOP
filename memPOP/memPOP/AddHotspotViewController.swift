@@ -15,6 +15,7 @@
 
 import CoreData
 import UIKit
+import MapKit
 
 class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UICollectionViewDelegate,UICollectionViewDataSource, UITableViewDataSource {
     
@@ -43,6 +44,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     // Needed when updating each photo
     var addedImagesNSData = [NSData]()
     
+    // For getting the address
+    var searchCompleter = MKLocalSearchCompleter()
+    var searchResults = [MKLocalSearchCompletion]()
+    var searchAddressChosen:String = ""
+    var searchAddressLatitude:Double = 0.0
+    var searchAddressLongitude:Double = 0.0
+    
     //===================================================================================================
     // Outlets
     //===================================================================================================
@@ -51,7 +59,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var doneButton: UIButton!
     
     @IBOutlet weak var hotspotName: UITextField!
-    @IBOutlet weak var hotspotAddress: UITextField!
     @IBOutlet weak var hotspotTransportation: UISegmentedControl!
     @IBOutlet weak var hotspotCategory: UISegmentedControl!
     @IBOutlet weak var hotspotInfo: UITextView!
@@ -62,6 +69,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var todoItem: UITextField!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var dialogCheck: UITextField!
+    
+    @IBOutlet weak var searchResultsTableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     //===================================================================================================
     // Actions
@@ -85,7 +95,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     // Action needed to save all the attributes for a single hotspot and their relationships
     @IBAction func donePressed(_ sender: UIButton) {
         
-        if (hotspotName.text!.isEmpty || hotspotAddress.text!.isEmpty)
+        // Check that name and address are filled before saving
+        if (hotspotName.text!.isEmpty || searchBar.text!.isEmpty)
         {
             dialogCheck.isHidden = false
             if (hotspotName.text!.isEmpty) {
@@ -98,21 +109,24 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 hotspotName.layer.borderWidth = 0.0
             }
             
-            if (hotspotAddress.text!.isEmpty) {
-                hotspotAddress.layer.borderWidth = 1.0
-                let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
-                hotspotAddress.layer.borderColor = layerColor.cgColor
+            if (searchBar.text!.isEmpty) {
+                self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
             }
             else {
-                hotspotAddress.layer.borderWidth = 0.0
+                self.searchBar.setTextFieldColor(color: UIColor.white.withAlphaComponent(0))
+        
             }
         }
         else {
             dialogCheck.isHidden = true
 
+            // Create a new hotspot
             if( selectedHotspot == nil) {
                 let name = hotspotName.text!
-                let address = hotspotAddress.text!
+                let address = searchAddressChosen
+                let longitude = searchAddressLongitude
+                let latitude = searchAddressLatitude
+        
                 let newHotspot = HotspotMO(context: PersistenceService.context)
                 var newPhotos = [PhotosMO(context: PersistenceService.context)]
                 var newToDos = [ToDoMO(context: PersistenceService.context)]
@@ -122,6 +136,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 // Update the attribute values of the hotspot object
                 newHotspot.name = name
                 newHotspot.address = address
+                newHotspot.latitude = latitude
+                newHotspot.longitude = longitude
                 
                 // Check the category selected
                 if(hotspotCategory.selectedSegmentIndex == 1) {
@@ -178,6 +194,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 self.hotspots.append(newHotspot)
             }
             else {
+                // Updating a Hotspot
+                
                 print("Updating one")
                 let updateHotspot = selectedHotspot as! HotspotMO
                 var newToDos = updateHotspot.toDo as! [ToDoMO]
@@ -185,7 +203,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 var index: Int = 0
                 
                 updateHotspot.name = hotspotName.text!
-                updateHotspot.address = hotspotAddress.text!
+                updateHotspot.address = searchAddressChosen
+                updateHotspot.latitude = searchAddressLatitude
+                updateHotspot.longitude = searchAddressLongitude
                 
                 // Check the category selected
                 if(hotspotCategory.selectedSegmentIndex == 1) {
@@ -327,13 +347,30 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // For autocomplete table view
+        searchResultsTableView.dataSource = self
+        searchResultsTableView.delegate = self
+        searchResultsTableView.alpha = 0.0
+        self.searchResultsTableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        self.searchResultsTableView.layer.cornerRadius = 10;
+        
+        // For todo table view
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        // For search bar button
+        self.searchCompleter.delegate = self
+        self.searchBar.delegate = self
+        self.searchBar.placeholder = "Search the location"
+        self.searchBar.returnKeyType = UIReturnKeyType.done
+        self.searchBar.searchBarStyle = .minimal
+        
         dialogCheck.isHidden = true
 
         // Add a border around the description UI textfield, and image view
         descriptionTextView.layer.borderWidth = 1
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
         hotspotName.delegate = self
-        hotspotAddress.delegate = self
         todoItem.delegate = self
         
         if(selectedHotspot == nil) {
@@ -358,7 +395,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             
             // Done button should only be enabled when the hotspot and address is filled
             doneButton.isEnabled = true
-            [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
+            // Dont think we need this check [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
         }
         else {
             print("Editing")
@@ -381,7 +418,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             self.title = ("Editing " + updateHotspot.name!)
             
             // Check if hotspotName or hotspotAddress are empty and disable Done button
-            [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
+            // Dont think we need this check [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
             
             // Fetch every object for that specific hotpost to the new AddHotspotViewController //
             
@@ -389,7 +426,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             hotspotName.text = selectedHotspot?.value(forKey: "name") as? String
             
             // Fetch address
-            hotspotAddress.text = selectedHotspot?.value(forKey: "address") as? String
+            searchBar.text = selectedHotspot?.value(forKey: "address") as? String
             
             // Fetch category
             switch selectedHotspot?.value(forKey: "category") as? String {
@@ -444,7 +481,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     //===================================================================================================
     // Functions
     //===================================================================================================
@@ -469,18 +506,104 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         self.dismiss(animated: true, completion: nil)
     }
     
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        
+        // Return the number of sections for each tableview
+        
+        var sectionNum : Int?
+        
+        if(tableView == self.searchResultsTableView) {
+            sectionNum = 1
+        }
+        
+        if(tableView == self.tableView) {
+            sectionNum = 1
+        }
+        
+        return sectionNum!
+    }
+    
+    
     // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (list.count)
+        
+        // Return the number of items for each tableview
+        
+        var count : Int?
+        
+        if(tableView == self.searchResultsTableView) {
+            count = searchResults.count
+        }
+        
+        if(tableView == self.tableView) {
+            count = list.count
+        }
+        
+        return count!
+        
     }
     
     // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-        cell.textLabel?.text = list[indexPath.row]
-  
-        return(cell)
+        // Return the cell template for each table view
+        
+        var cell : UITableViewCell?
+        
+        if(tableView == self.searchResultsTableView) {
+            let searchResult = searchResults[indexPath.row]
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+            cell!.textLabel?.text = searchResult.title
+            cell!.detailTextLabel?.text = searchResult.subtitle
+        }
+        
+        if(tableView == self.tableView) {
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+            cell!.textLabel?.text = list[indexPath.row]
+        }
+        
+        return cell!
+    }
+    
+    
+    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        
+        // Check which item is selected for each table view
+        
+        print("did select:  \(indexPath.row)    ")
+        
+        if(tableView == self.searchResultsTableView) {
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+            let completion = searchResults[indexPath.row]
+            
+            if(!completion.subtitle.isEmpty && completion.subtitle != "Search Nearby") {
+                searchBar.text? = completion.subtitle
+            }
+            else {
+                if(!completion.title.isEmpty) {
+                    searchBar.text? = completion.title
+                }
+                else {
+                    print("No title or subtitle for this address")
+                }
+            }
+            
+            let searchRequest = MKLocalSearchRequest(completion: completion)
+            let search = MKLocalSearch(request: searchRequest)
+            
+            search.start { (response, error) in
+                let coordinate = response?.mapItems[0].placemark.coordinate
+                
+                // Store the address of the location for later use
+                self.searchAddressChosen = self.searchBar.text!
+                self.searchAddressLatitude = coordinate!.latitude
+                self.searchAddressLongitude = coordinate!.longitude
+                
+                print(String(describing: coordinate))
+            }
+        }
+        return indexPath
     }
     
     // delete an item by a left swipe
@@ -534,8 +657,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             //let toDos = fetchedToDos as? [ToDoMO]
             
             // '-1' to ignore the first line of the array
-            // let toDoToDelete = toDos![index-1]
-            
             let toDoToDelete = toDosToDelete[index-1]
             
             // Delete specific item from database
@@ -554,10 +675,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             // This means that we have not yet saved any changes to the photos list
         }
         else {
-            //let photos = fetchedImages as? [PhotosMO]
-        
-            //let photoToDelete = photos![index]
-            
+
             let photoToDelete = photosToDelete[index]
             
             // Delete specific item from database
@@ -585,12 +703,14 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     
     // Close the keyboard on return for a textField
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
         textField.resignFirstResponder()
         return true
     }
     
     // Close the keyboard on return for a textView
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
         if(text == "\n"){
             textView.resignFirstResponder()
             return false
@@ -598,3 +718,92 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         return true 
     }
 }
+
+/* Used code from https://stackoverflow.com/questions/13817330/how-to-change-inside-background-color-of-uisearchbar-component-on-ios */
+extension UISearchBar {
+    
+    // Get the type of element that we are modifying
+    private func getViewElement<T>(type: T.Type) -> T? {
+        let svs = subviews.flatMap {$0.subviews}
+        guard let element = (svs.filter {$0 is T}).first as? T else {return nil}
+        return element
+    }
+    
+    // Set the color of the border
+    func setTextFieldColor(color: UIColor) {
+        
+        if let textField = getViewElement(type: UITextField.self) {
+            switch searchBarStyle {
+                case .minimal:
+                    //textField.layer.backgroundColor = color.cgColor
+                    textField.layer.borderColor = color.cgColor
+                    textField.layer.borderWidth = 1.0;
+                
+                case .prominent, .default:
+                    textField.backgroundColor = color
+            }
+        }
+    }
+}
+
+extension AddHotspotViewController : UISearchBarDelegate {
+    
+    func searchBar( _ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        // Check when the text changes within the search bar and update it
+        searchCompleter.queryFragment = searchText
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        // Clicking on the 'X' will clear the text in the search bar
+        searchBar.text = ""
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+        // When editing text within the search bar, show the table view with all its contents
+        searchResultsTableView.alpha = 1.0
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        
+        // When done editing, hide the table view
+        searchResultsTableView.alpha = 0.0
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        // When pressing "Done" from keyboard, hide the keyboard
+        searchBar.perform(#selector(self.resignFirstResponder), with: nil, afterDelay: 0.1)
+        
+        if(searchBar.text == "" || searchBar.text == nil) {
+            searchAddressChosen = ""
+            searchAddressLatitude = 0.0
+            searchAddressLongitude = 0.0
+        }
+        
+        print("Address Chosen: \(searchAddressChosen)")
+        print("Latitude: \(searchAddressLatitude)")
+        print("Longitude: \(searchAddressLongitude)")
+        
+    }
+    
+}
+
+extension AddHotspotViewController : MKLocalSearchCompleterDelegate {
+   
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        
+        // Autocomplete the address and update the results on the table view
+        searchResults = completer.results
+        searchResultsTableView.reloadData()
+    }
+    
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        
+        // Handle error
+        print("Error in getting results for address")
+    }
+}
+
