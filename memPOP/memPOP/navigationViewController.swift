@@ -39,27 +39,16 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        layoutRoute();
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        layoutWalkingRoute();
     }
     
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(overlay: overlay)
-        renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 5.0
-        return renderer
-    }
-    
-   func setUpLocationManager() {
+    func setUpLocationManager() {
         // Get location permission from user
         self.locationManager.requestAlwaysAuthorization()
         
         // Check if location services enabled before starting
         if CLLocationManager.locationServicesEnabled(){
+            print("location enabled")
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation // accuracy using gps
             
             //locationManager.distanceFilter = 10.0
@@ -77,54 +66,50 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         self.mapkitView.setRegion(viewLoc, animated: true)
     }
     
-    func layoutRoute()
-    {
-        // Set up the mapkit with some conditions
-        mapkitView.delegate = self
-        mapkitView.showsScale = true
-        mapkitView.showsCompass = true
-        mapkitView.showsPointsOfInterest = true
-        mapkitView.showsUserLocation = true
+    func getCoordinateFrom(address: String, completion: @escaping(_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
+        CLGeocoder().geocodeAddressString(address) { placemarks, error in
+            completion(placemarks?.first?.location?.coordinate, error)
+        }
+    }
+    
+    // Draw and display the walking route in blue
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+        renderer.strokeColor = UIColor.blue
+        renderer.lineWidth = 3.0
+        return renderer
+    }
+    
+    // Get walking directions
+    func layoutWalkingRoute(){
+        let sourceCoordinates = CLLocationCoordinate2DMake(49.276765, -122.917957)
+        let destCoordinates = CLLocationCoordinate2DMake(49.2420, -122.9441)
         
-        let sourceCoordinates = locationManager.location?.coordinate
-        //let sourceCoordinates = CLLocationCoordinate2DMake(49.2014, 122.7772)
-        let destCoordinates = CLLocationCoordinate2DMake(49.1969, 122.7772)
-        
-        let sourcePin = customPin(pinTitle: " ", location: sourceCoordinates!)
+        // Mark source and destination locations as pins on the map
+        let sourcePin = customPin(pinTitle: " ", location: sourceCoordinates)
         let destPin =   customPin(pinTitle: " ", location: destCoordinates)
         self.mapkitView.addAnnotation(sourcePin)
         self.mapkitView.addAnnotation(destPin)
         
+        let request = MKDirectionsRequest()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates, addressDictionary: nil))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destCoordinates, addressDictionary: nil))
+        request.transportType = .walking
         
-        let sourcePlacemark = MKPlacemark(coordinate: (sourceCoordinates!))
-        let destPlacemark = MKPlacemark(coordinate: destCoordinates)
+        let directions = MKDirections(request: request)
         
-        let sourceItem = MKMapItem(placemark: sourcePlacemark)
-        let destItem = MKMapItem(placemark: destPlacemark)
-        
-        let directionRequest = MKDirectionsRequest()
-        directionRequest.source = sourceItem
-        directionRequest.destination = destItem
-        directionRequest.transportType = .walking
-        
-        let directions = MKDirections(request: directionRequest)
-        directions.calculate(completionHandler: {
-            response, error in
+        directions.calculate { [unowned self] response, error in
+            guard let unwrappedResponse = response else { return }
             
-            guard let response = response else {
-                if let error = error {
-                    print("error ==\(error.localizedDescription)")
-                }
-                return
+            for route in unwrappedResponse.routes {
+                self.mapkitView.add(route.polyline)
+                self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
-            
-            // fastest route
-            let route = response.routes[0]
-            self.mapkitView.add(route.polyline, level: .aboveRoads)
-            
-            let rekt = route.polyline.boundingMapRect
-            self.mapkitView.setRegion(MKCoordinateRegionForMapRect(rekt), animated: true)
-        })
+        }
     }
-
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
 }
