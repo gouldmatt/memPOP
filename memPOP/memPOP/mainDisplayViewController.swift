@@ -58,14 +58,23 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.sendSubview(toBack: collectionView)        
+        
+        // change appearance for segmented control
+        selectedCategory.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .normal)
+        
+        selectedCategory.setTitleTextAttributes([
+            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),
+            NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .selected)
+        
+        view.sendSubview(toBack: collectionView)
     }
     
     override func viewWillAppear(_ animated:Bool) {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
-        
-        // Fetch all the hotspots
+    
         load()
         
         // Everytime the view appears, reload data stored in the collection view
@@ -178,6 +187,12 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         
         if(mainEditIsTapped) {
             let editHotspotVC = storyboard?.instantiateViewController(withIdentifier: "AddHotspotViewController") as! AddHotspotViewController
+            // Check if this is the home hotspot
+            if(indexPath.row == 0){
+                editHotspotVC.isHomeHotspot = true
+            }
+            
+            // Pass the selected hotspot information
             editHotspotVC.selectedHotspot = hotspots[indexPath.row]
             
             editHotspotVC.fetchedToDos = hotspots[indexPath.row].toDo as! [NSManagedObject]
