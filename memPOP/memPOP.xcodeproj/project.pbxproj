@@ -27,6 +27,8 @@
 		A0B63CD1217F9C560072A82F /* memPOPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CD0217F9C560072A82F /* memPOPTests.swift */; };
 		A0B63CDC217F9C560072A82F /* memPOPUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B63CDB217F9C560072A82F /* memPOPUITests.swift */; };
 		E1D31053219D004D0094C445 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D31052219D004D0094C445 /* CoreLocation.framework */; };
+		EB634B7821A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB634B7621A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift */; };
+		EB634B7921A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB634B7721A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift */; };
 		EB7423F9218E5695005836A2 /* CollectionViewPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */; };
 		EB93AE1521972F9F00B4B486 /* navigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1421972F9F00B4B486 /* navigationViewController.swift */; };
 		EB93AE1721972FD000B4B486 /* overviewNavMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */; };
@@ -78,6 +80,8 @@
 		A0B63CDB217F9C560072A82F /* memPOPUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memPOPUITests.swift; sourceTree = "<group>"; };
 		A0B63CDD217F9C560072A82F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1D31052219D004D0094C445 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		EB634B7621A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonInfoMO+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EB634B7721A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonInfoMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhoto.swift; sourceTree = "<group>"; };
 		EB93AE1421972F9F00B4B486 /* navigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = navigationViewController.swift; sourceTree = "<group>"; };
 		EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = overviewNavMasterViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +120,8 @@
 		7477DF96218F835D00D90ECD /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				EB634B7621A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift */,
+				EB634B7721A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift */,
 				475ECB82219F65D20046C400 /* HotspotMO+CoreDataClass.swift */,
 				475ECB83219F65D20046C400 /* HotspotMO+CoreDataProperties.swift */,
 				EBE8F4BA218B8BFC006A5806 /* PhotosMO+CoreDataClass.swift */,
@@ -342,6 +348,7 @@
 				EB93AE1521972F9F00B4B486 /* navigationViewController.swift in Sources */,
 				742E2574218109C6004F5E7E /* personInfoViewController.swift in Sources */,
 				EBE8F4C3218B8BFC006A5806 /* ToDoMO+CoreDataProperties.swift in Sources */,
+				EB634B7921A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift in Sources */,
 				A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */,
 				742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */,
 				EBE8F4C1218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift in Sources */,
@@ -349,6 +356,7 @@
 				A0B63CB9217F9C560072A82F /* AppDelegate.swift in Sources */,
 				47C260E421852DD6003AF531 /* PersistenceService.swift in Sources */,
 				742E257221810918004F5E7E /* settingsViewController.swift in Sources */,
+				EB634B7821A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift in Sources */,
 				EB7423F9218E5695005836A2 /* CollectionViewPhoto.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
