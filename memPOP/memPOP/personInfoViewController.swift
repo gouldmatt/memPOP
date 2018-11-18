@@ -13,7 +13,7 @@
 import CoreData
 import UIKit
 import MapKit
-class personInfoViewController: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate {
+class personInfoViewController: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
     
     //===================================================================================================
     // Constants
@@ -38,7 +38,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     //===================================================================================================
     // Outlets
     //===================================================================================================
-    @IBOutlet var nameField: UITextField!
+    @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var searchResultsTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet var dialogCheck: UITextField!
@@ -51,6 +51,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         // Check that name and address are filled before saving
         if (nameField.text!.isEmpty || searchBar.text!.isEmpty){
             dialogCheck.isHidden = false
+            dialogCheck.layer.borderWidth = 0.0
             if (nameField.text!.isEmpty) {
                 nameField.layer.borderWidth = 1.0
                 let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
@@ -67,7 +68,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             }
             else {
                 self.searchBar.setTextFieldColor(color: UIColor.white.withAlphaComponent(0))
-                
             }
         }
         else {
@@ -83,9 +83,10 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 
                 newHotspot.name = "Home"
                 newHotspot.address = searchAddressChosen
+                newHotspot.longitude = searchAddressLongitude
+                newHotspot.latitude = searchAddressLatitude
                 
                 newHotspot.addToPhotos(newPhoto)
-                
             }
             else {
                 user?.name = nameField.text
@@ -95,7 +96,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                         homeHotspot.address = searchAddressChosen
                         homeHotspot.longitude = searchAddressLongitude
                         homeHotspot.latitude = searchAddressLatitude
-                        
                     }
                     catch {
                         print("failed hotspot fetch")
@@ -191,6 +191,13 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         
         
         return cell!
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        // Close the keyboard on return for a textField
+        textField.resignFirstResponder()
+        return true
     }
     
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
