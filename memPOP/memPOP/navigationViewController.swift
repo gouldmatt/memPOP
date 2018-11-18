@@ -68,10 +68,12 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         if CLLocationManager.locationServicesEnabled(){
             
             print("location enabled")
-           
+            
+            locationManager.delegate = self
+            
             // Accuracy using GPS
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-            locationManager.delegate = self
+            
             locationManager.startUpdatingLocation()
         }
         
