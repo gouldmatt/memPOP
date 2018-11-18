@@ -19,6 +19,7 @@ import MapKit
 
 class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UICollectionViewDelegate,UICollectionViewDataSource, UITableViewDataSource {
     
+    //comment
     //===================================================================================================
     // Constants
     //===================================================================================================
