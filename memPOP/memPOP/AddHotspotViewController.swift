@@ -1,17 +1,28 @@
-//
 //  AddHotspotViewController.swift
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Emily on 2018-10-23.
 //  Programmers: Emily Chen, Matthew Gould, Diego Martin Marcelo
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
 
-// Changes that have been made
-// - Description place holder text
-// - Saving user inputted information
-// - Done button disabling and enabling
-// - Delete button dialog
+//===================================================================================================
+// Changes that have been made in v1.0
+// Added description place holder text
+// Saving the information of each hotspot using our CoreData model
+// Done button disabling when necessary fields are empty
+// Added a pop up dialog message when attempting to delete a hotspot
+
+//===================================================================================================
+// Changes that have been made in v2.0
+// Saving of data now supports all attributes of HotspotMO
+// Added attributes to store latitude and longitude for each HotspotMO
+// Added autocomplete feature when searching for an address based on MapKit library
+// UI changes to clean up the look of the view controller
+// Fixed issues when user deleted their last photo or todo item
+// Added a check to enable editing and adding using the same view controller
+// Editing mode feature added
+// Editing mode fetches all the information of the selected hotspot and displays it to the user
+// Editing mode allows the user to make changes and save them
 
 import CoreData
 import UIKit
@@ -20,12 +31,12 @@ import MapKit
 class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UICollectionViewDelegate,UICollectionViewDataSource, UITableViewDataSource {
     
     //===================================================================================================
-    // Constants
+    // MARK: Constants
     //===================================================================================================
     let image = UIImagePickerController()
 
     //===================================================================================================
-    // Variables declaration
+    // MARK: Variables declaration
     //===================================================================================================
     var descriptionPlaceholder: UILabel!
     var categoryChosen:String = ""
@@ -40,8 +51,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     var fetchedImages = [NSManagedObject]()
     var selectedHotspot: NSManagedObject?
     
-    // Used to keep track of the NSData objects, not only UIImage objects
-    // Needed when updating each photo
+    // Used to keep track of the NSData objects, not only UIImage objects, needed when updating each photo
     var addedImagesNSData = [NSData]()
     
     // For getting the address
@@ -53,10 +63,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     var changedAddress:Bool = false
     
     //===================================================================================================
-    // Outlets
+    // MARK: Outlets
     //===================================================================================================
     @IBOutlet weak var descriptionTextView: UITextView!
-    
+
     @IBOutlet weak var doneButton: UIButton!
     
     @IBOutlet weak var hotspotName: UITextField!
@@ -75,10 +85,11 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var searchBar: UISearchBar!
     
     //===================================================================================================
-    // Actions
+    // MARK: Actions
     //===================================================================================================
-    
     @IBAction func ImportPhoto(_ sender: Any) {
+        
+        // Open the camera library and show the user their photos
         image.delegate = self
         image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
         image.allowsEditing = false
@@ -86,6 +97,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
     
     @IBAction func addToDo(_ sender: Any) {
+        
+        // Adding a ToDO item in the table view
         if (todoItem.text != "") {
             list.append("- " + todoItem.text!)
             todoItem.text = ""
@@ -93,8 +106,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
     }
     
-    // Action needed to save all the attributes for a single hotspot and their relationships
     @IBAction func donePressed(_ sender: UIButton) {
+        
+        // Action needed to save or update all the attributes for a single hotspot and their relationships
         
         // Check that name and address are filled before saving
         if (hotspotName.text!.isEmpty || searchBar.text!.isEmpty)
@@ -115,10 +129,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             }
             else {
                 self.searchBar.setTextFieldColor(color: UIColor.white.withAlphaComponent(0))
-        
             }
         }
         else {
+            
             dialogCheck.isHidden = true
 
             // Create a new hotspot
@@ -195,24 +209,24 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 self.hotspots.append(newHotspot)
             }
             else {
-                // Updating a Hotspot
                 
+                // Updating a hotspot selected
                 print("Updating one")
+                
                 let updateHotspot = selectedHotspot as! HotspotMO
                 var newToDos = updateHotspot.toDo as! [ToDoMO]
                 var newPhotos = updateHotspot.photos as! [PhotosMO]
                 var index: Int = 0
                 
-                
                 updateHotspot.name = hotspotName.text!
                 
+                // Check if the address has been changed, if not then no need to update it
                 if (changedAddress){
                     updateHotspot.address = searchAddressChosen
                     updateHotspot.latitude = searchAddressLatitude
                     updateHotspot.longitude = searchAddressLongitude
                     changedAddress = false
                 }
-                
                 
                 // Check the category selected
                 if(hotspotCategory.selectedSegmentIndex == 1) {
@@ -278,11 +292,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                     index = index + 1
                 }
                 
+                // Save all the changes made to the hotspot selected
                 PersistenceService.saveContext()
             }
             
             // Update the navigation bar back button so that when back is pressed on the main display screen
-            // it will take the user to the start screen instead of the add hotspot form again
+            // it will take the user to the start screen instead of the add hotspot view controller again
             let viewControllers: [UIViewController] = self.navigationController!.viewControllers
             for aViewController in viewControllers {
                 if aViewController is AddHotspotViewController {
@@ -334,7 +349,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
     }
     
-    //---------------------------------------------------------------------------------------------------
     // The name and address fields must be filled before the done button is enabled
     //https://stackoverflow.com/questions/34941069/enable-a-button-in-swift-only-if-all-text-fields-have-been-filled-out
     @objc func editChanged(_ textField: UITextField) {
@@ -345,15 +359,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             }
         }
     }
-    //---------------------------------------------------------------------------------------------------
 
     //===================================================================================================
-    // Override Functions
+    // MARK: Override Functions
     //===================================================================================================
-    
     override func viewDidLoad() {
-        super.viewDidLoad()
         
+        super.viewDidLoad()
         
         // For autocomplete table view
         searchResultsTableView.dataSource = self
@@ -383,6 +395,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         todoItem.delegate = self
         
         if(selectedHotspot == nil) {
+            
+            // Adding a new hotpost mode
             print("Adding")
             
             // Change the navigation title to match the action desired, in this case to "Add a Hotpost"
@@ -407,6 +421,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             // Dont think we need this check [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
         }
         else {
+            
+            // Editing a selected hotspot mode
             print("Editing")
             
             // Check if editing the home hotspot, if so, disable change for the title and delete button
@@ -415,10 +431,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                  deleteButton.isHidden = true 
             }
             
-            
             // When we are editting a hotspot, change the button title to "Delete"
             deleteButton.setTitle("Delete", for: UIControlState.normal)
             
+            // Fetch the information from the hotspot selected to be displayed
             let updateHotspot = selectedHotspot as! HotspotMO
             let todoItems = updateHotspot.toDo as! [ToDoMO]
             let photoItems = updateHotspot.photos as! [PhotosMO]
@@ -430,7 +446,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             // Dont think we need this check [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
             
             // Fetch every object for that specific hotpost to the new AddHotspotViewController //
-            
             // Fetch name
             hotspotName.text = selectedHotspot?.value(forKey: "name") as? String
             
@@ -492,9 +507,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
 
     //===================================================================================================
-    // Functions
+    // MARK: Functions
     //===================================================================================================
-    
     func textViewDidChange(_ descriptionTextView: UITextView) {
         if(selectedHotspot == nil) {
             descriptionPlaceholder.isHidden = !descriptionTextView.text.isEmpty
@@ -616,10 +630,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         return indexPath
     }
     
-    // delete an item by a left swipe
+    // Delete a ToDo item by a left swipe
     // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
         if editingStyle == UITableViewCellEditingStyle.delete {
+            
             print("removed todo")
             
             if (selectedHotspot != nil){
@@ -632,21 +648,24 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             
             // Update the table view to show changes
             tableView.reloadData()
-            
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-         return addedImages.count
+        
+        // Return the number of photos
+        return addedImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell:  CollectionViewPhotoDelete = collectionView.dequeueReusableCell(withReuseIdentifier: "cellPhotos", for: indexPath) as! CollectionViewPhotoDelete
         
         cell.image.image = addedImages[indexPath.row]
         
         // Set the value of the index at which the image is added to key "index"
         cell.deletePhotoButton?.layer.setValue(indexPath.row, forKey: "index")
+        
         // Call the deletePhoto to delete the image at a particular index
         cell.deletePhotoButton?.addTarget(self, action: #selector((deletePhoto(sender:))), for: UIControlEvents.touchUpInside)
         
@@ -666,7 +685,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         else {
             //let toDos = fetchedToDos as? [ToDoMO]
             
-            // '-1' to ignore the first line of the array
+            // '-1' to ignore the first line of the array "My To-Do List"
             let toDoToDelete = toDosToDelete[index-1]
             
             // Delete specific item from database
@@ -705,22 +724,22 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             deletePhoto(index: i)
         }
         
-        print(i)
-    
+        // For debugging
         print("Removed image")
+        
         collectionView.reloadData()
     }
     
-    // Close the keyboard on return for a textField
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
+        // Close the keyboard on return for a textField
         textField.resignFirstResponder()
         return true
     }
     
-    // Close the keyboard on return for a textView
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
+        // Close the keyboard on return for a textView
         if(text == "\n"){
             textView.resignFirstResponder()
             return false
@@ -729,7 +748,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
 }
 
-/* Used code from https://stackoverflow.com/questions/13817330/how-to-change-inside-background-color-of-uisearchbar-component-on-ios */
+//===================================================================================================
+// MARK: Extensions
+//===================================================================================================
+// Used code from https://stackoverflow.com/questions/13817330/how-to-change-inside-background-color-of-uisearchbar-component-on-ios
 extension UISearchBar {
     
     // Get the type of element that we are modifying
@@ -757,6 +779,8 @@ extension UISearchBar {
 }
 
 extension AddHotspotViewController : UISearchBarDelegate {
+    
+    // Handle the functionality of the search bar
     
     func searchBar( _ searchBar: UISearchBar, textDidChange searchText: String) {
         
@@ -793,12 +817,11 @@ extension AddHotspotViewController : UISearchBarDelegate {
             searchAddressLongitude = 0.0
         }
         
+        // For debugging
         print("Address Chosen: \(searchAddressChosen)")
         print("Latitude: \(searchAddressLatitude)")
         print("Longitude: \(searchAddressLongitude)")
-        
     }
-    
 }
 
 extension AddHotspotViewController : MKLocalSearchCompleterDelegate {

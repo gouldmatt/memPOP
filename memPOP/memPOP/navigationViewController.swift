@@ -1,11 +1,17 @@
-//
 //  navigationViewController.swift
 //  memPOP
-//
-//  Created by Matthew Gould   on 2018-11-10.
-//  Programmer: Nicholas Lau
+//  Group 9, Iota Inc.
+//  Created by Matthew Gould on 2018-11-10.
+//  Programmers: Nicholas Lau, Emily Chen, Matthew Gould, Diego Martin Marcelo
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
+
+//===================================================================================================
+// Changes that have been made in v2.0
+// Created view controller to handle all of the navigation features for each hotspot selected
+// Fetch information about the hotspot selected
+// Show the route in mapView between the user's location and the hotspot address
+// Add named pins to the map view
+// Print walking/driving instructions to the output terminal
 
 import UIKit
 import CoreLocation
@@ -13,6 +19,9 @@ import MapKit
 import CoreData
 
 class customPin: NSObject, MKAnnotation {
+    
+    // Class "customPin" added to handle each pin added to the map view
+    
     var coordinate: CLLocationCoordinate2D
     var title: String?
     
@@ -24,96 +33,101 @@ class customPin: NSObject, MKAnnotation {
 
 class navigationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
+    //===================================================================================================
+    // MARK: Variables declaration
+    //===================================================================================================
     var doOnce: Bool = true
     var takeCar: Bool = false
     var selectedHotspot: NSManagedObject?
     var destinationName: String = ""
-    
     var latitude:Double?
     var longitude:Double?
-    
     var currentLatitude:Double?
     var currentLongitude:Double?
+    var locationManager = CLLocationManager()
+
+    //===================================================================================================
+    // MARK: Outlets
+    //===================================================================================================
+    @IBOutlet weak var mapkitView: MKMapView!
     
     //===================================================================================================
-    // Constants
-    var locationManager = CLLocationManager()
-    //===================================================================================================
-    // Outlets
-    @IBOutlet weak var mapkitView: MKMapView!
-    //===================================================================================================
-    // Functions
+    // MARK: Override Functions
     //===================================================================================================
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        // Only update the route once whenever the view is loaded
         doOnce = true
         
+        // Request the user permission to use their location
         self.locationManager.requestWhenInUseAuthorization()
         
+        // Check if permission is granted by the user
         if CLLocationManager.locationServicesEnabled(){
+            
             print("location enabled")
+           
+            // Accuracy using GPS
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation // accuracy using gps
             locationManager.startUpdatingLocation()
         }
         
-        //setUpLocationManager()
+        // Store the name of the destination for the selected hotspot
         destinationName = selectedHotspot?.value(forKey: "name") as! String
+        
+        // Fetch the latitude and longitude for the selected hotspot
         latitude = selectedHotspot?.value(forKey: "latitude") as? Double
         longitude = selectedHotspot?.value(forKey: "longitude") as? Double
+        
+        // For debugging
         print(latitude!)
         print(longitude!)
         
+        // Check the method of transportation chosen for the selected hotspot
         if (selectedHotspot?.value(forKey: "transportation") as? String == "Car") {
             takeCar = true
         } else {
             takeCar = false
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
     
     }
     
-    func setUpLocationManager() {
-        
-        // Get location permission from user
-        self.locationManager.requestAlwaysAuthorization()
-        
-        // Check if location services enabled before starting
-        if CLLocationManager.locationServicesEnabled(){
-            print("location enabled")
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation // accuracy using gps
-            
-            locationManager.distanceFilter = 10.0
-            // meters update when past cetain distance using other methods
-            //but realtime is better for navigation related purposes
-            
-            
-            locationManager.startUpdatingLocation()
-            
-        }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
+    //===================================================================================================
+    // MARK: Functions
+    //===================================================================================================
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
+        // This function gets called whenever the user updates their location and updates the route
+        
         //let locValue:CLLocationCoordinate2D = (manager.location?.coordinate)!
         let userLocal = locations.last
         
+        // Store the user's current location
         currentLongitude = userLocal?.coordinate.longitude
         currentLatitude = userLocal?.coordinate.latitude
+        
+        // For debugging
         print(currentLatitude!)
        
         //let viewLoc = MKCoordinateRegionMakeWithDistance((userLocal?.coordinate)!, 5000, 5000)
         //self.mapkitView.setRegion(viewLoc, animated: true)
+        
+        // Only show the route once
         if(doOnce){
             layoutWalkingRoute()
             doOnce = false
         }
-        
     }
     
     // Draw and display the walking route in blue
@@ -124,8 +138,9 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         return renderer
     }
     
-    // Get walking directions
-    func layoutWalkingRoute(){
+    // Get walking or driving directions
+    func layoutWalkingRoute() {
+    
         let sourceCoordinates = CLLocationCoordinate2DMake(currentLatitude!, currentLongitude!)
         let destCoordinates = CLLocationCoordinate2DMake(latitude!, longitude!)
         
@@ -139,6 +154,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates, addressDictionary: nil))
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destCoordinates, addressDictionary: nil))
      
+        // Check the method of transportation from the selected hotspot to display the appropiate route
         if (takeCar){
             request.transportType = .automobile
         } else {
@@ -155,15 +171,12 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
                 self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
                 
                 for step in route.steps {
+                    // Print the directions in the output window
                     print(step.instructions)
                 }
             }
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
 

@@ -1,10 +1,12 @@
-//
 //  settingsViewController.swift
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Emily on 2018-10-24.
+//  Programmers:
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
+
+//===================================================================================================
+// Implementation coming in v3.0
 
 import UIKit
 

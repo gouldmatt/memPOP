@@ -1,11 +1,15 @@
-//
 //  HotspotMO+CoreDataProperties.swift
 //  memPOP
-//
+//  Group 9, Iota Inc.
 //  Created by Diego Martin on 2018-11-16.
+//  Programmers:
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
-//
+
+//===============================================================
+// Defines characterstics and attributes of HotpotMO entity
+// with its relationships with the PhotosMO and ToDOMO
+// This was generated from the xcdatamodeld
+//===============================================================
 
 import Foundation
 import CoreData
