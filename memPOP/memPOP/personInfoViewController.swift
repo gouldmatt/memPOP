@@ -1,10 +1,14 @@
-//
 //  personInfoViewController.swift
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Emily on 2018-10-24.
+//  Programmers:
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
+
+//===================================================================================================
+// Changes that have been made in v2.0
+
+
 import CoreData
 import UIKit
 import MapKit

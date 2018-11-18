@@ -1,11 +1,9 @@
-//
 //  AppDelegate.swift
 //  memPOP
 //  Group 9, Iota Inc.
-
 //  Created by nla52 on 10/23/18.
+//  Programmers:
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
 
 import UIKit
 import CoreData

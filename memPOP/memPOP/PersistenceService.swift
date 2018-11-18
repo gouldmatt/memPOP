@@ -1,8 +1,8 @@
-//
 //  PersistenceService.swift
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Diego Martin on 2018-10-27.
+//  Programmers: Diego Martin
 //  Copyright © 2018 Iota Inc. All rights reserved.
 
 import Foundation
@@ -10,8 +10,9 @@ import CoreData
 
 class PersistenceService {
     
-    // MARK: - Core Data stack
-    
+    //===================================================================================================
+    // MARK: Core Data Stack
+    //===================================================================================================
     private init() {}
     
     static var context: NSManagedObjectContext {
@@ -45,8 +46,9 @@ class PersistenceService {
         return container
     }()
     
-    // MARK: - Core Data Saving support
-    
+    //===================================================================================================
+    // MARK: Core Data Saving support
+    //===================================================================================================
     static func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
