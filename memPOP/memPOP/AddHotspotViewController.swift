@@ -49,6 +49,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     var searchAddressChosen:String = ""
     var searchAddressLatitude:Double = 0.0
     var searchAddressLongitude:Double = 0.0
+    var changedAddress:Bool = false
     
     //===================================================================================================
     // Outlets
@@ -201,10 +202,16 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 var newPhotos = updateHotspot.photos as! [PhotosMO]
                 var index: Int = 0
                 
+                
                 updateHotspot.name = hotspotName.text!
-                updateHotspot.address = searchAddressChosen
-                updateHotspot.latitude = searchAddressLatitude
-                updateHotspot.longitude = searchAddressLongitude
+                
+                if (changedAddress){
+                    updateHotspot.address = searchAddressChosen
+                    updateHotspot.latitude = searchAddressLatitude
+                    updateHotspot.longitude = searchAddressLongitude
+                    changedAddress = false
+                }
+                
                 
                 // Check the category selected
                 if(hotspotCategory.selectedSegmentIndex == 1) {
@@ -346,6 +353,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         // For autocomplete table view
         searchResultsTableView.dataSource = self
         searchResultsTableView.delegate = self
@@ -358,6 +366,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         tableView.delegate = self
         
         // For search bar button
+        changedAddress = false
         self.searchCompleter.delegate = self
         self.searchBar.delegate = self
         self.searchBar.placeholder = "Search the location"
@@ -562,6 +571,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         
         // Check which item is selected for each table view
         
+        changedAddress = true
+        
         print("did select:  \(indexPath.row)    ")
         
         if(tableView == self.searchResultsTableView) {
@@ -591,7 +602,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 self.searchAddressChosen = self.searchBar.text!
                 self.searchAddressLatitude = coordinate!.latitude
                 self.searchAddressLongitude = coordinate!.longitude
-                
                 print(String(describing: coordinate))
             }
         }
