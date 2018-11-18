@@ -25,7 +25,7 @@ class startViewController: UIViewController {
             if(hotspots.count == 0){
                 
                 // Create the alert
-                let alert = UIAlertController(title: "Welcome to Mem-POP!", message: "Let's Set Up Your Personal Information!", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Welcome to Mem-POP!", message: "Let's Set Up Your Personal Information", preferredStyle: .alert)
                 
                 // Create the actions
                 let startAction = UIAlertAction(title: "Get Started", style: .default) {

@@ -90,10 +90,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             else {
                 user?.name = nameField.text
                 if(changedAddress){
-                    user?.homeLat = searchAddressLatitude
-                    user?.homeLong = searchAddressLongitude
-                    user?.homeAddress = searchAddressChosen
-                
                     do{
                         let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
                         homeHotspot.address = searchAddressChosen
@@ -144,15 +140,17 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         self.searchBar.searchBarStyle = .minimal
         
         // fetch any existing user information 
-        do{
+        do {
             let userFetch = try PersistenceService.context.fetch(fetchUser)
+            let hotspotFetch = try PersistenceService.context.fetch(fetchHotspot)
             
             if(userFetch.count == 1){
                 user = userFetch[0]
                 nameField.text = user?.name
-                searchBar.text = user?.homeAddress
+                searchBar.text = hotspotFetch[0].address
             }
-        } catch {
+        }
+        catch {
             print("failed user fetch")
         }
         

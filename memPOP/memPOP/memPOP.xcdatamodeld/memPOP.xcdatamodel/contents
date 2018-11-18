@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17E202" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="HotspotMO" representedClassName=".HotspotMO" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,9 +13,6 @@
         <relationship name="toDo" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ToDoMO" inverseName="hotspot" inverseEntity="ToDoMO" syncable="YES"/>
     </entity>
     <entity name="PersonInfoMO" representedClassName=".PersonInfoMO" syncable="YES">
-        <attribute name="homeAddress" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="homeLat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="homeLong" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="PhotosMO" representedClassName=".PhotosMO" syncable="YES">
@@ -28,7 +25,7 @@
     </entity>
     <elements>
         <element name="HotspotMO" positionX="-297" positionY="-162" width="128" height="195"/>
-        <element name="PersonInfoMO" positionX="-189" positionY="-63" width="128" height="105"/>
+        <element name="PersonInfoMO" positionX="-189" positionY="-63" width="128" height="60"/>
         <element name="PhotosMO" positionX="-74" positionY="-162" width="128" height="73"/>
         <element name="ToDoMO" positionX="-74" positionY="-4" width="128" height="58"/>
     </elements>

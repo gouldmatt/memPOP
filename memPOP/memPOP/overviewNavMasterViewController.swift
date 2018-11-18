@@ -69,6 +69,14 @@ class overviewNavMasterViewController: UIViewController {
         
         // Update navigation bar title with hotspot name
         self.title = ((selectedHotspot?.value(forKey: "name")) as? String)
+        
+        let hotspot = selectedHotspot as! HotspotMO
+        if ((hotspot.info == nil || (hotspot.info?.isEmpty)!) && hotspot.toDo?.count == 0 && hotspot.photos?.count == 0){
+            self.overviewContainer.isHidden = true
+            self.navigationContainer.isHidden = false
+            overviewNavControl.removeSegment(at:0, animated: true)
+            overviewNavControl.isUserInteractionEnabled = false
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: (Any)?) {
