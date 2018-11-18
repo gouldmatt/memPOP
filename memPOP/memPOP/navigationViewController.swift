@@ -24,7 +24,10 @@ class customPin: NSObject, MKAnnotation {
 
 class navigationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
+    var doOnce: Bool = true
+    var takeCar: Bool = false
     var selectedHotspot: NSManagedObject?
+    var destinationName: String = ""
     
     var latitude:Double?
     var longitude:Double?
@@ -44,6 +47,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        doOnce = true
         
         self.locationManager.requestWhenInUseAuthorization()
         
@@ -55,11 +59,17 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         }
         
         //setUpLocationManager()
-        
+        destinationName = selectedHotspot?.value(forKey: "name") as! String
         latitude = selectedHotspot?.value(forKey: "latitude") as? Double
         longitude = selectedHotspot?.value(forKey: "longitude") as? Double
         print(latitude!)
         print(longitude!)
+        
+        if (selectedHotspot?.value(forKey: "transportation") as? String == "Car") {
+            takeCar = true
+        } else {
+            takeCar = false
+        }
         
     }
     
@@ -99,8 +109,11 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
        
         //let viewLoc = MKCoordinateRegionMakeWithDistance((userLocal?.coordinate)!, 5000, 5000)
         //self.mapkitView.setRegion(viewLoc, animated: true)
+        if(doOnce){
+            layoutWalkingRoute()
+            doOnce = false
+        }
         
-        layoutWalkingRoute();
     }
     
     // Draw and display the walking route in blue
@@ -118,15 +131,19 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         
         // Mark source and destination locations as pins on the map
         let sourcePin = customPin(pinTitle: " ", location: sourceCoordinates)
-        let destPin =   customPin(pinTitle: " ", location: destCoordinates)
+        let destPin =   customPin(pinTitle: destinationName, location: destCoordinates)
         self.mapkitView.addAnnotation(sourcePin)
         self.mapkitView.addAnnotation(destPin)
         
         let request = MKDirectionsRequest()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates, addressDictionary: nil))
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destCoordinates, addressDictionary: nil))
-        //request.transportType = .automobile
-        request.transportType = .walking
+     
+        if (takeCar){
+            request.transportType = .automobile
+        } else {
+            request.transportType = .walking
+        }
         
         let directions = MKDirections(request: request)
         
@@ -136,6 +153,10 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
             for route in unwrappedResponse.routes {
                 self.mapkitView.add(route.polyline)
                 self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+                
+                for step in route.steps {
+                    print(step.instructions)
+                }
             }
         }
     }
