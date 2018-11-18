@@ -375,7 +375,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         self.searchBar.searchBarStyle = .minimal
         
         dialogCheck.isHidden = true
-
+ 
         // Add a border around the description UI textfield, and image view
         descriptionTextView.layer.borderWidth = 1
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
