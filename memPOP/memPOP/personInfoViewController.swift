@@ -2,11 +2,12 @@
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Emily on 2018-10-24.
-//  Programmers:
+//  Programmers: Matthew Gould
 //  Copyright © 2018 Iota Inc. All rights reserved.
 
 //===================================================================================================
 // Changes that have been made in v2.0
+// Added name textfield and autofill address
 
 
 import CoreData
@@ -176,19 +177,14 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         // Return the number of items for each tableview
         
         var count : Int?
-        
-
         count = searchResults.count
-        
         return count!
-        
     }
     
     // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         var cell : UITableViewCell?
-        
         
         let searchResult = searchResults[indexPath.row]
         cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
@@ -241,7 +237,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     }
 }
 
-/* Used code from https://stackoverflow.com/questions/13817330/how-to-change-inside-background-color-of-uisearchbar-component-on-ios */
+// Used code from
+// https://stackoverflow.com/questions/13817330/how-to-change-inside-background-color-of-uisearchbar-component-on-ios
 extension UISearchBar {
     
     // Get the type of element that we are modifying
@@ -257,7 +254,6 @@ extension UISearchBar {
         if let textField = getViewElement(type: UITextField.self) {
             switch searchBarStyle {
             case .minimal:
-                //textField.layer.backgroundColor = color.cgColor
                 textField.layer.borderColor = color.cgColor
                 textField.layer.borderWidth = 1.0;
                 
@@ -308,7 +304,6 @@ extension personInfoViewController : UISearchBarDelegate {
         print("Address Chosen: \(searchAddressChosen)")
         print("Latitude: \(searchAddressLatitude)")
         print("Longitude: \(searchAddressLongitude)")
-        
     }
     
 }

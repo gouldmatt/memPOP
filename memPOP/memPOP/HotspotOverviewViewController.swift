@@ -41,7 +41,6 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var toDoTableHeight: NSLayoutConstraint!
     @IBOutlet var collectionViewHeight: NSLayoutConstraint!
-   // @IBOutlet var descriptionViewHeight: NSLayoutConstraint!
     @IBOutlet var toDoListLabel: UILabel!
     @IBOutlet var photosLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
@@ -69,7 +68,8 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         // Hide the text view if there is no description
         if(descriptionView.text == nil){
             descriptionLabel.isHidden = true
-        } else if(descriptionView.text?.isEmpty)!{
+        }
+        else if(descriptionView.text?.isEmpty)!{
             descriptionLabel.isHidden = true
         }
         
@@ -135,7 +135,8 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         if(imageData != nil){
             let image = UIImage(data: imageData as! Data)
             photoOnlyCell.image.image = image
-        } else {
+        }
+        else {
             photoOnlyCell.image.image = (UIImage(named: "defaultPhoto"))
         }
         

@@ -2,7 +2,7 @@
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by nla52 on 10/23/18.
-//  Programmers:
+//  Programmers: Emily Chen, Matthew Gould
 //  Copyright © 2018 Iota Inc. All rights reserved.
 
 //===================================================================================================
@@ -25,7 +25,7 @@ class startViewController: UIViewController {
             if(hotspots.count == 0){
                 
                 // Create the alert
-                let alert = UIAlertController(title: "Welcome to Mem-POP!", message: "It looks like your first time using the app", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Welcome to Mem-POP!", message: "Let's Set Up Your Personal Information!", preferredStyle: .alert)
                 
                 // Create the actions
                 let startAction = UIAlertAction(title: "Get Started", style: .default) {
@@ -37,18 +37,17 @@ class startViewController: UIViewController {
                 
                 // Add actions to alert
                 alert.addAction(startAction)
-            
                 
                 // Show the alert
                 self.present(alert,animated: true, completion: nil)
             }
-        } catch {
+        }
+        catch {
             
             // Show error message
             print("failed fetching")
         }
     }
-    
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = true

@@ -44,7 +44,8 @@ class overviewNavMasterViewController: UIViewController {
         if sender.selectedSegmentIndex == 0 {
             self.overviewContainer.isHidden = false
             self.navigationContainer.isHidden = true
-        } else {
+        }
+        else {
             self.overviewContainer.isHidden = true
             self.navigationContainer.isHidden = false
         }

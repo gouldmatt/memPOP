@@ -349,17 +349,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
     }
     
-    // The name and address fields must be filled before the done button is enabled
-    //https://stackoverflow.com/questions/34941069/enable-a-button-in-swift-only-if-all-text-fields-have-been-filled-out
-    @objc func editChanged(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            if textField.text?.first == " " {
-                textField.text = ""
-                return
-            }
-        }
-    }
-
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
@@ -418,7 +407,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             
             // Done button should only be enabled when the hotspot and address is filled
             doneButton.isEnabled = true
-            // Dont think we need this check [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
         }
         else {
             
@@ -441,9 +429,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             
             // Change the navigation title to match the action desired, in this case to "Editing <HotspotName>"
             self.title = ("Editing " + updateHotspot.name!)
-            
-            // Check if hotspotName or hotspotAddress are empty and disable Done button
-            // Dont think we need this check [hotspotName, hotspotAddress].forEach({ $0.addTarget(self, action: #selector(editChanged), for: .editingChanged) })
             
             // Fetch every object for that specific hotpost to the new AddHotspotViewController //
             // Fetch name
@@ -546,7 +531,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         return sectionNum!
     }
     
-    
     // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -587,7 +571,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         
         return cell!
     }
-    
     
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         

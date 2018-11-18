@@ -18,6 +18,8 @@ import CoreLocation
 import MapKit
 import CoreData
 
+
+// Consulted https://www.youtube.com/watch?v=vEN5WzsAoxA for customPin
 class customPin: NSObject, MKAnnotation {
     
     // Class "customPin" added to handle each pin added to the map view
@@ -91,7 +93,8 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         // Check the method of transportation chosen for the selected hotspot
         if (selectedHotspot?.value(forKey: "transportation") as? String == "Car") {
             takeCar = true
-        } else {
+        }
+        else {
             takeCar = false
         }
     }
@@ -141,6 +144,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     }
     
     // Get walking or driving directions
+    // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
     func layoutWalkingRoute() {
     
         let sourceCoordinates = CLLocationCoordinate2DMake(currentLatitude!, currentLongitude!)
@@ -159,7 +163,8 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         // Check the method of transportation from the selected hotspot to display the appropiate route
         if (takeCar){
             request.transportType = .automobile
-        } else {
+        }
+        else {
             request.transportType = .walking
         }
         
