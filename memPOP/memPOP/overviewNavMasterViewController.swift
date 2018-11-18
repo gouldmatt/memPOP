@@ -21,6 +21,9 @@ class overviewNavMasterViewController: UIViewController {
     var addedImages = [NSManagedObject]()
     var selectedHotspot: NSManagedObject?
     
+    var latitude:Double = 0.0
+    var longitude:Double = 0.0
+    
     //let locationManager = CLLocationManager()
 
     //===================================================================================================
@@ -51,6 +54,8 @@ class overviewNavMasterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
    
+        //latitude = selectedHotspot?.value(forKey: "latitude") as! Double
+        //longitude = selectedHotspot?.value(forKey: "longitude") as! Double
         
         // change appearance for segmented control
         overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
@@ -75,7 +80,7 @@ class overviewNavMasterViewController: UIViewController {
             controller.selectedHotspot = selectedHotspot
         }
         
-        if let controller = segue.destination as? HotspotOverviewViewController, segue.identifier == "showNav" {
+        if let controller = segue.destination as? navigationViewController, segue.identifier == "showNav" {
             controller.selectedHotspot = selectedHotspot
         }
         
