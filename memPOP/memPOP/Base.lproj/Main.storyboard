@@ -504,6 +504,13 @@
                                     <outlet property="delegate" destination="CIO-jH-7Q8" id="eF4-bs-hX5"/>
                                 </connections>
                             </searchBar>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Please complete the highlighted fields" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aqo-9r-4Tq">
+                                <rect key="frame" x="9" y="577" width="357" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -530,6 +537,7 @@
                         <viewLayoutGuide key="safeArea" id="l7f-vX-whw"/>
                     </view>
                     <connections>
+                        <outlet property="dialogCheck" destination="aqo-9r-4Tq" id="VIl-ZJ-99A"/>
                         <outlet property="nameField" destination="yWO-Cr-jsx" id="h9f-SV-rQA"/>
                         <outlet property="searchBar" destination="hrf-6o-hd6" id="ksv-7s-zd9"/>
                         <outlet property="searchDisplayController" destination="NCL-0v-ytp" id="5RX-LU-JNe"/>

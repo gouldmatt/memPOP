@@ -36,57 +36,81 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet var nameField: UITextField!
     @IBOutlet weak var searchResultsTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+    @IBOutlet var dialogCheck: UITextField!
     
     //===================================================================================================
     // Actions
     //===================================================================================================
     @IBAction func donePressed(_ sender: Any) {
     
-        // create a new user or update existing user info
-        if(user == nil){
-            let newUser = PersonInfoMO(context: PersistenceService.context)
-            newUser.name = nameField.text
-            
-            let newHotspot = HotspotMO(context: PersistenceService.context)
-            let newPhoto = PhotosMO(context: PersistenceService.context)
-            
-            newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "home"))!, 1)! as NSData
-            
-            newHotspot.name = "Home"
-            newHotspot.address = searchAddressChosen
-            
-            newHotspot.addToPhotos(newPhoto)
+        // Check that name and address are filled before saving
+        if (nameField.text!.isEmpty || searchBar.text!.isEmpty){
+            dialogCheck.isHidden = false
+            if (nameField.text!.isEmpty) {
+                nameField.layer.borderWidth = 1.0
+                let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
+                nameField.layer.borderColor = layerColor.cgColor
+                
+            }
+            else {
+                nameField.layer.borderWidth = 0.0
+            }
             
             
-            
-        } else {
-            user?.name = nameField.text
-            if(changedAddress){
-                user?.homeLat = searchAddressLatitude
-                user?.homeLong = searchAddressLongitude
-                user?.homeAddress = searchAddressChosen
-            
-                do{
-                    let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
-                    homeHotspot.address = searchAddressChosen
-                    homeHotspot.longitude = searchAddressLongitude
-                    homeHotspot.latitude = searchAddressLatitude
-                    
-                } catch {
-                    print("failed hotspot fetch")
-                }
-                changedAddress = false
+            if (searchBar.text!.isEmpty) {
+                self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+            }
+            else {
+                self.searchBar.setTextFieldColor(color: UIColor.white.withAlphaComponent(0))
+                
             }
         }
+        else {
+            // create a new user or update existing user info
+            if(user == nil){
+                let newUser = PersonInfoMO(context: PersistenceService.context)
+                newUser.name = nameField.text
+                
+                let newHotspot = HotspotMO(context: PersistenceService.context)
+                let newPhoto = PhotosMO(context: PersistenceService.context)
+                
+                newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "home"))!, 1)! as NSData
+                
+                newHotspot.name = "Home"
+                newHotspot.address = searchAddressChosen
+                
+                newHotspot.addToPhotos(newPhoto)
+                
+            }
+            else {
+                user?.name = nameField.text
+                if(changedAddress){
+                    user?.homeLat = searchAddressLatitude
+                    user?.homeLong = searchAddressLongitude
+                    user?.homeAddress = searchAddressChosen
+                
+                    do{
+                        let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
+                        homeHotspot.address = searchAddressChosen
+                        homeHotspot.longitude = searchAddressLongitude
+                        homeHotspot.latitude = searchAddressLatitude
+                        
+                    }
+                    catch {
+                        print("failed hotspot fetch")
+                    }
+                    changedAddress = false
+                }
+            }
 
-        PersistenceService.saveContext()
-        
-        // move back to start screen
-        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-        for aViewController in viewControllers {
-            if aViewController is personInfoViewController {
-                self.navigationController!.popViewController(animated: true)
+            PersistenceService.saveContext()
+            
+            // move back to start screen
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+            for aViewController in viewControllers {
+                if aViewController is personInfoViewController {
+                    self.navigationController!.popViewController(animated: true)
+                }
             }
         }
     }
@@ -97,6 +121,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     //===================================================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        dialogCheck.isHidden = true
         
         // For autocomplete table view
         searchResultsTableView.dataSource = self
