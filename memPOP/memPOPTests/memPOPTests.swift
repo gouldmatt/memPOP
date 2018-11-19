@@ -1,10 +1,10 @@
-//
 //  memPOPTests.swift
 //  memPOPTests
-//
+//  Group 9, Iota Inc.
 //  Created by nla52 on 10/23/18.
+//  Programmers: Emily Chen, Matthew Gould, Diego Martin Marcelo
 //  Copyright © 2018 Iota Inc. All rights reserved.
-//
+
 import CoreData
 import XCTest
 @testable import memPOP
@@ -15,6 +15,7 @@ class memPOPTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+       
     }
     
     override func tearDown() {
@@ -22,9 +23,7 @@ class memPOPTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        
-        
+    func testHotspotCreationWithCoredata() {
         for i in 0 ... 9 {
             print(i)
             let newHotspot = HotspotMO(context: PersistenceService.context)
@@ -40,12 +39,14 @@ class memPOPTests: XCTestCase {
             
             PersistenceService.saveContext()
         }
- 
+        
+        
         do{
             
             let hotspots = try PersistenceService.context.fetch(fetchRequest)
             print(hotspots.count)
             XCTAssert(hotspots.count == 10)
+
             // Put setup code here. This method is called before the invocation of each test method in the class.
         }
         catch {
@@ -54,12 +55,35 @@ class memPOPTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+
+    func testNameComparison() {
+
+        do {
+            let hotspots = try PersistenceService.context.fetch(fetchRequest)
+            for i in 0 ... 9 {
+                XCTAssert(hotspots[i].name == "Home" + String(i))
+            }
+        }
+        catch {
+            print("Failed fetching")
+        }
+    }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testZDeleteAllHotspots() {
+        do {
+            let hotspots = try PersistenceService.context.fetch(fetchRequest)
+            if(hotspots.count != 0){
+                for hotspot in hotspots{
+                    PersistenceService.context.delete(hotspot)
+                    PersistenceService.saveContext()
+                }
+            }
+        }
+        catch
+        {
+            print("failed fetch")
         }
     }
     
 }
+
