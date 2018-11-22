@@ -47,6 +47,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     var currentLatitude:Double?
     var currentLongitude:Double?
     var locationManager = CLLocationManager()
+    var personalInfo: NSManagedObject?
 
     //===================================================================================================
     // MARK: Outlets
@@ -117,6 +118,8 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         
         //let locValue:CLLocationCoordinate2D = (manager.location?.coordinate)!
         let userLocal = locations.last
+        
+        
         
         // Store the user's current location
         currentLongitude = userLocal?.coordinate.longitude
