@@ -1,29 +1,28 @@
-//  navigationViewController.swift
-//  memPOP
-//  Group 9, Iota Inc.
-//  Created by Matthew Gould on 2018-11-10.
-//  Programmers: Nicholas Lau, Emily Chen, Matthew Gould, Diego Martin Marcelo
-//  Copyright © 2018 Iota Inc. All rights reserved.
-
-//===================================================================================================
-// Changes that have been made in v2.0
-// Created view controller to handle all of the navigation features for each hotspot selected
-// Fetch information about the hotspot selected
-// Show the route in mapView between the user's location and the hotspot address
-// Add named pins to the map view
-// Print walking/driving instructions to the output terminal
-
-import UIKit
-import CoreLocation
-import MapKit
-import CoreData
-
-
-// Consulted https://www.youtube.com/watch?v=vEN5WzsAoxA for customPin
-class customPin: NSObject, MKAnnotation {
+   //  navigationViewController.swift
+   //  memPOP
+   //  Group 9, Iota Inc.
+   //  Created by Matthew Gould on 2018-11-10.
+   //  Programmers: Nicholas Lau, Emily Chen, Matthew Gould, Diego Martin Marcelo
+   //  Copyright © 2018 Iota Inc. All rights reserved.
+   
+   //===================================================================================================
+   // Changes that have been made in v2.0
+   // Created view controller to handle all of the navigation features for each hotspot selected
+   // Fetch information about the hotspot selected
+   // Show the route in mapView between the user's location and the hotspot address
+   // Add named pins to the map view
+   // Print walking/driving instructions to the output terminal
+   
+   import UIKit
+   import CoreLocation
+   import MapKit
+   import CoreData
+   
+   
+   // Consulted https://www.youtube.com/watch?v=vEN5WzsAoxA for customPin
+   class customPin: NSObject, MKAnnotation {
     
     // Class "customPin" added to handle each pin added to the map view
-    
     var coordinate: CLLocationCoordinate2D
     var title: String?
     
@@ -31,9 +30,9 @@ class customPin: NSObject, MKAnnotation {
         self.title = pinTitle
         self.coordinate = location
     }
-}
-
-class navigationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+   }
+   
+   class navigationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     //===================================================================================================
     // MARK: Variables declaration
@@ -47,18 +46,21 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     var currentLatitude:Double?
     var currentLongitude:Double?
     var locationManager = CLLocationManager()
-
+    var route:MKRoute?
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
     @IBOutlet weak var mapkitView: MKMapView!
+    @IBOutlet var mapOrDirectionsControl: UISegmentedControl!
     
+    @IBOutlet var directionsContainer: UIView!
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        directionsContainer.isHidden = true
         
         // Only update the route once whenever the view is loaded
         doOnce = true
@@ -100,7 +102,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     }
     
     override func viewWillAppear(_ animated: Bool) {
-    
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -112,7 +114,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     // MARK: Functions
     //===================================================================================================
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
+        
         // This function gets called whenever the user updates their location and updates the route
         
         //let locValue:CLLocationCoordinate2D = (manager.location?.coordinate)!
@@ -124,9 +126,6 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         
         // For debugging
         print(currentLatitude!)
-       
-        //let viewLoc = MKCoordinateRegionMakeWithDistance((userLocal?.coordinate)!, 5000, 5000)
-        //self.mapkitView.setRegion(viewLoc, animated: true)
         
         // Only show the route once
         if(doOnce){
@@ -146,7 +145,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
     func layoutWalkingRoute() {
-    
+        
         let sourceCoordinates = CLLocationCoordinate2DMake(currentLatitude!, currentLongitude!)
         let destCoordinates = CLLocationCoordinate2DMake(latitude!, longitude!)
         
@@ -159,7 +158,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         let request = MKDirectionsRequest()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates, addressDictionary: nil))
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destCoordinates, addressDictionary: nil))
-     
+        
         // Check the method of transportation from the selected hotspot to display the appropiate route
         if (takeCar){
             request.transportType = .automobile
@@ -172,6 +171,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         
         directions.calculate { [unowned self] response, error in
             guard let unwrappedResponse = response else { return }
+            self.route = unwrappedResponse.routes[0]
             
             for route in unwrappedResponse.routes {
                 self.mapkitView.add(route.polyline)
@@ -184,6 +184,27 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
             }
         }
     }
+    @IBAction func changedNavMode(_ sender: Any){
+        if(mapOrDirectionsControl.selectedSegmentIndex == 0){
+            print("map")
+            layoutWalkingRoute()
+            
+            directionsContainer.isHidden = true
+        }
+        else {
+            print("directions")
+            //let viewLoc = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2D(latitude,longitude), 1000)
+            //self.mapkitView.setRegion(viewLoc, animated: true)
+            
+            //Zoom to user location
+            if let userLocation = locationManager.location?.coordinate {
+                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
+                mapkitView.setRegion(viewRegion, animated: false)
+            }
+            directionsContainer.isHidden = false
+        }
+    }
     
-}
+   }
+   
 

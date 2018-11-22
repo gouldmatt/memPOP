@@ -421,23 +421,52 @@
                                     <outlet property="delegate" destination="1Oi-AX-OUe" id="dEX-WJ-zdu"/>
                                 </connections>
                             </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="B3n-o5-Wgv">
+                                <rect key="frame" x="0.0" y="527" width="375" height="61"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="P68-qH-o5Z"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changedNavMode:" destination="1Oi-AX-OUe" eventType="valueChanged" id="bvG-r7-INt"/>
+                                </connections>
+                            </segmentedControl>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pjr-P7-E4r">
+                                <rect key="frame" x="0.0" y="314" width="375" height="213"/>
+                                <connections>
+                                    <segue destination="J3h-RG-nK7" kind="embed" id="9pE-ng-Sbl"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Zoz-a9-t3l" secondAttribute="trailing" id="47M-Ka-9KC"/>
                             <constraint firstAttribute="bottomMargin" secondItem="Zoz-a9-t3l" secondAttribute="bottom" constant="-4" id="6DZ-QH-0ec"/>
                             <constraint firstItem="Zoz-a9-t3l" firstAttribute="top" secondItem="n8s-sY-qcf" secondAttribute="top" id="EEy-G3-gNI"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="top" secondItem="pjr-P7-E4r" secondAttribute="bottom" id="Fx5-Lg-3U6"/>
+                            <constraint firstItem="pjr-P7-E4r" firstAttribute="leading" secondItem="uma-gG-LFb" secondAttribute="leading" id="URZ-F8-QhM"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="bottom" secondItem="uma-gG-LFb" secondAttribute="bottom" id="WwI-SD-6fW"/>
+                            <constraint firstItem="pjr-P7-E4r" firstAttribute="top" secondItem="uma-gG-LFb" secondAttribute="top" constant="294" id="b6h-9h-rM0"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="leading" secondItem="uma-gG-LFb" secondAttribute="leading" id="czf-cA-64p"/>
                             <constraint firstItem="Zoz-a9-t3l" firstAttribute="leading" secondItem="n8s-sY-qcf" secondAttribute="leading" id="wsd-gP-wZA"/>
+                            <constraint firstItem="pjr-P7-E4r" firstAttribute="trailing" secondItem="uma-gG-LFb" secondAttribute="trailing" id="ymm-yL-4z5"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="trailing" secondItem="uma-gG-LFb" secondAttribute="trailing" id="zhX-hT-bCo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uma-gG-LFb"/>
                     </view>
                     <connections>
+                        <outlet property="directionsContainer" destination="pjr-P7-E4r" id="LsP-w5-98L"/>
+                        <outlet property="mapOrDirectionsControl" destination="B3n-o5-Wgv" id="RgV-5U-TzZ"/>
                         <outlet property="mapkitView" destination="Zoz-a9-t3l" id="qMl-Vi-YgI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gig-hB-wkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2128.8000000000002" y="1253.9730134932536"/>
+            <point key="canvasLocation" x="2128.8000000000002" y="1253.5232383808097"/>
         </scene>
         <!--Personal Information-->
         <scene sceneID="AQr-gx-ERh">
@@ -1059,6 +1088,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYB-tz-V5A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-332" y="33"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="0ee-Rm-wt2">
+            <objects>
+                <viewController id="J3h-RG-nK7" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="laL-7S-AQN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="213"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DNd-np-3Sb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2967" y="1253"/>
         </scene>
     </scenes>
     <resources>
