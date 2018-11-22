@@ -32,11 +32,12 @@
     }
    }
    
-   class navigationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+   class navigationViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate,UITableViewDelegate,UITableViewDataSource {
     
     //===================================================================================================
     // MARK: Variables declaration
     //===================================================================================================
+    //var directionArr: [String]?
     var doOnce: Bool = true
     var takeCar: Bool = false
     var selectedHotspot: NSManagedObject?
@@ -47,22 +48,22 @@
     var currentLongitude:Double?
     var locationManager = CLLocationManager()
     var route:MKRoute?
+    var routeSteps:Int = 0
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
     @IBOutlet weak var mapkitView: MKMapView!
     @IBOutlet var mapOrDirectionsControl: UISegmentedControl!
     
-    @IBOutlet var directionsContainer: UIView!
+    @IBOutlet var directionsTableView: UITableView!
+
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        directionsContainer.isHidden = true
-        
-        // Only update the route once whenever the view is loaded
+        directionsTableView.isHidden = true
         doOnce = true
         
         // Request the user permission to use their location
@@ -102,7 +103,7 @@
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        // Only update the route once whenever the view is loaded
     }
     
     override func didReceiveMemoryWarning() {
@@ -123,6 +124,14 @@
         // Store the user's current location
         currentLongitude = userLocal?.coordinate.longitude
         currentLatitude = userLocal?.coordinate.latitude
+        
+        if(mapOrDirectionsControl.selectedSegmentIndex == 1){
+            if let userLocation = locationManager.location?.coordinate {
+                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
+                mapkitView.setRegion(viewRegion, animated: false)
+            }
+        }
+        
         
         // For debugging
         print(currentLatitude!)
@@ -172,24 +181,30 @@
         directions.calculate { [unowned self] response, error in
             guard let unwrappedResponse = response else { return }
             self.route = unwrappedResponse.routes[0]
+            self.routeSteps = self.route!.steps.count
+            //print("\n\n\n\n\n\n\n\n\n\n \(self.route!.steps.count)")
             
             for route in unwrappedResponse.routes {
                 self.mapkitView.add(route.polyline)
                 self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
                 
+                
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
+
+
+
                 }
             }
+            
         }
     }
     @IBAction func changedNavMode(_ sender: Any){
         if(mapOrDirectionsControl.selectedSegmentIndex == 0){
             print("map")
             layoutWalkingRoute()
-            
-            directionsContainer.isHidden = true
+            directionsTableView.isHidden = true
         }
         else {
             print("directions")
@@ -201,10 +216,33 @@
                 let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
                 mapkitView.setRegion(viewRegion, animated: false)
             }
-            directionsContainer.isHidden = false
+            directionsTableView.reloadData()
+            directionsTableView.isHidden = false
+
         }
     }
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
     
-   }
+    // https://www.youtube.com/watch?v=LrCqXmHenJY
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+       return routeSteps
+    }
+    
+    // https://www.youtube.com/watch?v=LrCqXmHenJY
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        var cell : UITableViewCell?
+        
+        cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+        cell!.textLabel?.text = self.route?.steps[indexPath.row].instructions
+        
+        return cell!
+    }
+    
+    
+}
    
 
