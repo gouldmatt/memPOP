@@ -416,7 +416,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zoz-a9-t3l">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
                                 <connections>
                                     <outlet property="delegate" destination="1Oi-AX-OUe" id="dEX-WJ-zdu"/>
                                 </connections>
@@ -428,8 +428,8 @@
                                     <constraint firstAttribute="height" constant="60" id="P68-qH-o5Z"/>
                                 </constraints>
                                 <segments>
-                                    <segment title="First"/>
-                                    <segment title="Second"/>
+                                    <segment title="Map"/>
+                                    <segment title="Directions"/>
                                 </segments>
                                 <connections>
                                     <action selector="changedNavMode:" destination="1Oi-AX-OUe" eventType="valueChanged" id="bvG-r7-INt"/>
@@ -456,18 +456,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Zoz-a9-t3l" secondAttribute="trailing" id="47M-Ka-9KC"/>
                             <constraint firstItem="8sC-f9-17U" firstAttribute="leading" secondItem="n8s-sY-qcf" secondAttribute="leading" id="47y-xA-gUA"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Zoz-a9-t3l" secondAttribute="bottom" constant="-4" id="6DZ-QH-0ec"/>
                             <constraint firstItem="8sC-f9-17U" firstAttribute="top" secondItem="n8s-sY-qcf" secondAttribute="top" constant="319" id="E94-6i-FX0"/>
-                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="top" secondItem="n8s-sY-qcf" secondAttribute="top" id="EEy-G3-gNI"/>
+                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="top" secondItem="n8s-sY-qcf" secondAttribute="top" id="FPR-l8-jnN"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="top" secondItem="Zoz-a9-t3l" secondAttribute="bottom" id="VyK-tx-R7e"/>
                             <constraint firstItem="B3n-o5-Wgv" firstAttribute="bottom" secondItem="uma-gG-LFb" secondAttribute="bottom" id="WwI-SD-6fW"/>
+                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="leading" secondItem="8sC-f9-17U" secondAttribute="leading" id="Yrt-O7-kn7"/>
                             <constraint firstAttribute="trailing" secondItem="8sC-f9-17U" secondAttribute="trailing" id="bj9-GP-4zB"/>
                             <constraint firstItem="B3n-o5-Wgv" firstAttribute="leading" secondItem="uma-gG-LFb" secondAttribute="leading" id="czf-cA-64p"/>
                             <constraint firstItem="8sC-f9-17U" firstAttribute="centerY" secondItem="n8s-sY-qcf" secondAttribute="centerY" constant="132" id="dMd-9G-sth"/>
                             <constraint firstItem="8sC-f9-17U" firstAttribute="centerX" secondItem="n8s-sY-qcf" secondAttribute="centerX" id="sUL-15-YSZ"/>
                             <constraint firstAttribute="bottom" secondItem="8sC-f9-17U" secondAttribute="bottom" constant="55" id="tqA-vL-oXk"/>
-                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="leading" secondItem="n8s-sY-qcf" secondAttribute="leading" id="wsd-gP-wZA"/>
+                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="trailing" secondItem="8sC-f9-17U" secondAttribute="trailing" id="uJg-4u-1Ln"/>
                             <constraint firstItem="B3n-o5-Wgv" firstAttribute="trailing" secondItem="uma-gG-LFb" secondAttribute="trailing" id="zhX-hT-bCo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uma-gG-LFb"/>

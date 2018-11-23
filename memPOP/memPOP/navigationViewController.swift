@@ -66,6 +66,9 @@
         directionsTableView.isHidden = true
         doOnce = true
         
+        mapkitView.isRotateEnabled = true
+        mapkitView.isPitchEnabled = true
+        
         // Request the user permission to use their location
         self.locationManager.requestWhenInUseAuthorization()
         
@@ -78,7 +81,6 @@
             
             // Accuracy using GPS
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-            
             locationManager.startUpdatingLocation()
         }
         
@@ -114,6 +116,8 @@
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
+
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         // This function gets called whenever the user updates their location and updates the route
@@ -126,12 +130,12 @@
         currentLatitude = userLocal?.coordinate.latitude
         
         if(mapOrDirectionsControl.selectedSegmentIndex == 1){
-            if let userLocation = locationManager.location?.coordinate {
-                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
-                mapkitView.setRegion(viewRegion, animated: false)
-            }
+//            if let userLocation = locationManager.location?.coordinate {
+//                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 500, 500)
+//                mapkitView.setRegion(viewRegion, animated: true)
+//            }
+             mapkitView.setUserTrackingMode(MKUserTrackingMode.followWithHeading, animated: true)
         }
-        
         
         // For debugging
         print(currentLatitude!)
@@ -145,16 +149,37 @@
     
     // Draw and display the walking route in blue
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-        renderer.strokeColor = UIColor.blue
-        renderer.lineWidth = 3.0
-        return renderer
+        if overlay is MKPolyline {
+            let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+            renderer.strokeColor = UIColor.red
+            renderer.lineWidth = 10.0
+            
+            return renderer
+        }
+        else if overlay is MKCircle {
+            let renderer = MKCircleRenderer(overlay: overlay)
+            renderer.strokeColor = UIColor.blue
+            renderer.fillColor = UIColor.blue
+            renderer.alpha = 0.5
+            
+            return renderer
+        }
+        return MKOverlayRenderer()
+    }
+    
+    //
+    // https://www.youtube.com/watch?v=8m-duJ9X_Hs
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("Within direction region")
     }
     
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
     func layoutWalkingRoute() {
-        
+        // remove any existing things from map
+        self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
+        mapkitView.removeOverlays(mapkitView.overlays)
+      
         let sourceCoordinates = CLLocationCoordinate2DMake(currentLatitude!, currentLongitude!)
         let destCoordinates = CLLocationCoordinate2DMake(latitude!, longitude!)
         
@@ -167,6 +192,7 @@
         let request = MKDirectionsRequest()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates, addressDictionary: nil))
         request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destCoordinates, addressDictionary: nil))
+        request.requestsAlternateRoutes = false
         
         // Check the method of transportation from the selected hotspot to display the appropiate route
         if (takeCar){
@@ -185,15 +211,22 @@
             //print("\n\n\n\n\n\n\n\n\n\n \(self.route!.steps.count)")
             
             for route in unwrappedResponse.routes {
-                self.mapkitView.add(route.polyline)
-                self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
                 
+                self.mapkitView.add(route.polyline)
+        
+                self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect,edgePadding: UIEdgeInsets.init(top: 60, left: 0, bottom: 60, right: 0) ,animated: true)
+            
                 
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
-
-
+                    
+                    // create the regions
+                    let region = CLCircularRegion(center: step.polyline.coordinate, radius: 30, identifier: step.instructions)
+                    self.locationManager.startMonitoring(for: region)
+                    let circle = MKCircle(center: region.center, radius: region.radius)
+                    self.mapkitView.add(circle)
+                    
 
                 }
             }
@@ -212,10 +245,17 @@
             //self.mapkitView.setRegion(viewLoc, animated: true)
             
             //Zoom to user location
-            if let userLocation = locationManager.location?.coordinate {
-                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
-                mapkitView.setRegion(viewRegion, animated: false)
-            }
+           // if let userLocation = locationManager.location?.coordinate {
+                
+                //let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 500, 500)
+                
+            mapkitView.setUserTrackingMode(MKUserTrackingMode.followWithHeading, animated: true)
+                
+                //mapkitView.setRegion(viewRegion, animated: true)
+            
+                //mapkitView.isRotateEnabled = true
+                //mapkitView.isPitchEnabled = true
+            //}
             directionsTableView.reloadData()
             directionsTableView.isHidden = false
 
@@ -235,13 +275,17 @@
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var cell : UITableViewCell?
-        
         cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-        cell!.textLabel?.text = self.route?.steps[indexPath.row].instructions
+        
+        if(indexPath.row == 0){
+            cell!.textLabel?.text = "Directions to Hotspot:"
+        }
+        else {
+            cell!.textLabel?.text = self.route?.steps[indexPath.row].instructions
+        }
         
         return cell!
     }
-    
     
 }
    
