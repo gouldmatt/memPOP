@@ -37,7 +37,6 @@
     //===================================================================================================
     // MARK: Variables declaration
     //===================================================================================================
-    //var directionArr: [String]?
     var doOnce: Bool = true
     var takeCar: Bool = false
     var selectedHotspot: NSManagedObject?
@@ -49,6 +48,7 @@
     var locationManager = CLLocationManager()
     var route:MKRoute?
     var routeSteps:Int = 0
+    
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -65,6 +65,15 @@
         super.viewDidLoad()
         directionsTableView.isHidden = true
         doOnce = true
+        
+        // Change appearance for segmented control
+        mapOrDirectionsControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .normal)
+        
+        mapOrDirectionsControl.setTitleTextAttributes([
+            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),
+            NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .selected)
         
         // Request the user permission to use their location
         self.locationManager.requestWhenInUseAuthorization()
@@ -100,20 +109,13 @@
         else {
             takeCar = false
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        // Only update the route once whenever the view is loaded
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         // This function gets called whenever the user updates their location and updates the route
@@ -125,13 +127,14 @@
         currentLongitude = userLocal?.coordinate.longitude
         currentLatitude = userLocal?.coordinate.latitude
         
+        /*
         if(mapOrDirectionsControl.selectedSegmentIndex == 1){
             if let userLocation = locationManager.location?.coordinate {
                 let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
                 mapkitView.setRegion(viewRegion, animated: false)
             }
         }
-        
+        */
         
         // For debugging
         print(currentLatitude!)
@@ -182,67 +185,122 @@
             guard let unwrappedResponse = response else { return }
             self.route = unwrappedResponse.routes[0]
             self.routeSteps = self.route!.steps.count
-            //print("\n\n\n\n\n\n\n\n\n\n \(self.route!.steps.count)")
             
             for route in unwrappedResponse.routes {
                 self.mapkitView.add(route.polyline)
                 self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
                 
-                
                 for step in route.steps {
-                    // Print the directions in the output window
+                    // Print the directions in the output window for debugging
                     print(step.instructions)
-
-
-
+                    print(step.distance.description)
                 }
             }
-            
         }
     }
+    
     @IBAction func changedNavMode(_ sender: Any){
-        if(mapOrDirectionsControl.selectedSegmentIndex == 0){
+        
+        // Check method of navigation: Directions or Map overview
+        
+        if(mapOrDirectionsControl.selectedSegmentIndex == 0) {
+            
             print("map")
             layoutWalkingRoute()
             directionsTableView.isHidden = true
         }
         else {
+            
             print("directions")
-            //let viewLoc = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2D(latitude,longitude), 1000)
-            //self.mapkitView.setRegion(viewLoc, animated: true)
             
             //Zoom to user location
             if let userLocation = locationManager.location?.coordinate {
                 let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
                 mapkitView.setRegion(viewRegion, animated: false)
             }
+            
             directionsTableView.reloadData()
             directionsTableView.isHidden = false
-
         }
     }
+    
     public func numberOfSections(in tableView: UITableView) -> Int {
+        
+        // Return the number of sections in the directions table view
         return 1
     }
     
-    // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
+        // Return the number of steps to get to the destination
        return routeSteps
     }
-    
-    // https://www.youtube.com/watch?v=LrCqXmHenJY
+
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var cell : UITableViewCell?
+        let image: UIImage?
         
-        cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-        cell!.textLabel?.text = self.route?.steps[indexPath.row].instructions
+        // Process each step and update the table view cell accordingly
+        
+        if(indexPath.row == 0) {
+            
+            // The very first step shows the user's location
+            
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+            image = UIImage(named: "location")!
+            cell?.textLabel?.text = "Your location"
+        }
+        else {
+            
+            // The rest of the steps show how to the destination
+
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
+            
+            let distanceInStep = self.route?.steps[indexPath.row].distance
+            let stringInStep = self.route?.steps[indexPath.row].instructions
+            var distanceInt = Int(distanceInStep!)
+            
+            // Check the direction per step to show the correct image
+            if (stringInStep?.range(of: "left") != nil) {
+                image = UIImage(named: "leftTurn")!
+            }
+            else if (stringInStep?.range(of: "right") != nil) {
+                image = UIImage(named: "rightTurn")!
+            }
+            else {
+                image = UIImage(named: "continue")!
+            }
+            
+            // Check the distance per step
+            if (distanceInt > 1000) {
+                distanceInt = distanceInt / 1000
+                cell?.textLabel?.text = "\(distanceInt) km"
+            }
+            else {
+                cell?.textLabel?.text = "\(distanceInt) m"
+            }
+            
+            // Show the step instruction
+            cell!.detailTextLabel?.text = self.route?.steps[indexPath.row].instructions
+        }
+        
+        // Attach the image
+        cell?.imageView?.image = image
+        
+        // Resize the image within the cell
+        let itemSize = CGSize.init(width: 27, height: 27)
+        UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.main.scale)
+        let imageRect = CGRect.init(origin: CGPoint.zero, size: itemSize)
+        cell?.imageView?.image?.draw(in: imageRect)
+        cell?.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // Make the cell not selectable view the user
+        cell?.selectionStyle = UITableViewCellSelectionStyle.none
         
         return cell!
     }
-    
-    
 }
    
 

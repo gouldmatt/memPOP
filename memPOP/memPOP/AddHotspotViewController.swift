@@ -84,6 +84,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var searchResultsTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     //===================================================================================================
     // MARK: Actions
     //===================================================================================================
@@ -130,7 +132,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             else {
                 self.searchBar.setTextFieldColor(color: UIColor.white.withAlphaComponent(0))
             }
+            
+            // Move the scroll view to the top
+            self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
+    
         }
+            
         else {
             
             dialogCheck.isHidden = true
@@ -822,4 +829,5 @@ extension AddHotspotViewController : MKLocalSearchCompleterDelegate {
         print("Error in getting results for address")
     }
 }
+
 
