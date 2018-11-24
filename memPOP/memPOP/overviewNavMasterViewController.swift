@@ -27,6 +27,8 @@ class overviewNavMasterViewController: UIViewController {
     
     var latitude:Double = 0.0
     var longitude:Double = 0.0
+    
+    var contactNumber:String = "6041234567"
 
     //===================================================================================================
     // MARK: Outlets
@@ -34,6 +36,7 @@ class overviewNavMasterViewController: UIViewController {
     @IBOutlet var overviewNavControl: UISegmentedControl!
     @IBOutlet weak var overviewContainer: UIView!
     @IBOutlet var navigationContainer: UIView!
+    @IBOutlet weak var emergency: UIButton!
     
     //===================================================================================================
     // MARK: Actions
@@ -50,7 +53,16 @@ class overviewNavMasterViewController: UIViewController {
             self.navigationContainer.isHidden = false
         }
     }
-
+    
+    // Call the emergency contact when the emergency button is pressed
+    @IBAction func emergencyPressed(_ sender: Any) {
+        print("entered")
+        // Retrieve emergency contact information
+        let contactNumber = "6041234567"
+        let url = URL(string: "tel://\(contactNumber)")
+        UIApplication.shared.open(url!)
+    }
+    
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
@@ -94,4 +106,8 @@ class overviewNavMasterViewController: UIViewController {
         }
     }
     
+    // Hide the status bar to increase screen real estate
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }

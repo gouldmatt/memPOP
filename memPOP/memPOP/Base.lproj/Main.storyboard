@@ -610,13 +610,26 @@
                                     <action selector="changedSegment:" destination="krc-Bi-JYM" eventType="valueChanged" id="EsI-GM-Yev"/>
                                 </connections>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rIb-Lg-oY5">
+                                <rect key="frame" x="0.0" y="80" width="375" height="45"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Call Emergy Contact">
+                                    <color key="titleColor" red="0.12941176469999999" green="0.17254901959999999" blue="0.1960784314" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="emergencyPressed:" destination="krc-Bi-JYM" eventType="touchUpInside" id="AVW-sX-I4J"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="alq-UW-7zH" firstAttribute="top" secondItem="ktI-Is-BIu" secondAttribute="bottom" id="8ZG-9Y-dQv"/>
                             <constraint firstItem="Rcd-05-gpt" firstAttribute="bottom" secondItem="jVI-VU-5Hy" secondAttribute="bottom" id="9fG-CT-2iD"/>
                             <constraint firstItem="Rcd-05-gpt" firstAttribute="trailing" secondItem="alq-UW-7zH" secondAttribute="trailing" id="LJ0-ay-sfg"/>
+                            <constraint firstItem="jVI-VU-5Hy" firstAttribute="bottom" secondItem="rIb-Lg-oY5" secondAttribute="bottom" constant="542" id="Tit-xA-D7W"/>
+                            <constraint firstItem="rIb-Lg-oY5" firstAttribute="trailing" secondItem="alq-UW-7zH" secondAttribute="trailing" id="aYy-DG-Nwy"/>
                             <constraint firstItem="alq-UW-7zH" firstAttribute="bottom" secondItem="jVI-VU-5Hy" secondAttribute="bottom" id="biK-Xh-cc4"/>
+                            <constraint firstItem="rIb-Lg-oY5" firstAttribute="leading" secondItem="alq-UW-7zH" secondAttribute="leading" id="e1V-9Z-5Iy"/>
                             <constraint firstItem="alq-UW-7zH" firstAttribute="trailing" secondItem="jVI-VU-5Hy" secondAttribute="trailing" id="eNU-wH-ydU"/>
                             <constraint firstItem="alq-UW-7zH" firstAttribute="leading" secondItem="jVI-VU-5Hy" secondAttribute="leading" id="i4s-vm-VJ2"/>
                             <constraint firstItem="Rcd-05-gpt" firstAttribute="top" secondItem="ktI-Is-BIu" secondAttribute="bottom" id="iK7-9r-6HA"/>
@@ -624,10 +637,12 @@
                             <constraint firstItem="ktI-Is-BIu" firstAttribute="top" secondItem="jVI-VU-5Hy" secondAttribute="top" id="oGb-FK-KhM"/>
                             <constraint firstItem="jVI-VU-5Hy" firstAttribute="trailing" secondItem="ktI-Is-BIu" secondAttribute="trailing" constant="-2" id="pjs-Tv-LHu"/>
                             <constraint firstItem="Rcd-05-gpt" firstAttribute="leading" secondItem="alq-UW-7zH" secondAttribute="leading" id="uDH-xs-WeP"/>
+                            <constraint firstItem="rIb-Lg-oY5" firstAttribute="top" secondItem="alq-UW-7zH" secondAttribute="top" id="yXc-Jm-Fip"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jVI-VU-5Hy"/>
                     </view>
                     <connections>
+                        <outlet property="emergency" destination="rIb-Lg-oY5" id="Zbo-gv-R0j"/>
                         <outlet property="navigationContainer" destination="Rcd-05-gpt" id="Ssb-fj-pGx"/>
                         <outlet property="overviewContainer" destination="alq-UW-7zH" id="VgQ-7W-Hxe"/>
                         <outlet property="overviewNavControl" destination="ktI-Is-BIu" id="5gm-1x-5D2"/>
