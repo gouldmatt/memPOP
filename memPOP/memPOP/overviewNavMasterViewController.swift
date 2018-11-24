@@ -82,6 +82,11 @@ class overviewNavMasterViewController: UIViewController {
         // Update navigation bar title with hotspot name
         self.title = ((selectedHotspot?.value(forKey: "name")) as? String)
         
+        // Add Emergency Contact Button to navigation bar
+        let eImage = UIImage(named: "emergency")!.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+        let eButton: UIBarButtonItem = UIBarButtonItem(image: eImage, style: .plain, target: self, action: #selector(emergencyPressed(_:)))
+        self.navigationItem.rightBarButtonItem = eButton
+        
         let hotspot = selectedHotspot as! HotspotMO
         if ((hotspot.info == nil || (hotspot.info?.isEmpty)!) && hotspot.toDo?.count == 0 && hotspot.photos?.count == 0){
             self.overviewContainer.isHidden = true
