@@ -23,7 +23,7 @@ class overviewNavMasterViewController: UIViewController {
     //===================================================================================================
     var addedToDos = [NSManagedObject]()
     var addedImages = [NSManagedObject]()
-    var selectedHotspot: NSManagedObject?
+    var selectedHotspot: HotspotMO?
     
     var latitude:Double = 0.0
     var longitude:Double = 0.0
@@ -70,8 +70,8 @@ class overviewNavMasterViewController: UIViewController {
         // Update navigation bar title with hotspot name
         self.title = ((selectedHotspot?.value(forKey: "name")) as? String)
         
-        let hotspot = selectedHotspot as! HotspotMO
-        if ((hotspot.info == nil || (hotspot.info?.isEmpty)!) && hotspot.toDo?.count == 0 && hotspot.photos?.count == 0){
+        let hotspot = selectedHotspot
+        if ((hotspot?.info == nil || (hotspot?.info?.isEmpty)!) && hotspot?.toDo?.count == 0 && hotspot?.photos?.count == 0){
             self.overviewContainer.isHidden = true
             self.navigationContainer.isHidden = false
             overviewNavControl.removeSegment(at:0, animated: true)

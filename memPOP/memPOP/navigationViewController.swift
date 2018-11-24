@@ -40,15 +40,16 @@
     //var directionArr: [String]?
     var doOnce: Bool = true
     var takeCar: Bool = false
-    var selectedHotspot: NSManagedObject?
-    var destinationName: String = ""
+    var selectedHotspot: HotspotMO?
     var latitude:Double?
     var longitude:Double?
     var currentLatitude:Double?
     var currentLongitude:Double?
     var locationManager = CLLocationManager()
     var route:MKRoute?
-    var routeSteps:Int = 0
+    var routeStepsArr = [String]()
+    var stepCounter:Int = 0
+    var directionRegionsArr = [CLCircularRegion]()
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -76,16 +77,12 @@
         if CLLocationManager.locationServicesEnabled(){
             
             print("location enabled")
-            
             locationManager.delegate = self
             
             // Accuracy using GPS
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
         }
-        
-        // Store the name of the destination for the selected hotspot
-        destinationName = selectedHotspot?.value(forKey: "name") as! String
         
         // Fetch the latitude and longitude for the selected hotspot
         latitude = selectedHotspot?.value(forKey: "latitude") as? Double
@@ -119,7 +116,6 @@
 
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         // This function gets called whenever the user updates their location and updates the route
         
         //let locValue:CLLocationCoordinate2D = (manager.location?.coordinate)!
@@ -130,13 +126,9 @@
         currentLatitude = userLocal?.coordinate.latitude
         
         if(mapOrDirectionsControl.selectedSegmentIndex == 1){
-//            if let userLocation = locationManager.location?.coordinate {
-//                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 500, 500)
-//                mapkitView.setRegion(viewRegion, animated: true)
-//            }
-             mapkitView.setUserTrackingMode(MKUserTrackingMode.followWithHeading, animated: true)
+             mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         }
-        
+
         // For debugging
         print(currentLatitude!)
         
@@ -151,7 +143,7 @@
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-            renderer.strokeColor = UIColor.red
+            renderer.strokeColor = UIColor.blue
             renderer.lineWidth = 10.0
             
             return renderer
@@ -167,11 +159,7 @@
         return MKOverlayRenderer()
     }
     
-    //
-    // https://www.youtube.com/watch?v=8m-duJ9X_Hs
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Within direction region")
-    }
+
     
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
@@ -185,7 +173,7 @@
         
         // Mark source and destination locations as pins on the map
         let sourcePin = customPin(pinTitle: " ", location: sourceCoordinates)
-        let destPin =   customPin(pinTitle: destinationName, location: destCoordinates)
+        let destPin =   customPin(pinTitle: (selectedHotspot?.name)!, location: destCoordinates)
         self.mapkitView.addAnnotation(sourcePin)
         self.mapkitView.addAnnotation(destPin)
         
@@ -206,28 +194,53 @@
         
         directions.calculate { [unowned self] response, error in
             guard let unwrappedResponse = response else { return }
-            self.route = unwrappedResponse.routes[0]
-            self.routeSteps = self.route!.steps.count
-            //print("\n\n\n\n\n\n\n\n\n\n \(self.route!.steps.count)")
             
             for route in unwrappedResponse.routes {
                 
                 self.mapkitView.add(route.polyline)
         
-                self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect,edgePadding: UIEdgeInsets.init(top: 60, left: 0, bottom: 60, right: 0) ,animated: true)
-            
+                self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
+                
+                self.route = route
                 
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
-                    
-                    // create the regions
-                    let region = CLCircularRegion(center: step.polyline.coordinate, radius: 30, identifier: step.instructions)
-                    self.locationManager.startMonitoring(for: region)
-                    let circle = MKCircle(center: region.center, radius: region.radius)
-                    self.mapkitView.add(circle)
-                    
+                    self.routeStepsArr.append(step.instructions)
 
+                }
+                self.routeStepsArr[0] = "Directions to " + (self.selectedHotspot?.name)!
+                // max regions that can be monitored is 20, so start with monitoring only 20
+                if( route.steps.count < 20){
+                    for step in route.steps {
+                        // Print the directions in the output window
+                        print(step.instructions)
+
+                        // create the regions
+                        let region = CLCircularRegion(center: step.polyline.coordinate, radius: 90, identifier: step.instructions)
+                        region.notifyOnEntry = true
+                        region.notifyOnExit = true
+                        self.locationManager.startMonitoring(for: region)
+                        self.directionRegionsArr.append(region)
+
+                        let circle = MKCircle(center: region.center, radius: region.radius)
+                        self.mapkitView.add(circle)
+
+                    }
+                }
+                else {
+                    // start to monitor first 20 regions
+                    for index in 0 ... 20 {
+                        let step = self.route?.steps[index]
+                        let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 90, identifier: (step?.instructions)!)
+                        region.notifyOnEntry = true
+                        region.notifyOnExit = true
+                        self.locationManager.startMonitoring(for: region)
+                        self.directionRegionsArr.append(region)
+
+                        let circle = MKCircle(center: region.center, radius: region.radius)
+                        self.mapkitView.add(circle)
+                    }
                 }
             }
             
@@ -241,21 +254,9 @@
         }
         else {
             print("directions")
-            //let viewLoc = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2D(latitude,longitude), 1000)
-            //self.mapkitView.setRegion(viewLoc, animated: true)
+                
+            mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
             
-            //Zoom to user location
-           // if let userLocation = locationManager.location?.coordinate {
-                
-                //let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 500, 500)
-                
-            mapkitView.setUserTrackingMode(MKUserTrackingMode.followWithHeading, animated: true)
-                
-                //mapkitView.setRegion(viewRegion, animated: true)
-            
-                //mapkitView.isRotateEnabled = true
-                //mapkitView.isPitchEnabled = true
-            //}
             directionsTableView.reloadData()
             directionsTableView.isHidden = false
 
@@ -268,7 +269,7 @@
     // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-       return routeSteps
+       return (routeStepsArr.count)
     }
     
     // https://www.youtube.com/watch?v=LrCqXmHenJY
@@ -277,16 +278,31 @@
         var cell : UITableViewCell?
         cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
         
-        if(indexPath.row == 0){
-            cell!.textLabel?.text = "Directions to Hotspot:"
-        }
-        else {
-            cell!.textLabel?.text = self.route?.steps[indexPath.row].instructions
+        
+        cell!.textLabel?.text = routeStepsArr[indexPath.row]
+       
+        // highlight the current direction 
+        if (indexPath.row == 0){
+            cell?.backgroundColor = UIColor.red
         }
         
         return cell!
     }
     
+    // https://www.youtube.com/watch?v=8m-duJ9X_Hs
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if(routeStepsArr.count != 0){
+            print("within region")
+            routeStepsArr.remove(at: stepCounter)
+            stepCounter += 1
+            directionsTableView.reloadData()
+        }
+        
+    }
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("left region")
+        
+    }
+    
 }
    
-
