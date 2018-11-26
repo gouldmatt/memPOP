@@ -25,10 +25,12 @@
     // Class "customPin" added to handle each pin added to the map view
     var coordinate: CLLocationCoordinate2D
     var title: String?
+    var identifier: String?
     
-    init(pinTitle:String, location:CLLocationCoordinate2D){
+    init(pinTitle:String, location:CLLocationCoordinate2D, identifier:String){
         self.title = pinTitle
         self.coordinate = location
+        self.identifier = identifier
     }
    }
    
@@ -37,9 +39,9 @@
     //===================================================================================================
     // MARK: Variables declaration
     //===================================================================================================
-    //var directionArr: [String]?
     var doOnce: Bool = true
     var takeCar: Bool = false
+    var stepCompleted: Bool = false
     var selectedHotspot: HotspotMO?
     var latitude:Double?
     var longitude:Double?
@@ -49,7 +51,7 @@
     var route:MKRoute?
     var routeStepsArr = [String]()
     var stepCounter:Int = 0
-    var directionRegionsArr = [CLCircularRegion]()
+
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -69,6 +71,16 @@
         
         mapkitView.isRotateEnabled = true
         mapkitView.isPitchEnabled = true
+        
+        // Change appearance for segmented control
+        mapOrDirectionsControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .normal)
+        
+        mapOrDirectionsControl.setTitleTextAttributes([
+            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),
+            NSAttributedStringKey.foregroundColor: UIColor.white
+            ], for: .selected)
+
         
         // Request the user permission to use their location
         self.locationManager.requestWhenInUseAuthorization()
@@ -114,8 +126,8 @@
     // MARK: Functions
     //===================================================================================================
 
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
         // This function gets called whenever the user updates their location and updates the route
         
         //let locValue:CLLocationCoordinate2D = (manager.location?.coordinate)!
@@ -128,9 +140,22 @@
         if(mapOrDirectionsControl.selectedSegmentIndex == 1){
              mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         }
+        
+//        if(routeStepsArr.count != 0) {
+//            // check if user is on track
+//            print("result from check")
+//            userRegion = MKCircle(center: (locations.last?.coordinate)!, radius: 30)
+//            let onTrackBool = route?.polyline.intersects((userRegion?.boundingMapRect)!)
+//            print(onTrackBool!)
+//            if !(onTrackBool!) {
+//                print("off track")
+//                self.mapkitView.add(userRegion!)
+//                layoutWalkingRoute()
+//            }
+//        }
 
         // For debugging
-        print(currentLatitude!)
+        //print(currentLatitude!)
         
         // Only show the route once
         if(doOnce){
@@ -164,18 +189,15 @@
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
     func layoutWalkingRoute() {
+        // reset the step counter for this new route
+        stepCounter = 0
+        
         // remove any existing things from map
         self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
         mapkitView.removeOverlays(mapkitView.overlays)
       
         let sourceCoordinates = CLLocationCoordinate2DMake(currentLatitude!, currentLongitude!)
         let destCoordinates = CLLocationCoordinate2DMake(latitude!, longitude!)
-        
-        // Mark source and destination locations as pins on the map
-        let sourcePin = customPin(pinTitle: " ", location: sourceCoordinates)
-        let destPin =   customPin(pinTitle: (selectedHotspot?.name)!, location: destCoordinates)
-        self.mapkitView.addAnnotation(sourcePin)
-        self.mapkitView.addAnnotation(destPin)
         
         let request = MKDirectionsRequest()
         request.source = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoordinates, addressDictionary: nil))
@@ -199,66 +221,66 @@
                 
                 self.mapkitView.add(route.polyline)
         
-                self.mapkitView.setVisibleMapRect(route.polyline.boundingMapRect,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
-                
                 self.route = route
                 
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
+                    
                     self.routeStepsArr.append(step.instructions)
 
                 }
+                // create the first region
                 self.routeStepsArr[0] = "Directions to " + (self.selectedHotspot?.name)!
-                // max regions that can be monitored is 20, so start with monitoring only 20
-                if( route.steps.count < 20){
-                    for step in route.steps {
-                        // Print the directions in the output window
-                        print(step.instructions)
 
-                        // create the regions
-                        let region = CLCircularRegion(center: step.polyline.coordinate, radius: 90, identifier: step.instructions)
-                        region.notifyOnEntry = true
-                        region.notifyOnExit = true
-                        self.locationManager.startMonitoring(for: region)
-                        self.directionRegionsArr.append(region)
-
-                        let circle = MKCircle(center: region.center, radius: region.radius)
-                        self.mapkitView.add(circle)
-
-                    }
-                }
-                else {
-                    // start to monitor first 20 regions
-                    for index in 0 ... 20 {
-                        let step = self.route?.steps[index]
-                        let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 90, identifier: (step?.instructions)!)
-                        region.notifyOnEntry = true
-                        region.notifyOnExit = true
-                        self.locationManager.startMonitoring(for: region)
-                        self.directionRegionsArr.append(region)
-
-                        let circle = MKCircle(center: region.center, radius: region.radius)
-                        self.mapkitView.add(circle)
-                    }
-                }
+                let step = route.steps[0]
+                
+                let region = CLCircularRegion(center: step.polyline.coordinate, radius: 30, identifier: step.instructions)
+                region.notifyOnEntry = true
+                region.notifyOnExit = true
+                self.locationManager.startMonitoring(for: region)
+                
+                // draw a circle for debugging on map
+                let circle = MKCircle(center: region.center, radius: region.radius)
+                self.mapkitView.add(circle)
+            }
+            
+            // if in overview layout zoom to show whole map
+            if(self.mapOrDirectionsControl.selectedSegmentIndex == 0){
+                   self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
             }
             
         }
+        // remove existing annotations
+        let annotations = self.mapkitView.annotations
+        for annotation in annotations {
+            
+            self.mapkitView.removeAnnotation(annotation)
+            
+        }
+        
+        
+        // Mark source and destination locations as pins on the map
+        let sourcePin = customPin(pinTitle: "My Location`", location: sourceCoordinates,identifier: "start")
+        let destPin =   customPin(pinTitle: (selectedHotspot?.name)!, location: destCoordinates,identifier: "end")
+        self.mapkitView.addAnnotation(sourcePin)
+        self.mapkitView.addAnnotation(destPin)
     }
+    
     @IBAction func changedNavMode(_ sender: Any){
         if(mapOrDirectionsControl.selectedSegmentIndex == 0){
             print("map")
-            layoutWalkingRoute()
+            //layoutWalkingRoute()
+            self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
             directionsTableView.isHidden = true
         }
         else {
             print("directions")
-                
+            layoutWalkingRoute()
             mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
-            
             directionsTableView.reloadData()
             directionsTableView.isHidden = false
+            
 
         }
     }
@@ -278,31 +300,183 @@
         var cell : UITableViewCell?
         cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
         
+        let currentDirection = routeStepsArr[indexPath.row]
         
-        cell!.textLabel?.text = routeStepsArr[indexPath.row]
-       
-        // highlight the current direction 
-        if (indexPath.row == 0){
-            cell?.backgroundColor = UIColor.red
+        let image: UIImage?
+        
+        // Process each step and update the table view cell accordingly
+        
+        if(indexPath.row == 0 && stepCounter == 0) {
+            
+            // The very first step shows the current direction highlighted
+            
+            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
+            image = UIImage(named: "location")!
+            cell?.textLabel?.text = routeStepsArr[0]
+            cell?.backgroundColor = UIColor.lightGray
+        
         }
+        else {
+            
+            // The rest of the steps show how to the destination
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
+            
+            let distanceInStep = self.route?.steps[indexPath.row].distance
+            var distanceInt = Int(distanceInStep!)
+            
+            // Check the direction per step to show the correct image
+            if (currentDirection.range(of: "left") != nil) {
+                image = UIImage(named: "leftTurn")!
+                
+            }
+            else if (currentDirection.range(of: "right") != nil) {
+                image = UIImage(named: "rightTurn")!
+            }
+            else {
+                image = UIImage(named: "continue")!
+            }
+            
+            // Check the distance per step
+            if (distanceInt > 1000) {
+                distanceInt = distanceInt / 1000
+                cell?.textLabel?.text = "\(distanceInt) km"
+            }
+            else {
+                cell?.textLabel?.text = "\(distanceInt) m"
+            }
+            
+            // Show the step instruction
+            cell!.detailTextLabel?.text = self.route?.steps[indexPath.row].instructions
+        }
+        
+        // Attach the image
+        cell?.imageView?.image = image
+        
+        // Resize the image within the cell
+        let itemSize = CGSize.init(width: 27, height: 27)
+        UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.main.scale)
+        let imageRect = CGRect.init(origin: CGPoint.zero, size: itemSize)
+        cell?.imageView?.image?.draw(in: imageRect)
+        cell?.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
         
         return cell!
     }
     
-    // https://www.youtube.com/watch?v=8m-duJ9X_Hs
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // when user selects one of the directions show that step on the map
+        let routeStepView = route?.steps[indexPath.row].polyline.boundingMapRect
+        self.mapkitView.setVisibleMapRect(routeStepView!,edgePadding: UIEdgeInsets.init(top: 60, left: 10, bottom: 60, right: 10) ,animated: true)
+    }
+    
+    //Consulted https://www.youtube.com/watch?v=8m-duJ9X_Hs for detecting user entry/exit of regions
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if !(self.stepCompleted) {
+            if(routeStepsArr.count != 0){
+                print("\n\n\n\n\n")
+                print("within region")
+                print("next step while entering")
+                print("step counter")
+                print(stepCounter)
+                routeStepsArr.remove(at: stepCounter)
+                stepCounter += 1
+                directionsTableView.reloadData()
+                stepCompleted = true
+                
+                if(stepCounter < routeStepsArr.count){
+                    let step = route?.steps[stepCounter]
+                    // create the regions
+                    let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 30, identifier: (step?.instructions)!)
+                    region.notifyOnEntry = true
+                    region.notifyOnExit = true
+                    self.locationManager.startMonitoring(for: region)
+                    
+                    
+                    let circle = MKCircle(center: region.center, radius: region.radius)
+                    self.mapkitView.add(circle)
+                }
+                
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+    
         if(routeStepsArr.count != 0){
-            print("within region")
-            routeStepsArr.remove(at: stepCounter)
-            stepCounter += 1
-            directionsTableView.reloadData()
+            if(stepCompleted != true){
+                print("\n\n\n\n\n")
+                print("left region")
+                print("next step while leaving")
+                print("step counter")
+                print(stepCounter)
+                routeStepsArr.remove(at: stepCounter)
+                stepCounter += 1
+                directionsTableView.reloadData()
+                
+                if(stepCounter < routeStepsArr.count){
+                    let step = route?.steps[stepCounter]
+                    // create the regions
+                    let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 30, identifier: (step?.instructions)!)
+                    region.notifyOnEntry = true
+                    region.notifyOnExit = true
+                    self.locationManager.startMonitoring(for: region)
+                    
+                    
+                    let circle = MKCircle(center: region.center, radius: region.radius)
+                    self.mapkitView.add(circle)
+                }
+            }
+            stepCompleted = false
         }
         
     }
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("left region")
-        
+    
+    // add the images for each custom pin annotation
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? customPin{
+            if let view = mapView.dequeueReusableAnnotationView(withIdentifier: annotation.identifier!){
+                return view
+            }
+            else{
+                if(annotation.identifier == "start"){
+                
+                    let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
+                    var image = #imageLiteral(resourceName: "user")
+                
+                    image = image.resize(targetSize: CGSize(width: 40, height: 40))
+                    view.image = image
+                    view.isEnabled = true
+                    view.canShowCallout = true
+                  
+                    return view
+                    
+                }
+                else {
+                    let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
+                    var image = #imageLiteral(resourceName: "hotspot")
+                    
+                    image = image.resize(targetSize: CGSize(width: 40, height: 40))
+                    view.image = image
+                    view.isEnabled = true
+                    view.canShowCallout = true
+                  
+                    return view
+                    
+                }
+            }
+        }
+        return nil
     }
     
 }
+
+// Consulted https://stackoverflow.com/questions/32612760/resize-image-without-losing-quality for resizing UIImage
+extension UIImage {
+    func resize(targetSize: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size:targetSize).image {_ in
+            self.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+    }
+   }
    
