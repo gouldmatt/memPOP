@@ -13,6 +13,8 @@
 import CoreData
 import UIKit
 import MapKit
+import Charts
+
 class personInfoViewController: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
     
     //===================================================================================================
@@ -20,7 +22,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     //===================================================================================================
     let fetchHotspot: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
     let fetchUser: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
-    
     
     //===================================================================================================
     // Variables declaration
@@ -34,6 +35,13 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     var searchAddressLatitude:Double = 0.0
     var searchAddressLongitude:Double = 0.0
     var changedAddress: Bool = false
+    
+    // Statistics
+    var months: [String]!
+    var hotspotsCount = [Int]()
+    var categories: [String]!
+    var count = [Int]()
+    weak var axisFormatDelegate: IAxisValueFormatter?
 
     //===================================================================================================
     // Outlets
@@ -41,8 +49,10 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var searchResultsTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet var dialogCheck: UITextField!
+    @IBOutlet weak var dialogCheck: UITextField!
     
+    @IBOutlet weak var barChart: BarChartView!
+    @IBOutlet weak var pieChart: PieChartView!
     //===================================================================================================
     // Actions
     //===================================================================================================
@@ -154,6 +164,12 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             print("failed user fetch")
         }
         
+        // Fetch Statistics
+        axisFormatDelegate = self
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        hotspotsCount = [20, 4, 6, 3, 12, 16, 4, 18, 2, 4, 5, 4]
+        loadBarChart(dataEntryX: months, dataEntryY: hotspotsCount)
+        loadPieChart(foodCount: 2, funCount: 3, taskCount: 7)
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -239,6 +255,57 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         }
         
         return indexPath
+    }
+    
+    // Create the bar chart showing the number of hotspots visited per month
+    // Consulted https://stackoverflow.com/questions/39049188/how-to-add-strings-on-x-axis-in-ios-charts to create the bar chart
+    func loadBarChart(dataEntryX forX:[String],dataEntryY forY: [Int]) {
+        
+        var dataEntries:[BarChartDataEntry] = []
+        for i in 0..<forX.count{
+            let dataEntry = BarChartDataEntry(x: Double(i), y: Double(forY[i]) , data: months as AnyObject?)
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
+        chartDataSet.colors = [UIColor(red: 255/255, green: 119/255, blue: 119/255, alpha: 1)]
+        let chartData = BarChartData(dataSet: chartDataSet)
+        barChart.data = chartData
+        
+        // Set up some chart configurations
+        barChart.chartDescription?.text = ""
+        barChart.rightAxis.enabled = false
+        barChart.legend.enabled = false
+        let xAxisValue = barChart.xAxis
+        barChart.xAxis.labelPosition = .bottom
+        
+        // Don't skip x-axis values
+        // barChart.xAxis.setLabelCount(12, force: true)
+        xAxisValue.valueFormatter = axisFormatDelegate
+    }
+    
+    // Create the pie chart showing categories division
+    func loadPieChart(foodCount: Double, funCount: Double, taskCount: Double) {
+        
+        var dataEntries:[PieChartDataEntry] = []
+
+        let food = PieChartDataEntry(value: foodCount)
+        food.label = "Food"
+        let fun = PieChartDataEntry(value: funCount)
+        fun.label = "Fun"
+        let task = PieChartDataEntry(value: taskCount)
+        task.label = "Task"
+        
+        dataEntries = [food, fun, task]
+        
+        let chartDataSet = PieChartDataSet(values: dataEntries, label: "")
+        let chartData = PieChartData(dataSet: chartDataSet)
+        chartDataSet.colors = ChartColorTemplates.colorful()
+        pieChart.data = chartData
+        
+        // Set up some chart configurations
+        pieChart.chartDescription?.text = ""
+        pieChart.legend.enabled = false
     }
 }
 
@@ -328,6 +395,14 @@ extension personInfoViewController : MKLocalSearchCompleterDelegate {
         print("Error in getting results for address")
     }
 }
+
+extension personInfoViewController: IAxisValueFormatter {
+    
+    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+        return months[Int(value)]
+    }
+}
+
 
 
 
