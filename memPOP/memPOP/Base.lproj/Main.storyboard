@@ -493,6 +493,7 @@
                         <outlet property="directionsTableView" destination="8sC-f9-17U" id="YoF-4G-08D"/>
                         <outlet property="mapOrDirectionsControl" destination="B3n-o5-Wgv" id="RgV-5U-TzZ"/>
                         <outlet property="mapkitView" destination="Zoz-a9-t3l" id="qMl-Vi-YgI"/>
+                        <outlet property="navigationView" destination="n8s-sY-qcf" id="Qqg-Hi-zKK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gig-hB-wkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1081,6 +1082,7 @@
                         <outlet property="hotspotInfo" destination="p0c-HB-2m6" id="q37-yh-Vhp"/>
                         <outlet property="hotspotName" destination="s6r-Ky-32k" id="Idv-su-oDk"/>
                         <outlet property="hotspotTransportation" destination="QVU-dr-zh4" id="4hU-D6-otQ"/>
+                        <outlet property="scrollView" destination="BPV-my-a9I" id="pWb-gP-ZRZ"/>
                         <outlet property="searchBar" destination="qsq-lH-1tf" id="vuY-3K-X5S"/>
                         <outlet property="searchDisplayController" destination="cxk-AN-CEG" id="WaP-Y0-OhD"/>
                         <outlet property="searchResultsTableView" destination="WBH-AP-bVB" id="PEa-LH-c76"/>

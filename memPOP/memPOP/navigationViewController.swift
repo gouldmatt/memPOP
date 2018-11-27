@@ -50,7 +50,13 @@
     var locationManager = CLLocationManager()
     var route:MKRoute?
     var routeStepsArr = [String]()
+    var routeDistanceArr = [Int]()
     var stepCounter:Int = 0
+    
+    //var routeSteps:Int = 0
+    var touchedScreen:Bool = false
+    var firstTouchLocation:CGPoint?
+    var lastTouchLocation:CGPoint?
 
     //===================================================================================================
     // MARK: Outlets
@@ -60,12 +66,48 @@
     
     @IBOutlet var directionsTableView: UITableView!
 
+    @IBOutlet var navigationView: UIView!
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        // Store the first touch location
+        firstTouchLocation = touches.first?.location(in: mapkitView)
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        // Store the last touch location
+        lastTouchLocation = touches.first?.location(in: mapkitView)
+        
+        // Check if the first touch and last touch location are the same
+        if(lastTouchLocation == firstTouchLocation) {
+            
+            // Every touch toggles between showing the entire map view or not
+            touchedScreen = !touchedScreen
+            
+            // If equal, choose to hide/show the subviews to show a larger map view
+            if(!touchedScreen) {
+                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                // Hide subviews
+                self.navigationView.sendSubview(toBack: mapkitView)
+            }
+            else {
+                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                // Show subviews
+                self.navigationView.bringSubview(toFront: mapkitView)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        touchedScreen = false
+        
         directionsTableView.isHidden = true
         doOnce = true
         
@@ -141,18 +183,19 @@
              mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         }
         
-//        if(routeStepsArr.count != 0) {
-//            // check if user is on track
-//            print("result from check")
-//            userRegion = MKCircle(center: (locations.last?.coordinate)!, radius: 30)
-//            let onTrackBool = route?.polyline.intersects((userRegion?.boundingMapRect)!)
-//            print(onTrackBool!)
-//            if !(onTrackBool!) {
-//                print("off track")
-//                self.mapkitView.add(userRegion!)
-//                layoutWalkingRoute()
-//            }
-//        }
+        if(routeStepsArr.count != 0) {
+            // check if user is on track
+            print("result from check")
+            let userRegion = MKCircle(center: (locations.last?.coordinate)!, radius: 30)
+            var onTrackBool = route?.polyline.intersects((userRegion.boundingMapRect))
+            print(onTrackBool!)
+            if !(onTrackBool!) {
+                print("off track")
+                self.mapkitView.add(userRegion)
+                layoutWalkingRoute()
+                onTrackBool = true
+            }
+        }
 
         // For debugging
         //print(currentLatitude!)
@@ -189,8 +232,11 @@
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
     func layoutWalkingRoute() {
-        // reset the step counter for this new route
+        // reset the step counter & array for this new route
         stepCounter = 0
+        
+        //self.routeStepsArr.removeAll()
+        //self.routeDistanceArr.removeAll()
         
         // remove any existing things from map
         self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
@@ -226,7 +272,7 @@
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
-                    
+                    self.routeDistanceArr.append(Int(step.distance))
                     self.routeStepsArr.append(step.instructions)
 
                 }
@@ -300,8 +346,6 @@
         var cell : UITableViewCell?
         cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
         
-        let currentDirection = routeStepsArr[indexPath.row]
-        
         let image: UIImage?
         
         // Process each step and update the table view cell accordingly
@@ -316,14 +360,52 @@
             cell?.backgroundColor = UIColor.lightGray
         
         }
-        else {
+        else if (indexPath.row == 0){
+            
+            let currentDirection = routeStepsArr[indexPath.row]
+            var distanceInt =  routeDistanceArr[indexPath.row]
             
             // The rest of the steps show how to the destination
             cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
             
-            let distanceInStep = self.route?.steps[indexPath.row].distance
-            var distanceInt = Int(distanceInStep!)
+           
             
+            // Check the direction per step to show the correct image
+            if (currentDirection.range(of: "left") != nil) {
+                image = UIImage(named: "leftTurn")!
+                
+            }
+            else if (currentDirection.range(of: "right") != nil) {
+                image = UIImage(named: "rightTurn")!
+            }
+            else {
+                image = UIImage(named: "continue")!
+            }
+            
+            // Check the distance per step
+            if (distanceInt > 1000) {
+                distanceInt = distanceInt / 1000
+                cell?.textLabel?.text = "\(distanceInt) km"
+            }
+            else {
+                cell?.textLabel?.text = "\(distanceInt) m"
+            }
+            
+            // Show the step instruction
+            cell!.detailTextLabel?.text = self.route?.steps[indexPath.row].instructions
+            cell?.backgroundColor = UIColor.lightGray
+        }
+        else {
+            
+            let currentDirection = routeStepsArr[indexPath.row]
+            
+            // The rest of the steps show how to the destination
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
+            
+            //let distanceInStep = self.route?.steps[indexPath.row].distance
+           // var distanceInt = Int(distanceInStep!)
+            
+            var distanceInt =  routeDistanceArr[indexPath.row]
             // Check the direction per step to show the correct image
             if (currentDirection.range(of: "left") != nil) {
                 image = UIImage(named: "leftTurn")!
