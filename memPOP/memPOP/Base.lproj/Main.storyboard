@@ -584,13 +584,16 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-wd-RpH">
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-wd-RpH">
                                                 <rect key="frame" x="227" y="157" width="132" height="29"/>
                                                 <segments>
                                                     <segment title="On"/>
                                                     <segment title="Off"/>
                                                 </segments>
                                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeActivitiesNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="mJQ-eM-PdC"/>
+                                                </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a hotspot notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJs-ND-wie">
                                                 <rect key="frame" x="16" y="47" width="197" height="21"/>
@@ -618,6 +621,9 @@
                                                     <segment title="Monthly"/>
                                                 </segments>
                                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeAddHotspotNotifFreq:" destination="m7B-yQ-MXr" eventType="valueChanged" id="vxg-Pt-FR3"/>
+                                                </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activities notification        " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Riq-ZO-Aif">
                                                 <rect key="frame" x="16" y="161" width="195" height="21"/>
@@ -625,13 +631,17 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="eUf-2K-rja">
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="eUf-2K-rja">
                                                 <rect key="frame" x="229" y="43" width="130" height="29"/>
                                                 <segments>
                                                     <segment title="On"/>
                                                     <segment title="Off"/>
                                                 </segments>
                                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeAddHotspotNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="OeW-7m-0oU"/>
+                                                    <action selector="setAddHotspotNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="rtp-7S-vC1"/>
+                                                </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enables reminders to visit your hotspots" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCS-Dz-HfI">
                                                 <rect key="frame" x="16" y="87" width="343" height="18"/>
@@ -653,6 +663,9 @@
                                                     <segment title="Monthly"/>
                                                 </segments>
                                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeActivitiesNotifFreq:" destination="m7B-yQ-MXr" eventType="valueChanged" id="wEJ-7L-beI"/>
+                                                </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   How-to and Help" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bw-Pm-xca">
                                                 <rect key="frame" x="0.0" y="275" width="375" height="31"/>
@@ -749,6 +762,12 @@
                         <viewLayoutGuide key="safeArea" id="hVP-cW-DPR"/>
                     </view>
                     <size key="freeformSize" width="375" height="900"/>
+                    <connections>
+                        <outlet property="activitiesNotif" destination="hy2-wd-RpH" id="6DD-qw-Ocu"/>
+                        <outlet property="activitiesNotifFreq" destination="ToF-Ur-bLe" id="p0z-qu-jJI"/>
+                        <outlet property="addHotspotNotif" destination="eUf-2K-rja" id="0nb-6r-xmp"/>
+                        <outlet property="addHotspotNotifFreq" destination="cdI-9W-Guy" id="LW0-7S-euf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S9f-SI-Yf3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
