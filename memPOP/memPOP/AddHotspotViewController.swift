@@ -446,7 +446,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             
             // Fetch category
             switch selectedHotspot?.value(forKey: "category") as? String {
-            case "All":
+            case "Other":
                 hotspotCategory.selectedSegmentIndex = 0
             case "Food":
                 hotspotCategory.selectedSegmentIndex = 1

@@ -62,7 +62,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 nameField.layer.borderWidth = 0.0
             }
             
-            
             if (searchBar.text!.isEmpty) {
                 self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
             }

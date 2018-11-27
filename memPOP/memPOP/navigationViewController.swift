@@ -48,23 +48,64 @@
     var locationManager = CLLocationManager()
     var route:MKRoute?
     var routeSteps:Int = 0
+    var touchedScreen:Bool = false
+    var firstTouchLocation:CGPoint?
+    var lastTouchLocation:CGPoint?
     
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
     @IBOutlet weak var mapkitView: MKMapView!
     @IBOutlet var mapOrDirectionsControl: UISegmentedControl!
-    
     @IBOutlet var directionsTableView: UITableView!
-
+    @IBOutlet var navigationView: UIView!
+    
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        // Store the first touch location
+        firstTouchLocation = touches.first?.location(in: mapkitView)
+    
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        // Store the last touch location
+        lastTouchLocation = touches.first?.location(in: mapkitView)
+        
+        // Check if the first touch and last touch location are the same
+        if(lastTouchLocation == firstTouchLocation) {
+            
+            // Every touch toggles between showing the entire map view or not
+            touchedScreen = !touchedScreen
+            
+            // If equal, choose to hide/show the subviews to show a larger map view
+            if(!touchedScreen) {
+                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                // Hide subviews
+                self.navigationView.sendSubview(toBack: mapkitView)
+            }
+            else {
+                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                // Show subviews
+                self.navigationView.bringSubview(toFront: mapkitView)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        touchedScreen = false
         directionsTableView.isHidden = true
         doOnce = true
+        
+        mapkitView.isRotateEnabled = true
+        mapkitView.isPitchEnabled = true
         
         // Change appearance for segmented control
         mapOrDirectionsControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
@@ -127,14 +168,15 @@
         currentLongitude = userLocal?.coordinate.longitude
         currentLatitude = userLocal?.coordinate.latitude
         
-        /*
+        
         if(mapOrDirectionsControl.selectedSegmentIndex == 1){
-            if let userLocation = locationManager.location?.coordinate {
-                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
-                mapkitView.setRegion(viewRegion, animated: false)
-            }
+//            if let userLocation = locationManager.location?.coordinate {
+//                let viewRegion = MKCoordinateRegionMakeWithDistance(userLocation, 200, 200)
+//                mapkitView.setRegion(viewRegion, animated: false)
+//            }
+            mapkitView.setUserTrackingMode(MKUserTrackingMode.followWithHeading, animated: true)
         }
-        */
+    
         
         // For debugging
         print(currentLatitude!)
@@ -151,6 +193,11 @@
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         renderer.strokeColor = UIColor.blue
         renderer.lineWidth = 3.0
+        
+        if (!takeCar) {
+            renderer.lineDashPattern = [0, 15]
+        }
+        
         return renderer
     }
     
@@ -301,6 +348,7 @@
         
         return cell!
     }
+    
 }
    
 
