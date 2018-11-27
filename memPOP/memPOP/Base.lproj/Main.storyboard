@@ -416,28 +416,89 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zoz-a9-t3l">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
                                 <connections>
                                     <outlet property="delegate" destination="1Oi-AX-OUe" id="dEX-WJ-zdu"/>
                                 </connections>
                             </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="B3n-o5-Wgv">
+                                <rect key="frame" x="-2" y="527" width="379" height="61"/>
+                                <color key="backgroundColor" red="0.16078431372549021" green="0.17254901960784313" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="P68-qH-o5Z"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="Ro1-zV-dzq"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="sLf-c3-7lH"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Map"/>
+                                    <segment title="Directions"/>
+                                </segments>
+                                <color key="tintColor" red="0.76862745099999996" green="0.76862745099999996" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="changedNavMode:" destination="1Oi-AX-OUe" eventType="valueChanged" id="bvG-r7-INt"/>
+                                </connections>
+                            </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8sC-f9-17U">
+                                <rect key="frame" x="0.0" y="319" width="375" height="213"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="70" id="4ct-LE-qfV">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4ct-LE-qfV" id="Wst-BR-tJs">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yag-nJ-lTw">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="68.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="WH5-O3-aob"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="yag-nJ-lTw" firstAttribute="top" secondItem="Wst-BR-tJs" secondAttribute="top" id="58C-dX-n4G"/>
+                                                <constraint firstItem="yag-nJ-lTw" firstAttribute="centerY" secondItem="Wst-BR-tJs" secondAttribute="centerY" id="U2O-f7-kYr"/>
+                                                <constraint firstItem="yag-nJ-lTw" firstAttribute="leading" secondItem="Wst-BR-tJs" secondAttribute="leading" id="hJ1-eg-rRf"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="1Oi-AX-OUe" id="a5a-lx-C0j"/>
+                                    <outlet property="delegate" destination="1Oi-AX-OUe" id="LBU-Qr-abH"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Zoz-a9-t3l" secondAttribute="trailing" id="47M-Ka-9KC"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Zoz-a9-t3l" secondAttribute="bottom" constant="-4" id="6DZ-QH-0ec"/>
-                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="top" secondItem="n8s-sY-qcf" secondAttribute="top" id="EEy-G3-gNI"/>
-                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="leading" secondItem="n8s-sY-qcf" secondAttribute="leading" id="wsd-gP-wZA"/>
+                            <constraint firstItem="8sC-f9-17U" firstAttribute="leading" secondItem="n8s-sY-qcf" secondAttribute="leading" id="47y-xA-gUA"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="bottom" secondItem="uma-gG-LFb" secondAttribute="bottom" id="4EO-al-aP5"/>
+                            <constraint firstItem="8sC-f9-17U" firstAttribute="top" secondItem="n8s-sY-qcf" secondAttribute="top" constant="319" id="E94-6i-FX0"/>
+                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="top" secondItem="n8s-sY-qcf" secondAttribute="top" id="FPR-l8-jnN"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="leading" secondItem="uma-gG-LFb" secondAttribute="leading" constant="-2" id="GsT-Fs-aq1"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="top" secondItem="Zoz-a9-t3l" secondAttribute="bottom" id="VyK-tx-R7e"/>
+                            <constraint firstItem="B3n-o5-Wgv" firstAttribute="bottom" secondItem="uma-gG-LFb" secondAttribute="bottom" id="WwI-SD-6fW"/>
+                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="leading" secondItem="8sC-f9-17U" secondAttribute="leading" id="Yrt-O7-kn7"/>
+                            <constraint firstAttribute="trailing" secondItem="8sC-f9-17U" secondAttribute="trailing" id="bj9-GP-4zB"/>
+                            <constraint firstItem="uma-gG-LFb" firstAttribute="trailing" secondItem="B3n-o5-Wgv" secondAttribute="trailing" constant="-2" id="c1t-ov-j5f"/>
+                            <constraint firstItem="8sC-f9-17U" firstAttribute="centerY" secondItem="n8s-sY-qcf" secondAttribute="centerY" constant="132" id="dMd-9G-sth"/>
+                            <constraint firstItem="8sC-f9-17U" firstAttribute="centerX" secondItem="n8s-sY-qcf" secondAttribute="centerX" id="sUL-15-YSZ"/>
+                            <constraint firstAttribute="bottom" secondItem="8sC-f9-17U" secondAttribute="bottom" constant="55" id="tqA-vL-oXk"/>
+                            <constraint firstItem="Zoz-a9-t3l" firstAttribute="trailing" secondItem="8sC-f9-17U" secondAttribute="trailing" id="uJg-4u-1Ln"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uma-gG-LFb"/>
                     </view>
                     <connections>
+                        <outlet property="directionsTableView" destination="8sC-f9-17U" id="YoF-4G-08D"/>
+                        <outlet property="mapOrDirectionsControl" destination="B3n-o5-Wgv" id="RgV-5U-TzZ"/>
                         <outlet property="mapkitView" destination="Zoz-a9-t3l" id="qMl-Vi-YgI"/>
+                        <outlet property="navigationView" destination="n8s-sY-qcf" id="Qqg-Hi-zKK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gig-hB-wkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2128.8000000000002" y="1253.9730134932536"/>
+            <point key="canvasLocation" x="2128.8000000000002" y="1253.5232383808097"/>
         </scene>
         <!--Personal Information-->
         <scene sceneID="AQr-gx-ERh">
@@ -1119,6 +1180,7 @@
                         <outlet property="hotspotInfo" destination="p0c-HB-2m6" id="q37-yh-Vhp"/>
                         <outlet property="hotspotName" destination="s6r-Ky-32k" id="Idv-su-oDk"/>
                         <outlet property="hotspotTransportation" destination="QVU-dr-zh4" id="4hU-D6-otQ"/>
+                        <outlet property="scrollView" destination="BPV-my-a9I" id="pWb-gP-ZRZ"/>
                         <outlet property="searchBar" destination="qsq-lH-1tf" id="vuY-3K-X5S"/>
                         <outlet property="searchDisplayController" destination="cxk-AN-CEG" id="WaP-Y0-OhD"/>
                         <outlet property="searchResultsTableView" destination="WBH-AP-bVB" id="PEa-LH-c76"/>
@@ -1161,7 +1223,7 @@
     </scenes>
     <resources>
         <image name="gear" width="1350" height="1364"/>
-        <image name="gearNoBG" width="2048" height="2048"/>
+        <image name="gearNoBG" width="4096" height="4096"/>
         <image name="logo" width="2048" height="2048"/>
         <image name="plus" width="4096" height="4096"/>
     </resources>
