@@ -20,6 +20,9 @@ class settingsViewController: UIViewController {
     // Notification IDs
     let addNotifID = "AddNotifReq"
     let activitiesNotifID = "ActivitiesNotifReq"
+    
+    // Notification Content
+    let addNotifContent = UNMutableNotificationContent()
     //===================================================================================================
     // MARK: Variables
     //===================================================================================================
@@ -41,6 +44,7 @@ class settingsViewController: UIViewController {
         notifCentre.getNotificationSettings { (settings) in
                 guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
+                self.alertPermissionDisabled()
                 return
             }
         }
@@ -53,6 +57,7 @@ class settingsViewController: UIViewController {
         notifCentre.getNotificationSettings { (settings) in
             guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
+                self.alertPermissionDisabled()
                 return
             }
         }
@@ -64,6 +69,7 @@ class settingsViewController: UIViewController {
             // check if permission granted. Do not add notif otherwise
             guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
+                self.alertPermissionDisabled()
                 return
             }
         }
@@ -75,6 +81,7 @@ class settingsViewController: UIViewController {
         notifCentre.getNotificationSettings { (settings) in
             guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
+                self.alertPermissionDisabled()
                 return
             }
         }
@@ -88,6 +95,17 @@ class settingsViewController: UIViewController {
         notifCentre.requestAuthorization(options: [.sound, .alert, .badge]){ (grantedNotif, err) in
             print("Granted notification permission")
         }
+        
+        notifCentre.getNotificationSettings(){ (settings) in
+            if (settings.alertSetting == .enabled){
+                print("check good")
+            } else {
+                print("check bad")
+                self.alertPermissionDisabled()
+            }
+        }
+        
+        
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -127,7 +145,6 @@ class settingsViewController: UIViewController {
             let addNotifTrigger = UNCalendarNotificationTrigger(dateMatching: dateAddNotif, repeats: true)
             
             // Set up the notification content
-            let addNotifContent = UNMutableNotificationContent()
             addNotifContent.title = "Time to add some new hotspots!"
             addNotifContent.body = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
             addNotifContent.sound = UNNotificationSound.default()
@@ -167,7 +184,6 @@ class settingsViewController: UIViewController {
             let addNotifTrigger = UNCalendarNotificationTrigger(dateMatching: dateActivitiesNotif, repeats: true)
             
             // Set up the notification content
-            let addNotifContent = UNMutableNotificationContent()
             addNotifContent.title = "Time to be Active!"
             addNotifContent.body = "Being active is great for your health. Use the navigation feature to get to your favourite hotspots!"
             addNotifContent.sound = UNNotificationSound.default()
@@ -181,6 +197,23 @@ class settingsViewController: UIViewController {
             print("Turn off Activities Notif")
             notifCentre.removePendingNotificationRequests(withIdentifiers: [activitiesNotifID])
         }
+    }
+    
+    func alertPermissionDisabled() {
+        // Create the alert
+        let alert = UIAlertController(title: "Request for Reminders Permission Denied", message: "memPOP needs to be able to send permissions for notifications.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled and Temporary banner.", preferredStyle: .alert)
+        
+        // Create the actions
+        let okAction = UIAlertAction(title: "Okay", style: .cancel) {
+            (action:UIAlertAction) in
+            print ("pressed OK")
+        }
+        
+        // Add actions to alert
+        alert.addAction(okAction)
+        
+        // Show the alert
+        self.present(alert,animated: true, completion: nil)
     }
 }
 
