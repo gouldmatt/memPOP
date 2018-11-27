@@ -66,8 +66,10 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         // Request the user permission to use their location
         self.locationManager.requestWhenInUseAuthorization()
         
+        
         // Check if permission is granted by the user
-        if CLLocationManager.locationServicesEnabled(){
+        let status = CLLocationManager.authorizationStatus()
+        if (status == CLAuthorizationStatus.authorizedWhenInUse){
             
             print("location enabled")
             
@@ -100,7 +102,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     }
     
     override func viewWillAppear(_ animated: Bool) {
-    
+       
     }
     
     override func didReceiveMemoryWarning() {

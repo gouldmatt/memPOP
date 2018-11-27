@@ -16,7 +16,7 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class overviewNavMasterViewController: UIViewController {
+class overviewNavMasterViewController: UIViewController, CLLocationManagerDelegate {
     
     //===================================================================================================
     // MARK: Variables declaration
@@ -44,13 +44,30 @@ class overviewNavMasterViewController: UIViewController {
     @IBAction func changedSegment(_ sender: UISegmentedControl) {
         
         // Hide one of the container views based on current segmented control selection
-        if sender.selectedSegmentIndex == 0 {
+        if (sender.selectedSegmentIndex == 0) {
             self.overviewContainer.isHidden = false
             self.navigationContainer.isHidden = true
         }
         else {
             self.overviewContainer.isHidden = true
             self.navigationContainer.isHidden = false
+            
+            let status = CLLocationManager.authorizationStatus()
+            if (status == CLAuthorizationStatus.denied) {
+                // Create the alert
+                let alert = UIAlertController(title: "Locations Permissions Denied", message: "Please enable locations services in the Settings app.", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "Done", style: .cancel) {
+                    (action:UIAlertAction) in
+                    print ("pressed Cancel")
+                }
+                
+                // Add actions to alert
+                alert.addAction(cancelAction)
+                
+                // Show the alert
+                self.present(alert,animated: true, completion: nil)
+            }
         }
     }
     
