@@ -201,7 +201,7 @@ class settingsViewController: UIViewController {
     
     func alertPermissionDisabled() {
         // Create the alert
-        let alert = UIAlertController(title: "Request for Reminders Permission Denied", message: "memPOP needs to be able to send permissions for notifications.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled and Temporary banner.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Request for Notifications Permission Denied", message: "memPOP needs to be able to have permission to notify you of things to do.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled and Temporary banner.", preferredStyle: .alert)
         
         // Create the actions
         let okAction = UIAlertAction(title: "Okay", style: .cancel) {
