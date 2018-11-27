@@ -27,6 +27,7 @@
 import CoreData
 import UIKit
 import MapKit
+import Photos
 
 class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UICollectionViewDelegate,UICollectionViewDataSource, UITableViewDataSource {
     
@@ -90,11 +91,41 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     //===================================================================================================
     @IBAction func ImportPhoto(_ sender: Any) {
         
-        // Open the camera library and show the user their photos
-        image.delegate = self
-        image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
-        image.allowsEditing = false
-        self.present(image, animated: true, completion: nil)
+        // Request Photos Permissions
+        PHPhotoLibrary.requestAuthorization { (status) in
+            switch status {
+            case .authorized:
+                print("authorized")
+            case .denied:
+                print("denied")
+            default:
+                print("default")
+            }
+        }
+
+        let status = PHPhotoLibrary.authorizationStatus()
+        if (status == PHAuthorizationStatus.authorized) {
+            // Open the camera library and show the user their photos
+            image.delegate = self
+            image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+            image.allowsEditing = false
+            self.present(image, animated: true, completion: nil)
+        }
+        else if (status == PHAuthorizationStatus.denied){
+            // Create the alert
+            let alert = UIAlertController(title: "Photos Permissions Denied", message: "Please enable photos permissions in the Settings app.", preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "Done", style: .cancel) {
+                (action:UIAlertAction) in
+                print ("pressed Cancel")
+            }
+            
+            // Add actions to alert
+            alert.addAction(cancelAction)
+            
+            // Show the alert
+            self.present(alert,animated: true, completion: nil)
+        }
     }
     
     @IBAction func addToDo(_ sender: Any) {

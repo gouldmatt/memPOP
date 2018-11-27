@@ -127,8 +127,10 @@
         // Request the user permission to use their location
         self.locationManager.requestWhenInUseAuthorization()
         
+        
         // Check if permission is granted by the user
-        if CLLocationManager.locationServicesEnabled(){
+        let status = CLLocationManager.authorizationStatus()
+        if (status == CLAuthorizationStatus.authorizedWhenInUse){
             
             print("location enabled")
             locationManager.delegate = self
@@ -156,7 +158,7 @@
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // Only update the route once whenever the view is loaded
+
     }
     
     override func didReceiveMemoryWarning() {
