@@ -110,9 +110,4 @@ class overviewNavMasterViewController: UIViewController {
             controller.selectedHotspot = selectedHotspot
         }
     }
-    
-    // Hide the status bar to increase screen real estate
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
 }
