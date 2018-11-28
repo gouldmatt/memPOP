@@ -135,9 +135,17 @@
             print("location enabled")
             locationManager.delegate = self
             
+            // Show the Navigation buttons when location access is given
+            mapOrDirectionsControl.isHidden = false
+            
             // Accuracy using GPS
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
+        }
+        else {
+            
+            // If location access is not given, user will only see the map until they allow access
+            mapOrDirectionsControl.isHidden = true
         }
         
         // Fetch the latitude and longitude for the selected hotspot
@@ -213,9 +221,19 @@
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-            renderer.strokeColor = UIColor.blue
-            renderer.lineWidth = 10.0
             
+            // Check if user takes car or is walking
+            if(takeCar) {
+                // For car show a filled line
+                renderer.strokeColor = UIColor.blue
+                renderer.lineWidth = 5.0
+            }
+            else {
+                // When walking show a dotted line
+                renderer.strokeColor = UIColor.blue
+                renderer.lineWidth = 5.0
+                renderer.lineDashPattern = [0, 10]
+            }
             return renderer
         }
         else if overlay is MKCircle {
