@@ -16,7 +16,10 @@
     <entity name="PersonInfoMO" representedClassName=".PersonInfoMO" syncable="YES">
         <attribute name="contactName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contactPhone" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="foodNum" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="funNum" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="taskNum" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="totalDistance" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="PhotosMO" representedClassName=".PhotosMO" syncable="YES">
@@ -29,7 +32,7 @@
     </entity>
     <elements>
         <element name="HotspotMO" positionX="-297" positionY="-162" width="128" height="210"/>
-        <element name="PersonInfoMO" positionX="-189" positionY="-63" width="128" height="105"/>
+        <element name="PersonInfoMO" positionX="-189" positionY="-63" width="128" height="150"/>
         <element name="PhotosMO" positionX="-74" positionY="-162" width="128" height="73"/>
         <element name="ToDoMO" positionX="-74" positionY="-4" width="128" height="58"/>
     </elements>
