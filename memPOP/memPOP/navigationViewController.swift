@@ -65,8 +65,8 @@
     @IBOutlet var mapOrDirectionsControl: UISegmentedControl!
     
     @IBOutlet var directionsTableView: UITableView!
+
     @IBOutlet var navigationView: UIView!
-     
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
