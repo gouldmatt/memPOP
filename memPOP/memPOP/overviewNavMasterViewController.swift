@@ -50,12 +50,6 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
         if (sender.selectedSegmentIndex == 0) {
             self.overviewContainer.isHidden = false
             self.navigationContainer.isHidden = true
-            
-            /*
-            navigationVC.directionsTableView.isHidden = false
-            navigationVC.mapOrDirectionsControl.isHidden = false
-            */
- 
         }
         else {
             self.overviewContainer.isHidden = true
