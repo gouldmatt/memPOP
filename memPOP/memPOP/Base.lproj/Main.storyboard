@@ -101,7 +101,7 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Add Hotspot"/>
                                         <connections>
-                                            <segue destination="ahN-ZB-9zy" kind="show" id="Z9t-Hs-Zdg"/>
+                                            <segue destination="ahN-ZB-9zy" kind="show" identifier="addHotspot" id="Z9t-Hs-Zdg"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xh8-yE-LS2">
@@ -178,7 +178,7 @@
                             </collectionView>
                             <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PlR-0a-VJZ">
                                 <rect key="frame" x="-1" y="607" width="375" height="61"/>
-                                <color key="backgroundColor" red="0.99215686274509807" green="0.47058823529411764" blue="0.47843137254901963" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.59607843137254901" green="0.61176470588235299" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="myA-ob-CmF"/>
                                 </constraints>
@@ -188,7 +188,7 @@
                                     <segment title="Fun"/>
                                     <segment title="Task"/>
                                 </segments>
-                                <color key="tintColor" red="0.71764705882352942" green="0.34901960784313724" blue="0.36078431372549019" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.73725490196078436" green="0.73725490196078436" blue="0.73725490196078436" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="categoryChanged:" destination="ndt-Kl-qBU" eventType="valueChanged" id="RJ9-ZK-7fS"/>
                                 </connections>
@@ -1110,6 +1110,11 @@
                                             <constraint firstAttribute="height" constant="162" id="zqp-9c-tB9"/>
                                         </constraints>
                                     </tableView>
+                                    <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="qsq-lH-1tf">
+                                        <rect key="frame" x="79" y="68" width="296" height="56"/>
+                                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </searchBar>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="QVU-dr-zh4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="TiJ-Xs-5Oq" secondAttribute="leading" id="0Db-eX-rh5"/>

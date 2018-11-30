@@ -518,7 +518,7 @@
                 }
                 else {
                     let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-                    var image = #imageLiteral(resourceName: "hotspot")
+                    var image = #imageLiteral(resourceName: "hotspotImage") 
                     
                     image = image.resize(targetSize: CGSize(width: 40, height: 40))
                     view.image = image
@@ -534,7 +534,7 @@
     }
     
 }
-
+   
 // Consulted https://stackoverflow.com/questions/32612760/resize-image-without-losing-quality for resizing UIImage
 extension UIImage {
     func resize(targetSize: CGSize) -> UIImage {

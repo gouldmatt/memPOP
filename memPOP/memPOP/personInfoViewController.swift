@@ -245,6 +245,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 /////////// Need to look at coredata model ///////////
                 emergencyTextField.text = user?.contactName
                 searchBar.text = hotspotFetch[0].address
+                loadPieChart(foodCount: Double((user?.foodNum)!), funCount: Double((user?.funNum)!), taskCount: Double((user?.taskNum)!))
             }
         }
         catch {
@@ -256,7 +257,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         hotspotsCount = [20, 4, 6, 3, 12, 16, 4, 18, 2, 4, 5, 4]
         loadBarChart(dataEntryX: months, dataEntryY: hotspotsCount)
-        loadPieChart(foodCount: 2, funCount: 3, taskCount: 7)
+        //loadPieChart(foodCount: Double(foodCount!), funCount: Double(funCount!), taskCount: Double(taskCount!))
     }
     
     override func viewWillAppear(_ animated:Bool) {
