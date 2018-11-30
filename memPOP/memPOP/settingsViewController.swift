@@ -10,12 +10,14 @@
 
 import UIKit
 import UserNotifications
+import CoreData
 
 class settingsViewController: UIViewController {
     //===================================================================================================
     // MARK: Constants
     //===================================================================================================
     let notifCentre = UNUserNotificationCenter.current()
+    let fetchUser: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
     
     // Notification IDs
     let addNotifID = "AddNotifReq"
@@ -144,9 +146,34 @@ class settingsViewController: UIViewController {
             // Assign when to trigger notification - based on frequency set by user
             let addNotifTrigger = UNCalendarNotificationTrigger(dateMatching: dateAddNotif, repeats: true)
             
+            // fetch any existing user information
+            do {
+                let userFetch = try PersistenceService.context.fetch(fetchUser)
+                let hotspotFetch = try PersistenceService.context.fetch(fetchHotspot)
+                
+                if(userFetch.count == 1){
+                    user = userFetch[0]
+                    nameField.text = user?.name
+                    //loadPieChart(foodCount: Double((user?.foodNum)!), funCount: Double((user?.funNum)!), taskCount: Double((user?.taskNum)!))
+                }
+            }
+            catch {
+                print("failed user fetch")
+            }
+            
             // Set up the notification content
+            var numHotspots = 
             addNotifContent.title = "Time to add some new hotspots!"
-            addNotifContent.body = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
+            //addNotifContent.body = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
+            if (user?.foodNum < user?.funNum || user?.foodNum < user?.taskNum){
+                addNotifContent.body = "Looks like there aren't many Food-related Hotspots (\(user?.foodNum)). Be sure to input your memories in case you forget!"
+            } else if (user?.funNum < user?.foodNum || user?.funNum < user?.taskNum){
+                addNotifContent.body = "Looks like there aren't many Fun-related Hotspots (\(user?.foodNum)). Be sure to input your memories in case you forget!"
+            } else if (user?.taskNum < user?.foodNum || user?.taskNum < user?.funNum){
+                addNotifContent.body = "Looks like there aren't many Task-related Hotspots (\(user?.foodNum)). Be sure to input your memories in case you forget!"
+            } else {
+                addNotifContent.body = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
+            }
             addNotifContent.sound = UNNotificationSound.default()
             
             // Create notif req
@@ -182,6 +209,8 @@ class settingsViewController: UIViewController {
             
             // Assign when to trigger notification - based on frequency set by user
             let addNotifTrigger = UNCalendarNotificationTrigger(dateMatching: dateActivitiesNotif, repeats: true)
+            
+            
             
             // Set up the notification content
             addNotifContent.title = "Time to be Active!"
