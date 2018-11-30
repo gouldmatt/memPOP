@@ -12,7 +12,7 @@ All code used to develop Mem-POP will be available in this repository.
 ### Build Instructions
 - Open memPOP.xcworkspace in the project directory 
 ```
-## NOTE: if .xcodeproj is opened instead of .xcworkspace, the project will not run
+NOTE: if .xcodeproj is opened instead of .xcworkspace, the project will not run
 ```
 - Set the simulator to iPhone 8 and click on the run button to build memPOP
 
