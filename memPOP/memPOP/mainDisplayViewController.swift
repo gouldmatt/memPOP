@@ -18,6 +18,12 @@
 // Added category sorting for each hotspot
 // Linking to AddHotspotViewControllers for editing an existing hotspot
 
+//===================================================================================================
+// Changes that have been made in v3.0
+// Update method for sorting the hotspots so that the sort only happens if a hotspot has been added/edited
+// Saved the number of hotspots in each category 
+//
+
 import UIKit
 import CoreData
 
@@ -26,15 +32,21 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     //===================================================================================================
     // MARK: Constants
     //===================================================================================================
-    let fetchRequest: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
-    
+    let fetchRequestHotspot: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
+    let fetchRequestPerson: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
     //===================================================================================================
     // MARK: Variables declaration
     //===================================================================================================
     var arrLabel = [String]()
     var arrImg = [UIImage]()
     var hotspots = [HotspotMO]()
+    var allHotspots = [HotspotMO]()
+    var foodHotspots = [HotspotMO]()
+    var funHotspots = [HotspotMO]()
+    var taskHotspots = [HotspotMO]()
+    
     var mainEditIsTapped : Bool = false;
+    var didSortHotspots: Bool = false;
     
     //===================================================================================================
     // MARK: Outlets
@@ -75,17 +87,19 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             NSAttributedStringKey.foregroundColor: UIColor.white
             ], for: .selected)
         
+        // initial load of the collection view data
+        load()
+        self.collectionView.reloadData()
+        
         view.sendSubview(toBack: collectionView)
     }
     
     override func viewWillAppear(_ animated:Bool) {
-        
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
-    
-        load()
         
         // Everytime the view appears, reload data stored in the collection view
+        load()
         self.collectionView.reloadData()
         
         // Check if the edit button is tapped to update the borders
@@ -102,6 +116,14 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
         super.didReceiveMemoryWarning()
     }
     
+    // if the user is adding a hotspot sort the hotspots again when they return
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("test")
+        if (segue.identifier == "addHotspot"){
+            didSortHotspots = false
+        }
+    }
+    
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
@@ -109,48 +131,89 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     // Fetch HotspotMO Entity and store it in array of hotspots
     func load () {
         
-        fetchRequest.returnsObjectsAsFaults = false
-        fetchRequest.relationshipKeyPathsForPrefetching = ["photos"]
+        fetchRequestHotspot.returnsObjectsAsFaults = false
+
+        // check if the hotspots are already sorted into category arrays
+        if !(didSortHotspots){
+          
+            // Do-try block to fetch all the hotspot entities that correspond to the category selected
+            do {
+                // counter for the num of each category
+                var foodNum:Int16 = 0
+                var taskNum:Int16 = 0
+                var funNum:Int16 = 0
+                
+                let person = try PersistenceService.context.fetch(fetchRequestPerson)
+                let allHotspots = try PersistenceService.context.fetch(fetchRequestHotspot)
+                
+                // remove exisiting hotspots in case hotspots have changed category
+                foodHotspots.removeAll()
+                funHotspots.removeAll()
+                taskHotspots.removeAll()
+                self.hotspots.removeAll()
+                
+                // go through hotspots and append to the correct category array, also counting the number
+                for hotspotItem in (allHotspots) {
         
-        // Do-try block to fetch all the hotspot entities that correspond to the category selected
-        do {
-        
-                let hotspots = try PersistenceService.context.fetch(fetchRequest)
-                var sortedHotspots = [HotspotMO]()
-            
-                // Before storing the hotspots check which category has been chosen and only load those
-                if (selectedCategory.selectedSegmentIndex == 1) {
-                    for hotspotItem in (hotspots) {
-                        if (hotspotItem.category == "Food") {
-                            sortedHotspots.append(hotspotItem)
-                        }
+                    if (hotspotItem.category == "Food") {
+                        foodHotspots.append(hotspotItem)
+                        foodNum += 1
                     }
+                    else if (hotspotItem.category == "Fun") {
+                        funHotspots.append(hotspotItem)
+                        funNum += 1
+                    }
+                    else if (hotspotItem.category == "Task") {
+                   
+                        taskHotspots.append(hotspotItem)
+                        taskNum += 1
+                    }
+                    
+                    // set the values to be saved with the PersonInfoMO
+                    person[0].foodNum = foodNum
+                    person[0].funNum = funNum
+                    person[0].taskNum = taskNum
+                }
+                
+                // determine which hotspots to display
+                if (selectedCategory.selectedSegmentIndex == 1) {
+                    
+                    self.hotspots = foodHotspots
                 }
                 else if (selectedCategory.selectedSegmentIndex == 2) {
-                    for hotspotItem in (hotspots) {
-                        if (hotspotItem.category == "Fun") {
-                            sortedHotspots.append(hotspotItem)
-                        }
-                    }
+                    self.hotspots = funHotspots
                 }
                 else if (selectedCategory.selectedSegmentIndex == 3) {
-                    for hotspotItem in (hotspots) {
-                        if (hotspotItem.category == "Task") {
-                            sortedHotspots.append(hotspotItem)
-                        }
-                    }
+                    self.hotspots = taskHotspots
                 }
                 else {
-                    for hotspotItem in (hotspots) {
-                        sortedHotspots.append(hotspotItem)
-                    }
+                    self.hotspots = allHotspots
+                    self.allHotspots = allHotspots
                 }
-                self.hotspots = sortedHotspots
+                self.didSortHotspots = true
+            }
+            catch {
+                print("failed fetching")
+            }
         }
-        catch {
-            print("failed fetching")
+        else {
+           // if the hotspots are already sorted just display the correct array for the selected cat
+
+            if (selectedCategory.selectedSegmentIndex == 1) {
+                print(foodHotspots.count)
+                self.hotspots = foodHotspots
+            }
+            else if (selectedCategory.selectedSegmentIndex == 2) {
+                self.hotspots = funHotspots
+            }
+            else if (selectedCategory.selectedSegmentIndex == 3) {
+                self.hotspots = taskHotspots
+            } else {
+                self.hotspots = allHotspots
+            }
         }
     }
+
     
     // Collection view shows all the hotpots in mainDisplay
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -207,6 +270,9 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             
             // User intends to edit a hotspot
             
+            // make sure hotspots are sorted when user returns
+            didSortHotspots = false
+            
             // Instantiate an AddHotspotVC and make a transition
             let editHotspotVC = storyboard?.instantiateViewController(withIdentifier: "AddHotspotViewController") as! AddHotspotViewController
             
@@ -240,6 +306,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
             navigationController?.pushViewController(overviewNavVC, animated: true)
         }
     }
-    
+
+
 }
 

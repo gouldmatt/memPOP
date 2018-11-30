@@ -29,8 +29,6 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     var longitude:Double = 0.0
     
     var contactNumber:String = "6041234567"
-    
-    var navigationVC : navigationViewController = navigationViewController()
 
     //===================================================================================================
     // MARK: Outlets
@@ -39,7 +37,6 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     @IBOutlet weak var overviewContainer: UIView!
     @IBOutlet var navigationContainer: UIView!
     @IBOutlet weak var emergency: UIButton!
-    
     
     //===================================================================================================
     // MARK: Actions
@@ -90,9 +87,6 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
         
         super.viewDidLoad()
         
-        navigationVC = navigationViewController()
-        
-        
         // Change appearance for segmented control
         overviewNavControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
             ], for: .normal)
@@ -119,8 +113,6 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
             overviewNavControl.removeSegment(at:0, animated: true)
             overviewNavControl.isUserInteractionEnabled = false
         }
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: (Any)?) {
@@ -136,6 +128,5 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
         if let controller = segue.destination as? navigationViewController, segue.identifier == "showNav" {
             controller.selectedHotspot = selectedHotspot
         }
-        
     }
 }

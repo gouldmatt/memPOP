@@ -20,5 +20,7 @@ extension PersonInfoMO {
     @NSManaged public var name: String?
     @NSManaged public var totalDistance: Int32
     @NSManaged public var contactName: String?
-    @NSManaged public var contactPhone: Int16
+    @NSManaged public var foodNum: Int16
+    @NSManaged public var funNum: Int16
+    @NSManaged public var taskNum: Int16
 }
