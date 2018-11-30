@@ -65,7 +65,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         
         let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
     
-        let top = CGPoint.init(x: 0.0, y: -(self.scrollView.contentInset.top + 62.0))
+        let top = CGPoint.init(x: 0.0, y: -(self.scrollView.contentInset.top + 63.0))
         
         // Check that name and address are filled before saving
         if (nameField.text!.isEmpty || searchBar.text!.isEmpty || emergencyTextField.text!.isEmpty){
@@ -118,7 +118,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             self.scrollView.setContentOffset(top, animated: true)
             
         }
-        else if ((emergencyTextField.text?.count)! > 10 || (emergencyTextField.text?.count)! < 9) {
+        else if ((emergencyTextField.text?.count)! > 10 || (emergencyTextField.text?.count)! <= 9) {
             
             // Check for too many or too few numbers, expected is 10 numbers
             dialogCheck.text = "Please enter 10 numbers only"
@@ -136,63 +136,77 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             
             emergencyTextField.layer.borderWidth = 0.0
             nameField.layer.borderWidth = 0.0
-            
-            // Check for a valid address
-            if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
+        
+        
+            // create a new user or update existing user info
+            if(user == nil){
+                let newUser = PersonInfoMO(context: PersistenceService.context)
+                newUser.name = nameField.text
                 
-                dialogCheck.text = "Please select a valid address"
-                dialogCheck.isHidden = false
+                /////////// Need to look at coredata model ///////////
+                newUser.contactName = emergencyTextField.text
                 
-                self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                let newHotspot = HotspotMO(context: PersistenceService.context)
+                let newPhoto = PhotosMO(context: PersistenceService.context)
                 
-                // Move the scroll view to the top
-                self.scrollView.setContentOffset(top, animated: true)
-            }
-            else {
-                // create a new user or update existing user info
-                if(user == nil){
-                    let newUser = PersonInfoMO(context: PersistenceService.context)
-                    newUser.name = nameField.text
+                newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "home"))!, 1)! as NSData
                     
-                    /////////// Need to look at coredata model ///////////
-                    newUser.contactName = emergencyTextField.text
+                if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
                     
-                    let newHotspot = HotspotMO(context: PersistenceService.context)
-                    let newPhoto = PhotosMO(context: PersistenceService.context)
+                    dialogCheck.text = "Please select a valid address"
+                    dialogCheck.isHidden = false
                     
-                    newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "home"))!, 1)! as NSData
+                    self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
                     
+                    // Move the scroll view to the top
+                    self.scrollView.setContentOffset(top, animated: true)
+                }
+                else {
                     newHotspot.name = "Home"
                     newHotspot.address = searchAddressChosen
                     newHotspot.longitude = searchAddressLongitude
                     newHotspot.latitude = searchAddressLatitude
-                    
+                        
                     newHotspot.addToPhotos(newPhoto)
                 }
-                else {
-                    user?.name = nameField.text
-                    if(changedAddress){
-                        do{
-                            let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
+            }
+            else {
+                user?.name = nameField.text
+                user?.contactName = emergencyTextField.text
+                if(changedAddress){
+                    do{
+                        let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
+                        if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
+                            
+                            dialogCheck.text = "Please select a valid address"
+                            dialogCheck.isHidden = false
+                            
+                            self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                            
+                            // Move the scroll view to the top
+                            self.scrollView.setContentOffset(top, animated: true)
+                        }
+                        else {
                             homeHotspot.address = searchAddressChosen
                             homeHotspot.longitude = searchAddressLongitude
                             homeHotspot.latitude = searchAddressLatitude
                         }
-                        catch {
-                            print("failed hotspot fetch")
-                        }
-                        changedAddress = false
                     }
+                    catch {
+                        print("failed hotspot fetch")
+                    }
+                    changedAddress = false
                 }
-
-                PersistenceService.saveContext()
                 
-                // move back to start screen
-                let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-                for aViewController in viewControllers {
-                    if aViewController is personInfoViewController {
-                        self.navigationController!.popViewController(animated: true)
-                    }
+            }
+            
+            PersistenceService.saveContext()
+                
+            // move back to start screen
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+            for aViewController in viewControllers {
+                if aViewController is personInfoViewController {
+                    self.navigationController!.popViewController(animated: true)
                 }
             }
         }
@@ -229,10 +243,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             if(userFetch.count == 1){
                 user = userFetch[0]
                 nameField.text = user?.name
-                
                 /////////// Need to look at coredata model ///////////
                 emergencyTextField.text = user?.contactName
-                
                 searchBar.text = hotspotFetch[0].address
             }
         }

@@ -29,6 +29,8 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     var longitude:Double = 0.0
     
     var contactNumber:String = "6041234567"
+    
+    var navigationVC : navigationViewController = navigationViewController()
 
     //===================================================================================================
     // MARK: Outlets
@@ -48,6 +50,12 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
         if (sender.selectedSegmentIndex == 0) {
             self.overviewContainer.isHidden = false
             self.navigationContainer.isHidden = true
+            
+            /*
+            navigationVC.directionsTableView.isHidden = false
+            navigationVC.mapOrDirectionsControl.isHidden = false
+            */
+ 
         }
         else {
             self.overviewContainer.isHidden = true
@@ -87,6 +95,8 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        navigationVC = navigationViewController()
         
         
         // Change appearance for segmented control
