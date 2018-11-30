@@ -29,6 +29,7 @@ extension HotspotMO {
     @NSManaged public var transportation: String?
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
+    @NSManaged public var timesVisit: Int32
     @NSManaged public var photos: NSArray?
     @NSManaged public var toDo: NSArray?
 

@@ -16,17 +16,19 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class overviewNavMasterViewController: UIViewController {
+class overviewNavMasterViewController: UIViewController, CLLocationManagerDelegate {
     
     //===================================================================================================
     // MARK: Variables declaration
     //===================================================================================================
     var addedToDos = [NSManagedObject]()
     var addedImages = [NSManagedObject]()
-    var selectedHotspot: NSManagedObject?
+    var selectedHotspot: HotspotMO?
     
     var latitude:Double = 0.0
     var longitude:Double = 0.0
+    
+    var contactNumber:String = "6041234567"
 
     //===================================================================================================
     // MARK: Outlets
@@ -34,6 +36,7 @@ class overviewNavMasterViewController: UIViewController {
     @IBOutlet var overviewNavControl: UISegmentedControl!
     @IBOutlet weak var overviewContainer: UIView!
     @IBOutlet var navigationContainer: UIView!
+    @IBOutlet weak var emergency: UIButton!
     
     //===================================================================================================
     // MARK: Actions
@@ -41,16 +44,42 @@ class overviewNavMasterViewController: UIViewController {
     @IBAction func changedSegment(_ sender: UISegmentedControl) {
         
         // Hide one of the container views based on current segmented control selection
-        if sender.selectedSegmentIndex == 0 {
+        if (sender.selectedSegmentIndex == 0) {
             self.overviewContainer.isHidden = false
             self.navigationContainer.isHidden = true
         }
         else {
             self.overviewContainer.isHidden = true
             self.navigationContainer.isHidden = false
+            
+            let status = CLLocationManager.authorizationStatus()
+            if (status == CLAuthorizationStatus.denied) {
+                // Create the alert
+                let alert = UIAlertController(title: "Locations Permissions Denied", message: "Please enable locations services in the Settings app.", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "Done", style: .cancel) {
+                    (action:UIAlertAction) in
+                    print ("pressed Cancel")
+                }
+                
+                // Add actions to alert
+                alert.addAction(cancelAction)
+                
+                // Show the alert
+                self.present(alert,animated: true, completion: nil)
+            }
         }
     }
-
+    
+    // Call the emergency contact when the emergency button is pressed
+    @IBAction func emergencyPressed(_ sender: Any) {
+        print("entered")
+        // Retrieve emergency contact information
+        let contactNumber = "6041234567"
+        let url = URL(string: "tel://\(contactNumber)")
+        UIApplication.shared.open(url!)
+    }
+    
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
@@ -70,8 +99,15 @@ class overviewNavMasterViewController: UIViewController {
         // Update navigation bar title with hotspot name
         self.title = ((selectedHotspot?.value(forKey: "name")) as? String)
         
-        let hotspot = selectedHotspot as! HotspotMO
-        if ((hotspot.info == nil || (hotspot.info?.isEmpty)!) && hotspot.toDo?.count == 0 && hotspot.photos?.count == 0){
+        // Add Emergency Contact Button to navigation bar
+        let eImage = UIImage(named: "emergency")!.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+        let eButton: UIBarButtonItem = UIBarButtonItem(image: eImage, style: .plain, target: self, action: #selector(emergencyPressed(_:)))
+        self.navigationItem.rightBarButtonItem = eButton
+      
+
+        let hotspot = selectedHotspot
+        if ((hotspot?.info == nil || (hotspot?.info?.isEmpty)!) && hotspot?.toDo?.count == 0 && hotspot?.photos?.count == 0){
+
             self.overviewContainer.isHidden = true
             self.navigationContainer.isHidden = false
             overviewNavControl.removeSegment(at:0, animated: true)
@@ -93,5 +129,4 @@ class overviewNavMasterViewController: UIViewController {
             controller.selectedHotspot = selectedHotspot
         }
     }
-    
 }

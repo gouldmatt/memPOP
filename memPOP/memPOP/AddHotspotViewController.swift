@@ -27,6 +27,7 @@
 import CoreData
 import UIKit
 import MapKit
+import Photos
 
 class AddHotspotViewController: UIViewController, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UICollectionViewDelegate,UICollectionViewDataSource, UITableViewDataSource {
     
@@ -84,16 +85,47 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var searchResultsTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    @IBOutlet var scrollView: UIScrollView!
     //===================================================================================================
     // MARK: Actions
     //===================================================================================================
     @IBAction func ImportPhoto(_ sender: Any) {
         
-        // Open the camera library and show the user their photos
-        image.delegate = self
-        image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
-        image.allowsEditing = false
-        self.present(image, animated: true, completion: nil)
+        // Request Photos Permissions
+        PHPhotoLibrary.requestAuthorization { (status) in
+            switch status {
+            case .authorized:
+                print("authorized")
+            case .denied:
+                print("denied")
+            default:
+                print("default")
+            }
+        }
+
+        let status = PHPhotoLibrary.authorizationStatus()
+        if (status == PHAuthorizationStatus.authorized) {
+            // Open the camera library and show the user their photos
+            image.delegate = self
+            image.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum
+            image.allowsEditing = false
+            self.present(image, animated: true, completion: nil)
+        }
+        else if (status == PHAuthorizationStatus.denied){
+            // Create the alert
+            let alert = UIAlertController(title: "Photos Permissions Denied", message: "Please enable photos permissions in the Settings app.", preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "Done", style: .cancel) {
+                (action:UIAlertAction) in
+                print ("pressed Cancel")
+            }
+            
+            // Add actions to alert
+            alert.addAction(cancelAction)
+            
+            // Show the alert
+            self.present(alert,animated: true, completion: nil)
+        }
     }
     
     @IBAction func addToDo(_ sender: Any) {
@@ -130,6 +162,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             else {
                 self.searchBar.setTextFieldColor(color: UIColor.white.withAlphaComponent(0))
             }
+            
+            // Move the scroll view to the top
+            self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
+            
         }
         else {
             

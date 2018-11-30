@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17D47" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="HotspotMO" representedClassName=".HotspotMO" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
@@ -7,14 +7,20 @@
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timesVisit" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="todoList" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="transportation" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="PhotosMO" inverseName="hotspot" inverseEntity="PhotosMO" syncable="YES"/>
         <relationship name="toDo" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ToDoMO" inverseName="hotspot" inverseEntity="ToDoMO" syncable="YES"/>
     </entity>
     <entity name="PersonInfoMO" representedClassName=".PersonInfoMO" syncable="YES">
-        <attribute name="distanceTravelled" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="contactName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactPhone" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="foodNum" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="funNum" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="taskNum" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="totalDistance" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="PhotosMO" representedClassName=".PhotosMO" syncable="YES">
         <attribute name="photo" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -25,8 +31,8 @@
         <relationship name="hotspot" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HotspotMO" inverseName="toDo" inverseEntity="HotspotMO" syncable="YES"/>
     </entity>
     <elements>
-        <element name="HotspotMO" positionX="-297" positionY="-162" width="128" height="195"/>
-        <element name="PersonInfoMO" positionX="-189" positionY="-63" width="128" height="75"/>
+        <element name="HotspotMO" positionX="-297" positionY="-162" width="128" height="210"/>
+        <element name="PersonInfoMO" positionX="-189" positionY="-63" width="128" height="150"/>
         <element name="PhotosMO" positionX="-74" positionY="-162" width="128" height="73"/>
         <element name="ToDoMO" positionX="-74" positionY="-4" width="128" height="58"/>
     </elements>
