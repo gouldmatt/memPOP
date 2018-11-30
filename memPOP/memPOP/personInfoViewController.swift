@@ -205,8 +205,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell!.textLabel?.text = searchResult.title
         cell!.detailTextLabel?.text = searchResult.subtitle
-        
-        
+    
         return cell!
     }
     
