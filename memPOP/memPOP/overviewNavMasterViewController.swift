@@ -126,7 +126,7 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
             overviewNavControl.isUserInteractionEnabled = false
         }
         
-
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: (Any)?) {

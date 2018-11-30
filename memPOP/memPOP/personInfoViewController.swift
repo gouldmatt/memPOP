@@ -143,7 +143,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 let newUser = PersonInfoMO(context: PersistenceService.context)
                 newUser.name = nameField.text
                 
-                /////////// Need to look at coredata model ///////////
                 newUser.contactName = emergencyTextField.text
                 
                 let newHotspot = HotspotMO(context: PersistenceService.context)
