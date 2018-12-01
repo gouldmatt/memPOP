@@ -19,6 +19,11 @@ import MapKit
 class overviewNavMasterViewController: UIViewController, CLLocationManagerDelegate {
     
     //===================================================================================================
+    // MARK: Constants
+    //===================================================================================================
+    let fetchUser: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
+    
+    //===================================================================================================
     // MARK: Variables declaration
     //===================================================================================================
     var addedToDos = [NSManagedObject]()
@@ -28,8 +33,9 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     var latitude:Double = 0.0
     var longitude:Double = 0.0
     
-    var contactNumber:String = "6041234567"
-
+    var user:PersonInfoMO?
+    var contactNumber:String = ""
+    
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -75,7 +81,18 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     @IBAction func emergencyPressed(_ sender: Any) {
         print("entered")
         // Retrieve emergency contact information
-        let contactNumber = "6041234567"
+        // fetch any existing user information
+        do {
+            let userFetch = try PersistenceService.context.fetch(fetchUser)
+            if(userFetch.count == 1){
+                user = userFetch[0]
+            }
+        }
+        catch {
+            print("failed user fetch")
+        }
+        
+        contactNumber = (user?.contactName)!
         let url = URL(string: "tel://\(contactNumber)")
         UIApplication.shared.open(url!)
     }
