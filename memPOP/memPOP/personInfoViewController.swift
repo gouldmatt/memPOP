@@ -89,7 +89,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 let newHotspot = HotspotMO(context: PersistenceService.context)
                 let newPhoto = PhotosMO(context: PersistenceService.context)
                 
-                newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "home"))!, 1)! as NSData
+                newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "defaultPhoto"))!, 1)! as NSData
                 
                 newHotspot.name = "Home"
                 newHotspot.address = searchAddressChosen

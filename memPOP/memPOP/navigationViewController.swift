@@ -41,7 +41,6 @@
     //===================================================================================================
     var doOnce: Bool = true
     var takeCar: Bool = false
-    var stepCompleted: Bool = false
     var selectedHotspot: HotspotMO?
     var latitude:Double?
     var longitude:Double?
@@ -51,13 +50,7 @@
     var route:MKRoute?
     var routeStepsArr = [String]()
     var routeDistanceArr = [Int]()
-    var stepCounter:Int = 0
     
-    //var routeSteps:Int = 0
-    var touchedScreen:Bool = false
-    var firstTouchLocation:CGPoint?
-    var lastTouchLocation:CGPoint?
-
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -70,43 +63,10 @@
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // Store the first touch location
-        firstTouchLocation = touches.first?.location(in: mapkitView)
-        
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // Store the last touch location
-        lastTouchLocation = touches.first?.location(in: mapkitView)
-        
-        // Check if the first touch and last touch location are the same
-        if(lastTouchLocation == firstTouchLocation) {
-            
-            // Every touch toggles between showing the entire map view or not
-            touchedScreen = !touchedScreen
-            
-            // If equal, choose to hide/show the subviews to show a larger map view
-            if(!touchedScreen) {
-                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
-                // Hide subviews
-                self.navigationView.sendSubview(toBack: mapkitView)
-            }
-            else {
-                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
-                // Show subviews
-                self.navigationView.bringSubview(toFront: mapkitView)
-            }
-        }
-    }
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        touchedScreen = false
         
         directionsTableView.isHidden = true
         doOnce = true
@@ -174,7 +134,6 @@
         
         // This function gets called whenever the user updates their location and updates the route
         
-        //let locValue:CLLocationCoordinate2D = (manager.location?.coordinate)!
         let userLocal = locations.last
         
         // Store the user's current location
@@ -185,19 +144,6 @@
              mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         }
         
-        if(routeStepsArr.count != 0) {
-            // check if user is on track
-            print("result from check")
-            let userRegion = MKCircle(center: (locations.last?.coordinate)!, radius: 30)
-            var onTrackBool = route?.polyline.intersects((userRegion.boundingMapRect))
-            print(onTrackBool!)
-            if !(onTrackBool!) {
-                print("off track")
-                self.mapkitView.add(userRegion)
-                layoutWalkingRoute()
-                onTrackBool = true
-            }
-        }
 
         // For debugging
         //print(currentLatitude!)
@@ -234,11 +180,6 @@
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
     func layoutWalkingRoute() {
-        // reset the step counter & array for this new route
-        stepCounter = 0
-        
-        //self.routeStepsArr.removeAll()
-        //self.routeDistanceArr.removeAll()
         
         // remove any existing things from map
         self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
@@ -278,19 +219,22 @@
                     self.routeStepsArr.append(step.instructions)
 
                 }
-                // create the first region
-                self.routeStepsArr[0] = "Directions to " + (self.selectedHotspot?.name)!
-
-                let step = route.steps[0]
                 
-                let region = CLCircularRegion(center: step.polyline.coordinate, radius: 30, identifier: step.instructions)
+                self.routeStepsArr[0] = "Directions to " + (self.selectedHotspot?.name)!
+                
+                 // create the destination region
+                let step = route.steps.last
+                
+                
+                let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 30, identifier: (step?.instructions)!)
                 region.notifyOnEntry = true
                 region.notifyOnExit = true
                 self.locationManager.startMonitoring(for: region)
                 
                 // draw a circle for debugging on map
                 let circle = MKCircle(center: region.center, radius: region.radius)
-                self.mapkitView.add(circle)
+                                self.mapkitView.add(circle)
+                
             }
             
             // if in overview layout zoom to show whole map
@@ -299,6 +243,12 @@
             }
             
         }
+        
+        if(route?.polyline == nil){
+            print("No available directions")
+            self.routeStepsArr.append("No available directions to " + (self.selectedHotspot?.name)!)
+        }
+        
         // remove existing annotations
         let annotations = self.mapkitView.annotations
         for annotation in annotations {
@@ -316,20 +266,35 @@
     }
     
     @IBAction func changedNavMode(_ sender: Any){
-        if(mapOrDirectionsControl.selectedSegmentIndex == 0){
-            print("map")
-            //layoutWalkingRoute()
-            self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
-            directionsTableView.isHidden = true
+        if(route?.polyline != nil) {
+            if(mapOrDirectionsControl.selectedSegmentIndex == 0){
+                print("map")
+                //layoutWalkingRoute()
+                self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
+                directionsTableView.isHidden = true
+            }
+            else {
+                print("directions")
+                //layoutWalkingRoute()
+                mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
+                directionsTableView.reloadData()
+                directionsTableView.isHidden = false
+            }
         }
         else {
-            print("directions")
-            layoutWalkingRoute()
-            mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
-            directionsTableView.reloadData()
-            directionsTableView.isHidden = false
+            if(mapOrDirectionsControl.selectedSegmentIndex == 0){
+                print("map")
+                //layoutWalkingRoute()
+                directionsTableView.isHidden = true
+            }
+            else {
+                print("directions")
+                //layoutWalkingRoute()
+                mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
+                directionsTableView.reloadData()
+                directionsTableView.isHidden = false
+            }
             
-
         }
     }
     public func numberOfSections(in tableView: UITableView) -> Int {
@@ -352,7 +317,7 @@
         
         // Process each step and update the table view cell accordingly
         
-        if(indexPath.row == 0 && stepCounter == 0) {
+        if(indexPath.row == 0) {
             
             // The very first step shows the current direction highlighted
             
@@ -456,63 +421,9 @@
     
     //Consulted https://www.youtube.com/watch?v=8m-duJ9X_Hs for detecting user entry/exit of regions
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if !(self.stepCompleted) {
-            if(routeStepsArr.count != 0){
-                print("\n\n\n\n\n")
-                print("within region")
-                print("next step while entering")
-                print("step counter")
-                print(stepCounter)
-                routeStepsArr.remove(at: stepCounter)
-                stepCounter += 1
-                directionsTableView.reloadData()
-                stepCompleted = true
-                
-                if(stepCounter < routeStepsArr.count){
-                    let step = route?.steps[stepCounter]
-                    // create the regions
-                    let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 30, identifier: (step?.instructions)!)
-                    region.notifyOnEntry = true
-                    region.notifyOnExit = true
-                    self.locationManager.startMonitoring(for: region)
-                    
-                    
-                    let circle = MKCircle(center: region.center, radius: region.radius)
-                    self.mapkitView.add(circle)
-                }
-                
-            }
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-    
-        if(routeStepsArr.count != 0){
-            if(stepCompleted != true){
-                print("\n\n\n\n\n")
-                print("left region")
-                print("next step while leaving")
-                print("step counter")
-                print(stepCounter)
-                routeStepsArr.remove(at: stepCounter)
-                stepCounter += 1
-                directionsTableView.reloadData()
-                
-                if(stepCounter < routeStepsArr.count){
-                    let step = route?.steps[stepCounter]
-                    // create the regions
-                    let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 30, identifier: (step?.instructions)!)
-                    region.notifyOnEntry = true
-                    region.notifyOnExit = true
-                    self.locationManager.startMonitoring(for: region)
-                    
-                    
-                    let circle = MKCircle(center: region.center, radius: region.radius)
-                    self.mapkitView.add(circle)
-                }
-            }
-            stepCompleted = false
-        }
+
+        
+        
         
     }
     
@@ -538,7 +449,7 @@
                 }
                 else {
                     let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-                    var image = #imageLiteral(resourceName: "hotspotImage") 
+                    var image = #imageLiteral(resourceName: "hotspot")
                     
                     image = image.resize(targetSize: CGSize(width: 40, height: 40))
                     view.image = image
