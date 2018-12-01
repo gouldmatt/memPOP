@@ -84,8 +84,9 @@
 
         
         // Request the user permission to use their location
-        self.locationManager.requestWhenInUseAuthorization()
+        //self.locationManager.requestWhenInUseAuthorization()
         
+ 
         
         // Check if permission is granted by the user
         let status = CLLocationManager.authorizationStatus()

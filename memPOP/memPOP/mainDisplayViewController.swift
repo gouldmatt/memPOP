@@ -23,11 +23,11 @@
 // Update method for sorting the hotspots so that the sort only happens if a hotspot has been added/edited
 // Saved the number of hotspots in each category 
 //
-
+import CoreLocation
 import UIKit
 import CoreData
 
-class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLocationManagerDelegate, UICollectionViewDataSource {
     
     //===================================================================================================
     // MARK: Constants
@@ -44,7 +44,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     var foodHotspots = [HotspotMO]()
     var funHotspots = [HotspotMO]()
     var taskHotspots = [HotspotMO]()
-    
+    var locationManager = CLLocationManager()
     var mainEditIsTapped : Bool = false;
     var didSortHotspots: Bool = false;
     
@@ -77,6 +77,9 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        // Request the user permission to use their location
+        self.locationManager.requestWhenInUseAuthorization()
         
         // Change appearance for segmented control (categories)
         selectedCategory.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
