@@ -846,9 +846,24 @@ extension AddHotspotViewController : UISearchBarDelegate {
 extension AddHotspotViewController : MKLocalSearchCompleterDelegate {
    
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        let size = completer.results.count
+        var counter:Int = 0
+        var filteredResults = [MKLocalSearchCompletion]()
+        
+        // Filter out any address with "Search Nearby" string
+        while(counter < size) {
+            if(completer.results[counter].subtitle == "Search Nearby") {
+                // Do nothing
+            }
+            else {
+                // Append to the filtered results array
+                filteredResults.append(completer.results[counter])
+            }
+            counter = counter + 1
+        }
         
         // Autocomplete the address and update the results on the table view
-        searchResults = completer.results
+        searchResults = filteredResults
         searchResultsTableView.reloadData()
     }
     

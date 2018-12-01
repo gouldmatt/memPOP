@@ -52,11 +52,6 @@
     var routeStepsArr = [String]()
     var routeDistanceArr = [Int]()
     var stepCounter:Int = 0
-    
-    //var routeSteps:Int = 0
-    var touchedScreen:Bool = false
-    var firstTouchLocation:CGPoint?
-    var lastTouchLocation:CGPoint?
 
     //===================================================================================================
     // MARK: Outlets
@@ -65,48 +60,13 @@
     @IBOutlet var mapOrDirectionsControl: UISegmentedControl!
     
     @IBOutlet var directionsTableView: UITableView!
-
-    @IBOutlet var navigationView: UIView!
+    
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // Store the first touch location
-        firstTouchLocation = touches.first?.location(in: mapkitView)
-        
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        // Store the last touch location
-        lastTouchLocation = touches.first?.location(in: mapkitView)
-        
-        // Check if the first touch and last touch location are the same
-        if(lastTouchLocation == firstTouchLocation) {
-            
-            // Every touch toggles between showing the entire map view or not
-            touchedScreen = !touchedScreen
-            
-            // If equal, choose to hide/show the subviews to show a larger map view
-            if(!touchedScreen) {
-                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
-                // Hide subviews
-                self.navigationView.sendSubview(toBack: mapkitView)
-            }
-            else {
-                UIView.transition(with: navigationView, duration: 0.2, options: .transitionCrossDissolve, animations: nil, completion: nil)
-                // Show subviews
-                self.navigationView.bringSubview(toFront: mapkitView)
-            }
-        }
-    }
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        touchedScreen = false
         
         directionsTableView.isHidden = true
         doOnce = true
@@ -213,9 +173,19 @@
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-            renderer.strokeColor = UIColor.blue
-            renderer.lineWidth = 10.0
             
+            // Check if user takes car or is walking
+            if(takeCar) {
+                // For car show a filled line
+                renderer.strokeColor = UIColor.blue
+                renderer.lineWidth = 5.0
+            }
+            else {
+                // When walking show a dotted line
+                renderer.strokeColor = UIColor.blue
+                renderer.lineWidth = 5.0
+                renderer.lineDashPattern = [0, 7]
+            }
             return renderer
         }
         else if overlay is MKCircle {
@@ -526,9 +496,9 @@
                 if(annotation.identifier == "start"){
                 
                     let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-                    var image = #imageLiteral(resourceName: "user")
+                    var image = UIImage(named: "user")
                 
-                    image = image.resize(targetSize: CGSize(width: 40, height: 40))
+                    image = image?.resize(targetSize: CGSize(width: 40, height: 40))
                     view.image = image
                     view.isEnabled = true
                     view.canShowCallout = true
@@ -538,9 +508,9 @@
                 }
                 else {
                     let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-                    var image = #imageLiteral(resourceName: "hotspotImage") 
+                    var image = UIImage(named: "hotspot")
                     
-                    image = image.resize(targetSize: CGSize(width: 40, height: 40))
+                    image = image?.resize(targetSize: CGSize(width: 40, height: 40))
                     view.image = image
                     view.isEnabled = true
                     view.canShowCallout = true
