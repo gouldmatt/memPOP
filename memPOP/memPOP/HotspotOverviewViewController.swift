@@ -44,7 +44,10 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     @IBOutlet var toDoListLabel: UILabel!
     @IBOutlet var photosLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
-    
+    @IBOutlet var toDoListHeight: NSLayoutConstraint!
+    @IBOutlet var descriptionHeight: NSLayoutConstraint!
+    @IBOutlet var photosSpace: NSLayoutConstraint!
+    @IBOutlet var descriptionSpace: NSLayoutConstraint!
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
@@ -60,6 +63,13 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         // Hide the label if there are no ToDos
         if (toDoTableHeight.constant == 0){
             toDoListLabel.isHidden = true
+            toDoTableHeight.constant = 0
+            toDoListHeight.constant = 0 
+            descriptionSpace.constant = 0
+        }
+        else {
+            toDoTableHeight.constant = toDoTable.contentSize.height
+            descriptionSpace.constant = 30
         }
         
         // Fetch and display the description of the hotspot selected
@@ -68,9 +78,17 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         // Hide the text view if there is no description
         if(descriptionView.text == nil){
             descriptionLabel.isHidden = true
+            descriptionHeight.constant = 0
+            photosSpace.constant = 0
         }
         else if(descriptionView.text?.isEmpty)!{
             descriptionLabel.isHidden = true
+            descriptionHeight.constant = 0
+            photosSpace.constant = 0
+        }
+        else {
+            photosSpace.constant = 30
+            descriptionHeight.constant = 40
         }
         
         collectionView.bounces = false
@@ -108,13 +126,13 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     public func tableView(_ toDoTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Use the single "photoCell" cell created in the storyboard as a template for every ToDo item
-        let photoCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "photoCell")
+        let toDoCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cellToDo")
     
-        photoCell.textLabel?.text = (addedToDos[indexPath.row].value(forKey: "toDoItem") as! String)
-        photoCell.backgroundColor = UIColor(red:0.16, green:0.19, blue:0.21, alpha:1.0)
-        photoCell.textLabel?.textColor = UIColor.white
+        toDoCell.textLabel?.text = (addedToDos[indexPath.row].value(forKey: "toDoItem") as! String)
+        toDoCell.backgroundColor = UIColor(red:0.16, green:0.19, blue:0.21, alpha:1.0)
+        toDoCell.textLabel?.textColor = UIColor.white
         
-        return(photoCell)
+        return(toDoCell)
     }
 
     

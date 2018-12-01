@@ -392,8 +392,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         
         super.viewDidLoad()
         
-        self.hideKeyboard()
-        
         // For autocomplete table view
         searchResultsTableView.dataSource = self
         searchResultsTableView.delegate = self
@@ -866,21 +864,3 @@ extension AddHotspotViewController : MKLocalSearchCompleterDelegate {
     }
 }
 
-// Used code from: https://stackoverflow.com/questions/32281651/how-to-dismiss-keyboard-when-touching-anywhere-outside-uitextfield-in-swift
-extension UIViewController
-{
-    func hideKeyboard()
-    {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(UIViewController.dismissKeyboard))
-        
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard()
-    {
-        view.endEditing(true)
-    }
-}

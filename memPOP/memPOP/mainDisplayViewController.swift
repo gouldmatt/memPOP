@@ -176,6 +176,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
                     person[0].foodNum = foodNum
                     person[0].funNum = funNum
                     person[0].taskNum = taskNum
+                    
+                    PersistenceService.saveContext()
                 }
                 
                 // determine which hotspots to display
