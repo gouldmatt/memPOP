@@ -202,6 +202,7 @@ class settingsViewController: UIViewController {
             } else { // Daily Freq
                 print("Daily")
                 dateAddNotif.hour = 18 // 18:00 or 6 PM
+                //dateAddNotif.minute = 7
                 user?.addHotspotNotifSetting = 1; // Set notification setting
             }
             

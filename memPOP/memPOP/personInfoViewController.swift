@@ -145,9 +145,9 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 newUser.addHotspotNotifSetting = 0
                 
                 let newHotspot = HotspotMO(context: PersistenceService.context)
-                let newPhoto = PhotosMO(context: PersistenceService.context)
+                //let newPhoto = PhotosMO(context: PersistenceService.context)
                 
-                newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "defaultPhoto"))!, 1)! as NSData
+                //newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "defaultPhoto"))!, 1)! as NSData
                 
                 // Check for a valid address
                 if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
@@ -165,7 +165,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     newHotspot.address = searchAddressChosen
                     newHotspot.longitude = searchAddressLongitude
                     newHotspot.latitude = searchAddressLatitude
-                    newHotspot.addToPhotos(newPhoto)
+                    //newHotspot.addToPhotos(newPhoto)
                 }
             }
             else {
