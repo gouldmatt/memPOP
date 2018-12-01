@@ -56,6 +56,17 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     
     @IBOutlet weak var barChart: BarChartView!
     @IBOutlet weak var pieChart: PieChartView!
+    
+    @IBOutlet var pieChartLabel: UILabel!
+    @IBOutlet var barChartLabel: UILabel!
+    
+    @IBOutlet var pieChartLabelHeight: NSLayoutConstraint!
+    @IBOutlet var barChartLabelHeight: NSLayoutConstraint!
+    
+    
+    @IBOutlet var pieChartHeight: NSLayoutConstraint!
+    @IBOutlet var barChartHeight: NSLayoutConstraint!
+    
     //===================================================================================================
     // Actions
     //===================================================================================================
@@ -63,7 +74,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     
         let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
         
-        let top = CGPoint.init(x: 0.0, y: -(self.scrollView.contentInset.top + 63.0))
+        let top = CGPoint.init(x: 0.0, y: -(self.scrollView.contentInset.top))
         
         // Check that name and address are filled before saving
         if (nameField.text!.isEmpty || searchBar.text!.isEmpty || emergencyTextField.text!.isEmpty){
@@ -245,6 +256,30 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 emergencyTextField.text = user?.contactName
                 searchBar.text = hotspotFetch[0].address
                 loadPieChart(foodCount: Double((user?.foodNum)!), funCount: Double((user?.funNum)!), taskCount: Double((user?.taskNum)!))
+                
+                if(user?.foodNum == 0 && user?.funNum == 0 && user?.taskNum == 0){
+                    pieChart.isHidden = true
+                    pieChartHeight.constant = 0
+                    pieChartLabel.isHidden = true
+                    pieChartLabelHeight.constant = 0
+                }
+                else {
+                    pieChartHeight.constant = 217
+                    pieChartLabelHeight.constant = 31
+                }
+                
+                if(false){
+                    barChart.isHidden = true
+                    barChartHeight.constant = 0
+                    barChartLabel.isHidden = true
+                    barChartLabelHeight.constant = 0
+                }
+                else {
+                    barChartHeight.constant = 212
+                    barChartLabelHeight.constant = 31
+                }
+                
+                
             }
         }
         catch {
@@ -257,6 +292,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         hotspotsCount = [20, 4, 6, 3, 12, 16, 4, 18, 2, 4, 5, 4]
         loadBarChart(dataEntryX: months, dataEntryY: hotspotsCount)
         //loadPieChart(foodCount: Double(foodCount!), funCount: Double(funCount!), taskCount: Double(taskCount!))
+        
+        
     }
     
     override func viewWillAppear(_ animated:Bool) {

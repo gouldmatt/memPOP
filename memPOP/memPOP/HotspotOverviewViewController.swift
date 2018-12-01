@@ -44,7 +44,10 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     @IBOutlet var toDoListLabel: UILabel!
     @IBOutlet var photosLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
-    
+    @IBOutlet var toDoListHeight: NSLayoutConstraint!
+    @IBOutlet var descriptionHeight: NSLayoutConstraint!
+    @IBOutlet var photosSpace: NSLayoutConstraint!
+    @IBOutlet var descriptionSpace: NSLayoutConstraint!
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
@@ -60,6 +63,13 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         // Hide the label if there are no ToDos
         if (toDoTableHeight.constant == 0){
             toDoListLabel.isHidden = true
+            toDoTableHeight.constant = 0
+            toDoListHeight.constant = 0 
+            descriptionSpace.constant = 0
+        }
+        else {
+            toDoTableHeight.constant = toDoTable.contentSize.height
+            descriptionSpace.constant = 30
         }
         
         // Fetch and display the description of the hotspot selected
@@ -68,9 +78,17 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
         // Hide the text view if there is no description
         if(descriptionView.text == nil){
             descriptionLabel.isHidden = true
+            descriptionHeight.constant = 0
+            photosSpace.constant = 0
         }
         else if(descriptionView.text?.isEmpty)!{
             descriptionLabel.isHidden = true
+            descriptionHeight.constant = 0
+            photosSpace.constant = 0
+        }
+        else {
+            photosSpace.constant = 30
+            descriptionHeight.constant = 40
         }
         
         collectionView.bounces = false
