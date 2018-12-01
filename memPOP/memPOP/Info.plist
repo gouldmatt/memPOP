@@ -2,10 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSRemindersUsageDescription</key>
+	<string>memPOP needs to be able to send reminders for notifications.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>memPOP needs get your location for navigation</string>
+	<string>memPOP needs to get your location for navigation</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>memPOP needs get your location for navigation</string>
+	<string>memPOP needs to get your location for navigation</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

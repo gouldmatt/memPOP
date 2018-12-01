@@ -140,6 +140,10 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 newUser.name = nameField.text
                 newUser.contactName = emergencyTextField.text
                 
+                // set the default values for the notification setting to off.
+                newUser.activitiesNotifSetting = 0
+                newUser.addHotspotNotifSetting = 0
+                
                 let newHotspot = HotspotMO(context: PersistenceService.context)
                 let newPhoto = PhotosMO(context: PersistenceService.context)
                 

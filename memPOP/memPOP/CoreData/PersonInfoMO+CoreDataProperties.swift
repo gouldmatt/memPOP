@@ -23,4 +23,6 @@ extension PersonInfoMO {
     @NSManaged public var foodNum: Int16
     @NSManaged public var funNum: Int16
     @NSManaged public var taskNum: Int16
+    @NSManaged public var addHotspotNotifSetting: Int16
+    @NSManaged public var activitiesNotifSetting: Int16
 }

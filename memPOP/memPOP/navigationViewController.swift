@@ -135,6 +135,8 @@
         
         let userLocal = locations.last
         
+        
+        
         // Store the user's current location
         currentLongitude = userLocal?.coordinate.longitude
         currentLatitude = userLocal?.coordinate.latitude

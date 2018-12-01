@@ -737,15 +737,213 @@
             <objects>
                 <viewController title="Settings" id="m7B-yQ-MXr" customClass="settingsViewController" customModule="memPOP" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8hF-QA-CWs">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cpa-Yb-HWU">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHL-t5-Zw7">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   Notifications" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qL-f2-ysX">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="31"/>
+                                                <color key="backgroundColor" red="0.93871456384658813" green="0.45636433362960815" blue="0.46130120754241943" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="31" id="3ef-AT-T50"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-wd-RpH">
+                                                <rect key="frame" x="227" y="157" width="132" height="29"/>
+                                                <segments>
+                                                    <segment title="On"/>
+                                                    <segment title="Off"/>
+                                                </segments>
+                                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeActivitiesNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="mJQ-eM-PdC"/>
+                                                </connections>
+                                            </segmentedControl>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a hotspot notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJs-ND-wie">
+                                                <rect key="frame" x="16" y="47" width="197" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enables reminders to add new memories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WG9-ex-0Ab">
+                                                <rect key="frame" x="16" y="201" width="343" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3t0-IV-TNa">
+                                                <rect key="frame" x="16" y="235" width="77" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cdI-9W-Guy">
+                                                <rect key="frame" x="109" y="117" width="250" height="29"/>
+                                                <segments>
+                                                    <segment title="Daily"/>
+                                                    <segment title="Weekly"/>
+                                                    <segment title="Monthly"/>
+                                                </segments>
+                                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeAddHotspotNotifFreq:" destination="m7B-yQ-MXr" eventType="valueChanged" id="vxg-Pt-FR3"/>
+                                                </connections>
+                                            </segmentedControl>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activities notification        " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Riq-ZO-Aif">
+                                                <rect key="frame" x="16" y="161" width="195" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="eUf-2K-rja">
+                                                <rect key="frame" x="229" y="43" width="130" height="29"/>
+                                                <segments>
+                                                    <segment title="On"/>
+                                                    <segment title="Off"/>
+                                                </segments>
+                                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeAddHotspotNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="OeW-7m-0oU"/>
+                                                    <action selector="setAddHotspotNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="rtp-7S-vC1"/>
+                                                </connections>
+                                            </segmentedControl>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enables reminders to visit your hotspots" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCS-Dz-HfI">
+                                                <rect key="frame" x="16" y="87" width="343" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="723-qh-DGo">
+                                                <rect key="frame" x="16" y="121" width="77" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ToF-Ur-bLe">
+                                                <rect key="frame" x="109" y="231" width="250" height="29"/>
+                                                <segments>
+                                                    <segment title="Daily"/>
+                                                    <segment title="Weekly"/>
+                                                    <segment title="Monthly"/>
+                                                </segments>
+                                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="changeActivitiesNotifFreq:" destination="m7B-yQ-MXr" eventType="valueChanged" id="wEJ-7L-beI"/>
+                                                </connections>
+                                            </segmentedControl>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   How-to and Help" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Bw-Pm-xca">
+                                                <rect key="frame" x="0.0" y="275" width="375" height="31"/>
+                                                <color key="backgroundColor" red="0.93871456379999996" green="0.45636433360000001" blue="0.46130120749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="31" id="KQ5-Tg-Y7L"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   About App" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qu-6h-5ml">
+                                                <rect key="frame" x="0.0" y="406" width="375" height="31"/>
+                                                <color key="backgroundColor" red="0.93871456379999996" green="0.45636433360000001" blue="0.46130120749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="31" id="gwm-23-Dwr"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   Terms and Conditions" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Jp-Sk-swH">
+                                                <rect key="frame" x="0.0" y="537" width="375" height="31"/>
+                                                <color key="backgroundColor" red="0.93871456379999996" green="0.45636433360000001" blue="0.46130120749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="31" id="5uh-Mz-OvP"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="WG9-ex-0Ab" secondAttribute="trailing" constant="16" id="37e-2e-DQV"/>
+                                            <constraint firstItem="hy2-wd-RpH" firstAttribute="leading" secondItem="Riq-ZO-Aif" secondAttribute="trailing" constant="16" id="7jh-K1-ffg"/>
+                                            <constraint firstItem="5Bw-Pm-xca" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" id="7kW-GE-W17"/>
+                                            <constraint firstAttribute="trailing" secondItem="3Jp-Sk-swH" secondAttribute="trailing" id="AKS-eM-KFh"/>
+                                            <constraint firstItem="3Jp-Sk-swH" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" id="BUH-Nj-9f3"/>
+                                            <constraint firstItem="5qu-6h-5ml" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" id="Bhu-7x-N5e"/>
+                                            <constraint firstItem="5qu-6h-5ml" firstAttribute="top" secondItem="5Bw-Pm-xca" secondAttribute="bottom" constant="100" id="GU8-QS-Dmz"/>
+                                            <constraint firstAttribute="trailing" secondItem="hy2-wd-RpH" secondAttribute="trailing" constant="16" id="KQ1-DT-97R"/>
+                                            <constraint firstItem="eUf-2K-rja" firstAttribute="top" secondItem="3qL-f2-ysX" secondAttribute="bottom" constant="12" id="LgF-ig-2he"/>
+                                            <constraint firstItem="Riq-ZO-Aif" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" constant="16" id="MAW-rh-xxa"/>
+                                            <constraint firstItem="723-qh-DGo" firstAttribute="top" secondItem="QCS-Dz-HfI" secondAttribute="bottom" constant="16" id="Nbf-bH-zGU"/>
+                                            <constraint firstItem="723-qh-DGo" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" constant="16" id="Nuu-sc-rcx"/>
+                                            <constraint firstAttribute="trailing" secondItem="5qu-6h-5ml" secondAttribute="trailing" id="PoB-bT-jZW"/>
+                                            <constraint firstItem="cdI-9W-Guy" firstAttribute="leading" secondItem="723-qh-DGo" secondAttribute="trailing" constant="16" id="QdD-6h-dKd"/>
+                                            <constraint firstItem="WG9-ex-0Ab" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" constant="16" id="Qg9-AY-VMd"/>
+                                            <constraint firstItem="QCS-Dz-HfI" firstAttribute="top" secondItem="eUf-2K-rja" secondAttribute="bottom" constant="16" id="TrE-0G-OhA"/>
+                                            <constraint firstItem="3t0-IV-TNa" firstAttribute="top" secondItem="WG9-ex-0Ab" secondAttribute="bottom" constant="16" id="Ugi-Bx-ui8"/>
+                                            <constraint firstItem="3qL-f2-ysX" firstAttribute="top" secondItem="dHL-t5-Zw7" secondAttribute="top" id="arb-fp-sNl"/>
+                                            <constraint firstItem="3t0-IV-TNa" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" constant="16" id="cSz-FA-1tJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="cdI-9W-Guy" secondAttribute="trailing" constant="16" id="dIM-Du-Mng"/>
+                                            <constraint firstAttribute="trailing" secondItem="5Bw-Pm-xca" secondAttribute="trailing" id="dlP-Zh-6h2"/>
+                                            <constraint firstAttribute="trailing" secondItem="eUf-2K-rja" secondAttribute="trailing" constant="16" id="eci-g8-mbp"/>
+                                            <constraint firstItem="3Jp-Sk-swH" firstAttribute="top" secondItem="5qu-6h-5ml" secondAttribute="bottom" constant="100" id="gdg-ag-CEW"/>
+                                            <constraint firstItem="WG9-ex-0Ab" firstAttribute="top" secondItem="hy2-wd-RpH" secondAttribute="bottom" constant="16" id="h0o-Nm-GYd"/>
+                                            <constraint firstAttribute="trailing" secondItem="QCS-Dz-HfI" secondAttribute="trailing" constant="16" id="hVv-Aa-DAX"/>
+                                            <constraint firstItem="3qL-f2-ysX" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" id="jxo-1R-9sg"/>
+                                            <constraint firstItem="Riq-ZO-Aif" firstAttribute="top" secondItem="cdI-9W-Guy" secondAttribute="bottom" constant="16" id="kTH-w4-oC8"/>
+                                            <constraint firstItem="5Bw-Pm-xca" firstAttribute="top" secondItem="ToF-Ur-bLe" secondAttribute="bottom" constant="16" id="laJ-lC-BQg"/>
+                                            <constraint firstItem="cdI-9W-Guy" firstAttribute="leading" secondItem="723-qh-DGo" secondAttribute="trailing" constant="16" id="luh-Ys-hxg"/>
+                                            <constraint firstItem="ToF-Ur-bLe" firstAttribute="top" secondItem="WG9-ex-0Ab" secondAttribute="bottom" constant="12" id="oFZ-Pf-RSI"/>
+                                            <constraint firstAttribute="trailing" secondItem="3qL-f2-ysX" secondAttribute="trailing" id="qCl-KS-0XR"/>
+                                            <constraint firstItem="ToF-Ur-bLe" firstAttribute="leading" secondItem="3t0-IV-TNa" secondAttribute="trailing" constant="16" id="sDW-xi-BMH"/>
+                                            <constraint firstItem="UJs-ND-wie" firstAttribute="top" secondItem="3qL-f2-ysX" secondAttribute="bottom" constant="16" id="sww-MZ-3Rs"/>
+                                            <constraint firstItem="hy2-wd-RpH" firstAttribute="top" secondItem="cdI-9W-Guy" secondAttribute="bottom" constant="12" id="v2T-W4-KvS"/>
+                                            <constraint firstItem="cdI-9W-Guy" firstAttribute="top" secondItem="QCS-Dz-HfI" secondAttribute="bottom" constant="12" id="xR7-CR-OuM"/>
+                                            <constraint firstItem="UJs-ND-wie" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" constant="16" id="yb0-VX-uKP"/>
+                                            <constraint firstAttribute="trailing" secondItem="ToF-Ur-bLe" secondAttribute="trailing" constant="16" id="ygB-6l-A2P"/>
+                                            <constraint firstItem="eUf-2K-rja" firstAttribute="leading" secondItem="UJs-ND-wie" secondAttribute="trailing" constant="16" id="ynM-4u-FE5"/>
+                                            <constraint firstItem="QCS-Dz-HfI" firstAttribute="leading" secondItem="dHL-t5-Zw7" secondAttribute="leading" constant="16" id="yzE-Ri-qlN"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="dHL-t5-Zw7" secondAttribute="trailing" id="F1e-WT-6gH"/>
+                                    <constraint firstItem="dHL-t5-Zw7" firstAttribute="leading" secondItem="Cpa-Yb-HWU" secondAttribute="leading" id="M8s-pG-afc"/>
+                                    <constraint firstAttribute="bottom" secondItem="dHL-t5-Zw7" secondAttribute="bottom" id="QtW-uf-a1t"/>
+                                    <constraint firstItem="dHL-t5-Zw7" firstAttribute="top" secondItem="Cpa-Yb-HWU" secondAttribute="top" id="dDE-QW-e9w"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Cpa-Yb-HWU" secondAttribute="bottom" id="5VI-dK-Yjs"/>
+                            <constraint firstItem="Cpa-Yb-HWU" firstAttribute="leading" secondItem="hVP-cW-DPR" secondAttribute="leading" id="CDp-N9-8m5"/>
+                            <constraint firstItem="Cpa-Yb-HWU" firstAttribute="trailing" secondItem="hVP-cW-DPR" secondAttribute="trailing" id="I7v-5L-pd9"/>
+                            <constraint firstItem="dHL-t5-Zw7" firstAttribute="height" secondItem="8hF-QA-CWs" secondAttribute="height" priority="250" id="UCX-XV-UHC"/>
+                            <constraint firstItem="Cpa-Yb-HWU" firstAttribute="top" secondItem="8hF-QA-CWs" secondAttribute="top" id="cfy-WU-YeX"/>
+                            <constraint firstItem="dHL-t5-Zw7" firstAttribute="width" secondItem="8hF-QA-CWs" secondAttribute="width" id="eVn-nN-huV"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="hVP-cW-DPR"/>
                     </view>
+                    <size key="freeformSize" width="375" height="900"/>
+                    <connections>
+                        <outlet property="activitiesNotif" destination="hy2-wd-RpH" id="6DD-qw-Ocu"/>
+                        <outlet property="activitiesNotifFreq" destination="ToF-Ur-bLe" id="p0z-qu-jJI"/>
+                        <outlet property="addHotspotNotif" destination="eUf-2K-rja" id="0nb-6r-xmp"/>
+                        <outlet property="addHotspotNotifFreq" destination="cdI-9W-Guy" id="LW0-7S-euf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S9f-SI-Yf3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="472.80000000000001" y="805.54722638680664"/>
+            <point key="canvasLocation" x="472.80000000000001" y="805.09745127436292"/>
         </scene>
         <!--Overview Navigation Select-->
         <scene sceneID="UEa-eN-UGE">
