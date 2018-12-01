@@ -51,6 +51,9 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var dialogCheck: UITextField!
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var emergencyTextField: UITextField!
+    
     @IBOutlet weak var barChart: BarChartView!
     @IBOutlet weak var pieChart: PieChartView!
     //===================================================================================================
@@ -58,54 +61,133 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     //===================================================================================================
     @IBAction func donePressed(_ sender: Any) {
     
+        let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
+        
+        let top = CGPoint.init(x: 0.0, y: -(self.scrollView.contentInset.top + 63.0))
+        
         // Check that name and address are filled before saving
-        if (nameField.text!.isEmpty || searchBar.text!.isEmpty){
+        if (nameField.text!.isEmpty || searchBar.text!.isEmpty || emergencyTextField.text!.isEmpty){
+            
+            dialogCheck.text = "Please complete the highlighted fields"
             dialogCheck.isHidden = false
             dialogCheck.layer.borderWidth = 0.0
+            
+            // Create a red border around the name field if empty
             if (nameField.text!.isEmpty) {
                 nameField.layer.borderWidth = 1.0
-                let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
                 nameField.layer.borderColor = layerColor.cgColor
-                
             }
             else {
                 nameField.layer.borderWidth = 0.0
             }
             
+            // Create a red border around the contact phone field if empty
+            if (emergencyTextField.text!.isEmpty) {
+                emergencyTextField.layer.borderWidth = 1.0
+                emergencyTextField.layer.borderColor = layerColor.cgColor
+            }
+            else {
+                emergencyTextField.layer.borderWidth = 0.0
+            }
             
+            // Crete a red border around the search bar field if empty
             if (searchBar.text!.isEmpty) {
                 self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
             }
             else {
                 self.searchBar.setTextFieldColor(color: UIColor.white.withAlphaComponent(0))
             }
+            
+            // Move the scroll view to the top
+            self.scrollView.setContentOffset(top, animated: true)
+        }
+        else if (!(emergencyTextField.text?.isNumber)!){
+            
+            // Check if the the Contact field has only numbers
+            dialogCheck.text = "Please enter only numbers for Contact field"
+            dialogCheck.isHidden = false
+            dialogCheck.layer.borderWidth = 0.0
+            
+            emergencyTextField.layer.borderWidth = 1.0
+            emergencyTextField.layer.borderColor = layerColor.cgColor
+            
+            // Move the scroll view to the top
+            self.scrollView.setContentOffset(top, animated: true)
+            
+        }
+        else if ((emergencyTextField.text?.count)! > 10 || (emergencyTextField.text?.count)! <= 9) {
+            
+            // Check for too many or too few numbers, expected is 10 numbers
+            dialogCheck.text = "Please enter 10 numbers only"
+            dialogCheck.isHidden = false
+            dialogCheck.layer.borderWidth = 0.0
+            
+            emergencyTextField.layer.borderWidth = 1.0
+            emergencyTextField.layer.borderColor = layerColor.cgColor
+            
+            // Move the scroll view to the top
+            self.scrollView.setContentOffset(top, animated: true)
+            
         }
         else {
+            
+            emergencyTextField.layer.borderWidth = 0.0
+            nameField.layer.borderWidth = 0.0
+            
             // create a new user or update existing user info
             if(user == nil){
                 let newUser = PersonInfoMO(context: PersistenceService.context)
                 newUser.name = nameField.text
+                newUser.contactName = emergencyTextField.text
                 
                 let newHotspot = HotspotMO(context: PersistenceService.context)
                 let newPhoto = PhotosMO(context: PersistenceService.context)
                 
                 newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "defaultPhoto"))!, 1)! as NSData
                 
-                newHotspot.name = "Home"
-                newHotspot.address = searchAddressChosen
-                newHotspot.longitude = searchAddressLongitude
-                newHotspot.latitude = searchAddressLatitude
-                
-                newHotspot.addToPhotos(newPhoto)
+                // Check for a valid address
+                if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
+                    
+                    dialogCheck.text = "Please select a valid address"
+                    dialogCheck.isHidden = false
+                    
+                    self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                    
+                    // Move the scroll view to the top
+                    self.scrollView.setContentOffset(top, animated: true)
+                }
+                else {
+                    newHotspot.name = "Home"
+                    newHotspot.address = searchAddressChosen
+                    newHotspot.longitude = searchAddressLongitude
+                    newHotspot.latitude = searchAddressLatitude
+                    newHotspot.addToPhotos(newPhoto)
+                }
             }
             else {
                 user?.name = nameField.text
+                user?.contactName = emergencyTextField.text
+                
                 if(changedAddress){
                     do{
                         let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
-                        homeHotspot.address = searchAddressChosen
-                        homeHotspot.longitude = searchAddressLongitude
-                        homeHotspot.latitude = searchAddressLatitude
+                        
+                        // Check for a valid address
+                        if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
+                            
+                            dialogCheck.text = "Please select a valid address"
+                            dialogCheck.isHidden = false
+                            
+                            self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                            
+                            // Move the scroll view to the top
+                            self.scrollView.setContentOffset(top, animated: true)
+                        }
+                        else {
+                            homeHotspot.address = searchAddressChosen
+                            homeHotspot.longitude = searchAddressLongitude
+                            homeHotspot.latitude = searchAddressLatitude
+                        }
                     }
                     catch {
                         print("failed hotspot fetch")
@@ -125,7 +207,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             }
         }
     }
-    
     
     //===================================================================================================
     // Override Functions
@@ -157,6 +238,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             if(userFetch.count == 1){
                 user = userFetch[0]
                 nameField.text = user?.name
+                emergencyTextField.text = user?.contactName
                 searchBar.text = hotspotFetch[0].address
                 loadPieChart(foodCount: Double((user?.foodNum)!), funCount: Double((user?.funNum)!), taskCount: Double((user?.taskNum)!))
             }
@@ -206,7 +288,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         cell!.textLabel?.text = searchResult.title
         cell!.detailTextLabel?.text = searchResult.subtitle
         
-        
         return cell!
     }
     
@@ -224,7 +305,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         // Check which item is selected for each table view
         
         print("did select:  \(indexPath.row)    ")
-        
         
         tableView.deselectRow(at: indexPath, animated: true)
         let completion = searchResults[indexPath.row]
@@ -310,6 +390,13 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     }
 }
 
+extension String {
+    var isNumber:Bool {
+        let characters = CharacterSet.decimalDigits.inverted
+        return !self.isEmpty && rangeOfCharacter(from: characters) == nil
+    }
+}
+
 // Used code from
 // https://stackoverflow.com/questions/13817330/how-to-change-inside-background-color-of-uisearchbar-component-on-ios
 extension UISearchBar {
@@ -384,9 +471,24 @@ extension personInfoViewController : UISearchBarDelegate {
 extension personInfoViewController : MKLocalSearchCompleterDelegate {
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        let size = completer.results.count
+        var counter:Int = 0
+        var filteredResults = [MKLocalSearchCompletion]()
+        
+        // Filter out any address with "Search Nearby" string
+        while(counter < size) {
+            if(completer.results[counter].subtitle == "Search Nearby") {
+                // Do nothing
+            }
+            else {
+                // Append to the filtered results array
+                filteredResults.append(completer.results[counter])
+            }
+            counter = counter + 1
+        }
         
         // Autocomplete the address and update the results on the table view
-        searchResults = completer.results
+        searchResults = filteredResults
         searchResultsTableView.reloadData()
     }
     

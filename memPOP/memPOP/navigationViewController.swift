@@ -50,7 +50,7 @@
     var route:MKRoute?
     var routeStepsArr = [String]()
     var routeDistanceArr = [Int]()
-    
+
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -58,12 +58,11 @@
     @IBOutlet var mapOrDirectionsControl: UISegmentedControl!
     
     @IBOutlet var directionsTableView: UITableView!
-
-    @IBOutlet var navigationView: UIView!
+    
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
-    
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -159,9 +158,19 @@
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-            renderer.strokeColor = UIColor.blue
-            renderer.lineWidth = 10.0
             
+            // Check if user takes car or is walking
+            if(takeCar) {
+                // For car show a filled line
+                renderer.strokeColor = UIColor.blue
+                renderer.lineWidth = 5.0
+            }
+            else {
+                // When walking show a dotted line
+                renderer.strokeColor = UIColor.blue
+                renderer.lineWidth = 5.0
+                renderer.lineDashPattern = [0, 7]
+            }
             return renderer
         }
         else if overlay is MKCircle {
@@ -437,9 +446,9 @@
                 if(annotation.identifier == "start"){
                 
                     let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-                    var image = #imageLiteral(resourceName: "user")
+                    var image = UIImage(named: "user")
                 
-                    image = image.resize(targetSize: CGSize(width: 40, height: 40))
+                    image = image?.resize(targetSize: CGSize(width: 40, height: 40))
                     view.image = image
                     view.isEnabled = true
                     view.canShowCallout = true
@@ -449,9 +458,10 @@
                 }
                 else {
                     let view = MKAnnotationView(annotation: annotation, reuseIdentifier: annotation.identifier)
-                    var image = #imageLiteral(resourceName: "hotspot")
+
+                    var image = UIImage(named: "hotspot")
                     
-                    image = image.resize(targetSize: CGSize(width: 40, height: 40))
+                    image = image?.resize(targetSize: CGSize(width: 40, height: 40))
                     view.image = image
                     view.isEnabled = true
                     view.canShowCallout = true
