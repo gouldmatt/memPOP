@@ -374,15 +374,25 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         
         var dataEntries:[PieChartDataEntry] = []
 
-        let food = PieChartDataEntry(value: foodCount)
-        food.label = "Food"
-        let fun = PieChartDataEntry(value: funCount)
-        fun.label = "Fun"
-        let task = PieChartDataEntry(value: taskCount)
-        task.label = "Task"
         
-        dataEntries = [food, fun, task]
+        if(foodCount > 0) {
+            let food = PieChartDataEntry(value: foodCount)
+            food.label = "Food"
+            dataEntries.append(food)
+        }
         
+        if(funCount > 0) {
+            let fun = PieChartDataEntry(value: funCount)
+            fun.label = "Fun"
+            dataEntries.append(fun)
+        }
+        
+        if(taskCount > 0) {
+            let task = PieChartDataEntry(value: taskCount)
+            task.label = "Task"
+            dataEntries.append(task)
+        }
+
         let chartDataSet = PieChartDataSet(values: dataEntries, label: "")
         let chartData = PieChartData(dataSet: chartDataSet)
         chartDataSet.colors = ChartColorTemplates.colorful()
