@@ -190,24 +190,35 @@ class settingsViewController: UIViewController {
             print("check good")
             print("Add notif process for addHotspot")
             dateAddNotif.calendar = Calendar.current
-            var durationTimer = 0.0
             if (addHotspotNotifFreq.selectedSegmentIndex == 1){ // Weekly Freq
                 print("weekly")
+                dateAddNotif.weekday = 6 // Friday - end of week
+                dateAddNotif.hour = 18 // 18:00 or 6 PM
                 user?.addHotspotNotifSetting = 2; // Set notification setting
             } else if (addHotspotNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
                 print("monthly")
+                dateAddNotif.weekOfMonth = 3 // Third week of the month
+                dateAddNotif.hour = 18 // 18:00 or 6 PM
                 user?.addHotspotNotifSetting = 3; // Set notification setting
             } else { // Daily Freq
                 print("Daily")
+                dateAddNotif.hour = 18 // 18:00 or 6 PM
                 user?.addHotspotNotifSetting = 1; // Set notification setting
-                 //durationTimer = 60.0 * 60.0 * 24.0 // 60 sec * 60 min * 24 hr
-                durationTimer = 5
             }
-            //timer = Timer.scheduledTimer(withTimeInterval: durationTimer, repeats: true, block: fireAddHotspotNotif() -> void)
-            print(durationTimer)
-            timer = Timer.scheduledTimer(timeInterval: durationTimer, target: self, selector: #selector(fireAddHotspotNotif), userInfo: nil, repeats: true)
             
+            // Assign when to trigger notification - based on frequency set by user
+            let addNotifTrigger = UNCalendarNotificationTrigger(dateMatching: dateAddNotif, repeats: true)
             
+            // Set up the notification content
+            addNotifContent.title = "Time to add some new hotspots!"
+            addNotifContent.body = alertMsgAddHotspot()
+            addNotifContent.sound = UNNotificationSound.default()
+            
+            // Create notif req
+            let addNotifReq = UNNotificationRequest(identifier: addNotifID, content: addNotifContent, trigger: addNotifTrigger)
+            
+            // add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
+            notifCentre.add(addNotifReq)
         } else { // addHotspotNotif - OFF
             print("Turn off AddHotspot Notif")
             notifCentre.removePendingNotificationRequests(withIdentifiers: [addNotifID])
@@ -305,32 +316,6 @@ class settingsViewController: UIViewController {
             let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
             return alertBody
         }
-    }
-    
-    @objc func fireAddHotspotNotif(){
-        print("firing the addhotspot notification")
-        // Assign when to trigger notification - based on frequency set by user
-        let currDate = Date()
-        let cal = Calendar.current
-        let calComponent = cal.dateComponents([.hour, .minute], from: currDate)
-        
-        dateAddNotif.hour = calComponent.hour
-        dateAddNotif.minute = calComponent.minute
-        
-        print(dateAddNotif.hour!)
-        
-        let addNotifTrigger = UNCalendarNotificationTrigger(dateMatching: dateAddNotif, repeats: false)
-        
-        // Set up the notification content
-        addNotifContent.title = "Time to add some new hotspots!"
-        addNotifContent.body = alertMsgAddHotspot()
-        addNotifContent.sound = UNNotificationSound.default()
-        
-        // Create notif req
-        let addNotifReq = UNNotificationRequest(identifier: addNotifID, content: addNotifContent, trigger: addNotifTrigger)
-        
-        // add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
-        notifCentre.add(addNotifReq)
     }
 }
 
