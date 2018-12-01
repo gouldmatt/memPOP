@@ -126,13 +126,13 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     public func tableView(_ toDoTable: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Use the single "photoCell" cell created in the storyboard as a template for every ToDo item
-        let photoCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "photoCell")
+        let toDoCell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cellToDo")
     
-        photoCell.textLabel?.text = (addedToDos[indexPath.row].value(forKey: "toDoItem") as! String)
-        photoCell.backgroundColor = UIColor(red:0.16, green:0.19, blue:0.21, alpha:1.0)
-        photoCell.textLabel?.textColor = UIColor.white
+        toDoCell.textLabel?.text = (addedToDos[indexPath.row].value(forKey: "toDoItem") as! String)
+        toDoCell.backgroundColor = UIColor(red:0.16, green:0.19, blue:0.21, alpha:1.0)
+        toDoCell.textLabel?.textColor = UIColor.white
         
-        return(photoCell)
+        return(toDoCell)
     }
 
     
