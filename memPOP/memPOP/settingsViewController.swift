@@ -97,68 +97,67 @@ class settingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         notifCentre.requestAuthorization(options: [.sound, .alert, .badge]){ (grantedNotif, err) in
-            print("Granted notification permission")
-        }
-        
-        notifCentre.getNotificationSettings(){ (settings) in
-            if (settings.alertSetting == .enabled){
-                print("check good")
-                
-                // Check if user data can be fetched
-                do {
-                    let userFetch = try PersistenceService.context.fetch(self.fetchUser)
-                    if(userFetch.count == 1){
-                        self.user = userFetch[0]
+            self.notifCentre.getNotificationSettings(){ (settings) in
+                if (settings.alertSetting == .enabled){
+                    print("check good")
+                    
+                    // Check if user data can be fetched
+                    do {
+                        let userFetch = try PersistenceService.context.fetch(self.fetchUser)
+                        if(userFetch.count == 1){
+                            self.user = userFetch[0]
+                        }
                     }
-                }
-                catch {
-                    print("failed user fetch")
-                }
-                
-                // The line below forces the fetch notification settings to update UI on the main thread
-                DispatchQueue.main.async{
-                    // Fetch addHotspot notif settings to put to settings controls
-                    if (self.user?.addHotspotNotifSetting == 1){ // Daily
-                        self.addHotspotNotif.selectedSegmentIndex = 0;
-                        self.addHotspotNotifFreq.selectedSegmentIndex = 0;
-                    }
-                    else if (self.user?.addHotspotNotifSetting == 2){ // Weekly
-                        self.addHotspotNotif.selectedSegmentIndex = 0;
-                        self.addHotspotNotifFreq.selectedSegmentIndex = 1;
-                    }
-                    else if (self.user?.addHotspotNotifSetting == 3){ // Monthly
-                        self.addHotspotNotif.selectedSegmentIndex = 0;
-                        self.addHotspotNotifFreq.selectedSegmentIndex = 2;
-                    }
-                    else { // Off
-                        self.addHotspotNotif.selectedSegmentIndex = 1;
-                        self.addHotspotNotifFreq.selectedSegmentIndex = 0;
+                    catch {
+                        print("failed user fetch")
                     }
                     
-                    // Fetch activities Notificaiton settings to put on segment controls
-                    if (self.user?.activitiesNotifSetting == 1){ // Daily
-                        self.activitiesNotif.selectedSegmentIndex = 0;
-                        self.activitiesNotifFreq.selectedSegmentIndex = 0;
+                    // The line below forces the fetch notification settings to update UI on the main thread
+                    DispatchQueue.main.async{
+                        // Fetch addHotspot notif settings to put to settings controls
+                        if (self.user?.addHotspotNotifSetting == 1){ // Daily
+                            self.addHotspotNotif.selectedSegmentIndex = 0;
+                            self.addHotspotNotifFreq.selectedSegmentIndex = 0;
+                        }
+                        else if (self.user?.addHotspotNotifSetting == 2){ // Weekly
+                            self.addHotspotNotif.selectedSegmentIndex = 0;
+                            self.addHotspotNotifFreq.selectedSegmentIndex = 1;
+                        }
+                        else if (self.user?.addHotspotNotifSetting == 3){ // Monthly
+                            self.addHotspotNotif.selectedSegmentIndex = 0;
+                            self.addHotspotNotifFreq.selectedSegmentIndex = 2;
+                        }
+                        else { // Off
+                            self.addHotspotNotif.selectedSegmentIndex = 1;
+                            self.addHotspotNotifFreq.selectedSegmentIndex = 0;
+                        }
+                        
+                        // Fetch activities Notificaiton settings to put on segment controls
+                        if (self.user?.activitiesNotifSetting == 1){ // Daily
+                            self.activitiesNotif.selectedSegmentIndex = 0;
+                            self.activitiesNotifFreq.selectedSegmentIndex = 0;
+                        }
+                        else if (self.user?.activitiesNotifSetting == 2){ // Weekly
+                            self.activitiesNotif.selectedSegmentIndex = 0;
+                            self.activitiesNotifFreq.selectedSegmentIndex = 1;
+                        }
+                        else if (self.user?.activitiesNotifSetting == 3){ // Monthly
+                            self.activitiesNotif.selectedSegmentIndex = 0;
+                            self.activitiesNotifFreq.selectedSegmentIndex = 2;
+                        }
+                        else { // Off
+                            self.activitiesNotif.selectedSegmentIndex = 1;
+                            self.activitiesNotifFreq.selectedSegmentIndex = 0;
+                        }
                     }
-                    else if (self.user?.activitiesNotifSetting == 2){ // Weekly
-                        self.activitiesNotif.selectedSegmentIndex = 0;
-                        self.activitiesNotifFreq.selectedSegmentIndex = 1;
-                    }
-                    else if (self.user?.activitiesNotifSetting == 3){ // Monthly
-                        self.activitiesNotif.selectedSegmentIndex = 0;
-                        self.activitiesNotifFreq.selectedSegmentIndex = 2;
-                    }
-                    else { // Off
-                        self.activitiesNotif.selectedSegmentIndex = 1;
-                        self.activitiesNotifFreq.selectedSegmentIndex = 0;
-                    }
+                    
+                } else {
+                    print("check bad")
+                    self.alertPermissionDisabled()
                 }
-                
-            } else {
-                print("check bad")
-                self.alertPermissionDisabled()
             }
         }
+        
         
     }
     
@@ -300,6 +299,8 @@ class settingsViewController: UIViewController {
         // Set up the notification content
         
         // Fewest Food hotspots message
+        
+        /*
         if ((user?.foodNum)! < (user?.funNum)! && (user?.foodNum)! < (user?.taskNum)!){
             let alertBody = "Looks like there aren't many Food-related Hotspots (There are only " + String((user?.foodNum)!) + " Food Hotspots. Enter some more!"
             return alertBody
@@ -315,7 +316,10 @@ class settingsViewController: UIViewController {
         else {
             let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
             return alertBody
-        }
+        }*/
+        
+        let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
+        return alertBody
     }
 }
 
