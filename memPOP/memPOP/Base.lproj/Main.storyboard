@@ -782,7 +782,7 @@
                                         <rect key="frame" x="0.0" y="64" width="375" height="800"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   Notifications" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qL-f2-ysX">
-                                                <rect key="frame" x="0.0" y="0.0" width="4237.5" height="31"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="4245" height="31"/>
                                                 <color key="backgroundColor" red="0.93871456384658813" green="0.45636433362960815" blue="0.46130120754241943" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="6C4-Sb-lI5"/>
@@ -792,7 +792,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="hy2-wd-RpH">
-                                                <rect key="frame" x="227" y="157" width="132" height="29"/>
+                                                <rect key="frame" x="181.5" y="156.5" width="177.5" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="pXR-xR-myU"/>
                                                 </constraints>
@@ -805,29 +805,29 @@
                                                     <action selector="changeActivitiesNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="mJQ-eM-PdC"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a hotspot notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJs-ND-wie">
-                                                <rect key="frame" x="16" y="47" width="197" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Hotspot Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJs-ND-wie">
+                                                <rect key="frame" x="16" y="47" width="188" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enables reminders to add new memories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WG9-ex-0Ab">
-                                                <rect key="frame" x="16" y="201" width="4205.5" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable reminders to add new memories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WG9-ex-0Ab">
+                                                <rect key="frame" x="16" y="200.5" width="4213" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="r5c-qd-SVK"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3t0-IV-TNa">
-                                                <rect key="frame" x="16" y="235" width="77" height="20"/>
+                                                <rect key="frame" x="16" y="234.5" width="77" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cdI-9W-Guy">
-                                                <rect key="frame" x="109" y="117" width="250" height="29"/>
+                                                <rect key="frame" x="109" y="116.5" width="250" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="Wzr-1X-5KE"/>
                                                 </constraints>
@@ -841,14 +841,14 @@
                                                     <action selector="changeAddHotspotNotifFreq:" destination="m7B-yQ-MXr" eventType="valueChanged" id="vxg-Pt-FR3"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activities notification        " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Riq-ZO-Aif">
-                                                <rect key="frame" x="16" y="161" width="195" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Riq-ZO-Aif">
+                                                <rect key="frame" x="16" y="160.5" width="149.5" height="19.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="eUf-2K-rja">
-                                                <rect key="frame" x="229" y="43" width="130" height="29"/>
+                                                <rect key="frame" x="220" y="42.5" width="139" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="fCH-cr-alo"/>
                                                 </constraints>
@@ -862,24 +862,24 @@
                                                     <action selector="setAddHotspotNotif:" destination="m7B-yQ-MXr" eventType="valueChanged" id="rtp-7S-vC1"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enables reminders to visit your hotspots" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCS-Dz-HfI">
-                                                <rect key="frame" x="16" y="86" width="274.5" height="19"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable reminders to visit your hotspots" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCS-Dz-HfI">
+                                                <rect key="frame" x="16" y="85.5" width="282" height="19"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="308" id="6Yg-my-WbQ"/>
                                                     <constraint firstAttribute="height" constant="19" id="TjV-qy-PWD"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="723-qh-DGo">
-                                                <rect key="frame" x="16" y="121" width="77" height="20"/>
+                                                <rect key="frame" x="16" y="121" width="77" height="19.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ToF-Ur-bLe">
-                                                <rect key="frame" x="109" y="231" width="250" height="29"/>
+                                                <rect key="frame" x="109" y="230.5" width="250" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="E4d-pd-wrk"/>
                                                 </constraints>
@@ -894,7 +894,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="   About Mem-POP" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jT-kb-g3f">
-                                                <rect key="frame" x="0.0" y="293" width="375" height="31"/>
+                                                <rect key="frame" x="0.0" y="292.5" width="375" height="31"/>
                                                 <color key="backgroundColor" red="0.93871456379999996" green="0.45636433360000001" blue="0.46130120749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="31" id="MGC-tz-MVd"/>
@@ -915,7 +915,7 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="assembly" translatesAutoresizingMaskIntoConstraints="NO" id="pyR-8v-Djy">
-                                                <rect key="frame" x="87" y="344" width="200" height="200"/>
+                                                <rect key="frame" x="87" y="343.5" width="200" height="200.5"/>
                                             </imageView>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Version 3.0" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4qy-i4-4C3">
                                                 <rect key="frame" x="147" y="523" width="80" height="21"/>
