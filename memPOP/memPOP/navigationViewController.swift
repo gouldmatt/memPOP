@@ -174,7 +174,7 @@
         
         // Only show the route once
         if(doOnce){
-            layoutWalkingRoute()
+            layoutRoute()
             doOnce = false
         }
         
@@ -234,7 +234,7 @@
     
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
-    func layoutWalkingRoute() {
+    func layoutRoute() {
         
         // remove any existing things from map
         self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
@@ -281,7 +281,7 @@
             
             // if in overview layout zoom to show whole map
             if(self.mapOrDirectionsControl.selectedSegmentIndex == 0){
-                   self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
+                   self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: false)
             }
             
         }
@@ -306,13 +306,11 @@
         if(route?.polyline != nil) {
             if(mapOrDirectionsControl.selectedSegmentIndex == 0){
                 print("map")
-                //layoutWalkingRoute()
                 self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
                 directionsTableView.isHidden = true
             }
             else {
                 print("directions")
-                //layoutWalkingRoute()
                 mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
                 directionsTableView.reloadData()
                 directionsTableView.isHidden = false
@@ -321,12 +319,10 @@
         else {
             if(mapOrDirectionsControl.selectedSegmentIndex == 0){
                 print("map")
-                //layoutWalkingRoute()
                 directionsTableView.isHidden = true
             }
             else {
                 print("directions")
-                //layoutWalkingRoute()
                 mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
                 directionsTableView.reloadData()
                 directionsTableView.isHidden = false
