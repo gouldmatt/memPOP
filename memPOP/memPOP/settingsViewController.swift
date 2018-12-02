@@ -201,8 +201,8 @@ class settingsViewController: UIViewController {
                 user?.addHotspotNotifSetting = 3; // Set notification setting
             } else { // Daily Freq
                 print("Daily")
-                dateAddNotif.hour = 18 // 18:00 or 6 PM
-                //dateAddNotif.minute = 7
+                dateAddNotif.hour = 16 // 18:00 or 6 PM
+                dateAddNotif.minute = 07
                 user?.addHotspotNotifSetting = 1; // Set notification setting
             }
             
@@ -300,27 +300,90 @@ class settingsViewController: UIViewController {
         // Set up the notification content
         
         // Fewest Food hotspots message
+        print((user?.foodNum)!)
+        print((user?.funNum)!)
+        print((user?.taskNum)!)
         
-        /*
         if ((user?.foodNum)! < (user?.funNum)! && (user?.foodNum)! < (user?.taskNum)!){
-            let alertBody = "Looks like there aren't many Food-related Hotspots (There are only " + String((user?.foodNum)!) + " Food Hotspots. Enter some more!"
+            let alertBody = "Looks like there aren't many Food-related Hotspots (There are only " + String((user?.foodNum)!) + " Food Hotspots). Enter some more!"
             return alertBody
         } // Fewest Fun hotspots message
         else if ((user?.funNum)! < (user?.foodNum)! && (user?.funNum)! < (user?.taskNum)!){
-            let alertBody = "Looks like there aren't many Fun-related Hotspots (There are only " + String((user?.funNum)!) + " Fun Hotspots. Enter some more!"
+            let alertBody = "Looks like there aren't many Fun-related Hotspots (There are only " + String((user?.funNum)!) + " Fun Hotspots). Enter some more!"
             return alertBody
         } // Fewest task hotspot message
         else if ((user?.taskNum)! < (user?.foodNum)! && (user?.taskNum)! < (user?.funNum)!){
-            let alertBody = "Looks like there aren't many Task-related Hotspots (There are only " + String((user?.taskNum)!) + " Task Hotspots. Enter some more!"
+            let alertBody = "Looks like there aren't many Task-related Hotspots (There are only " + String((user?.taskNum)!) + " Task Hotspots). Enter some more!"
             return alertBody
         } // Default hotspot message
         else {
             let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
             return alertBody
-        }*/
+        }
         
-        let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
-        return alertBody
+        //let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
+        //return alertBody
+    }
+    
+    // Used to update the notification body message for addHotspot when changes are made to the number of hotspots and category
+    public func modifyAddHotspotNotif(){
+        notifCentre.requestAuthorization(options: [.sound, .alert, .badge]){ (grantedNotif, err) in
+            // check if permission granted. Do not add notif otherwise
+            self.notifCentre.getNotificationSettings { (settings) in
+                guard settings.authorizationStatus == .authorized else {
+                    print("permission check failed")
+                    self.alertPermissionDisabled()
+                    return
+                }
+            }
+            // fetch any existing user information
+            do {
+                let userFetch = try PersistenceService.context.fetch(self.fetchUser)
+                if(userFetch.count == 1){
+                    self.user = userFetch[0]
+                }
+            }
+            catch {
+                print("failed user fetch")
+            }
+            
+            if (self.user?.addHotspotNotifSetting != 0){ // addHotspotNotif is on, then do below
+                print("Modify notif process for addHotspot")
+                self.dateAddNotif.calendar = Calendar.current
+                if (self.user?.addHotspotNotifSetting == 2){ // Weekly Freq setting
+                    print("weekly")
+                    self.dateAddNotif.weekday = 6 // Friday - end of week
+                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
+                    self.user?.addHotspotNotifSetting = 2; // Set notification setting
+                } else if (self.user?.addHotspotNotifSetting == 3){ // Monthly Freq setting
+                    print("monthly")
+                    self.dateAddNotif.weekOfMonth = 3 // Third week of the month
+                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
+                    self.user?.addHotspotNotifSetting = 3; // Set notification setting
+                } else { // Daily Freq setting
+                    print("Daily")
+                    self.dateAddNotif.hour = 16 // 18:00 or 6 PM
+                    self.dateAddNotif.minute = 07
+                    self.user?.addHotspotNotifSetting = 1; // Set notification setting
+                }
+                
+                // Assign when to trigger notification - based on frequency set by user
+                let addNotifTrigger = UNCalendarNotificationTrigger(dateMatching: self.dateAddNotif, repeats: true)
+                
+                // Set up the notification content
+                self.addNotifContent.title = "Time to add some new hotspots!"
+                self.addNotifContent.body = self.alertMsgAddHotspot()
+                self.addNotifContent.sound = UNNotificationSound.default()
+                
+                // Create notif req
+                let addNotifReq = UNNotificationRequest(identifier: self.addNotifID, content: self.addNotifContent, trigger: addNotifTrigger)
+                
+                // add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
+                self.notifCentre.add(addNotifReq)
+            } else {
+                print("doing nothing since notificaiton addHotspot not enabled.")
+            }
+        }
     }
 }
 

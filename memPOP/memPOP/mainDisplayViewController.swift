@@ -178,7 +178,12 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
                     person[0].taskNum = taskNum
                     
                     PersistenceService.saveContext()
+                    
+                    
                 }
+                
+                // Modify the addHotspot Notification
+                settingsViewController().modifyAddHotspotNotif()
                 
                 // determine which hotspots to display
                 if (selectedCategory.selectedSegmentIndex == 1) {
