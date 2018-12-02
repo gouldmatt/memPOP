@@ -9,6 +9,18 @@ All code used to develop Mem-POP will be available in this repository.
 - Target Deployment: iOS 11.4
 - Simulator build tests performed on iPhone 8
 
+### Install cocoapods 
+- Enter this command in terminal to install: 
+```
+sudo gem install cocoapods
+```
+ ### Build Instructions
+- Open memPOP.xcworkspace in the project directory 
+```
+ NOTE: if .xcodeproj is opened instead of .xcworkspace, the project will not run
+ ```
+ - Set the simulator to iPhone 8 and click on the run button to build memPOP
+
 ### Coding Guidelines
 (coding guidelines follow sections of https://www.mono-project.com/community/contributing/coding-guidelines/)
 - Indentation
