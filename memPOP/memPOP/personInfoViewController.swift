@@ -37,7 +37,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     var changedAddress: Bool = false
     
     // Statistics
-    var months: [String]!
+    var hotspotNames = [String]()
     var hotspotsCount = [Int]()
     var categories: [String]!
     var count = [Int]()
@@ -268,7 +268,24 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     pieChartLabelHeight.constant = 31
                 }
                 
-                if(false){
+                var noVisits:Bool = true
+                
+                hotspotNames.removeAll()
+                hotspotsCount.removeAll()
+                
+                for hotspot in hotspotFetch {
+                    if(hotspot.timesVisit != 0) {
+                        //let hotspotName = hotspot.name?.description
+                        
+                        hotspotNames.append(hotspot.name!)
+                        hotspotsCount.append(Int(hotspot.timesVisit))
+                        noVisits = false
+                    }
+                }
+                
+                print(hotspotNames.count)
+                
+                if(noVisits){
                     barChart.isHidden = true
                     barChartHeight.constant = 0
                     barChartLabel.isHidden = true
@@ -288,12 +305,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         
         // Fetch Statistics
         axisFormatDelegate = self
-        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        hotspotsCount = [20, 4, 6, 3, 12, 16, 4, 18, 2, 4, 5, 4]
-        loadBarChart(dataEntryX: months, dataEntryY: hotspotsCount)
-        //loadPieChart(foodCount: Double(foodCount!), funCount: Double(funCount!), taskCount: Double(taskCount!))
-        
-        
+        loadBarChart(dataEntryX: hotspotNames, dataEntryY: hotspotsCount)
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -384,10 +396,13 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     func loadBarChart(dataEntryX forX:[String],dataEntryY forY: [Int]) {
         
         var dataEntries:[BarChartDataEntry] = []
+        print(forX.count)
         for i in 0..<forX.count{
-            let dataEntry = BarChartDataEntry(x: Double(i), y: Double(forY[i]) , data: months as AnyObject?)
+            let dataEntry = BarChartDataEntry(x: Double(i), y: Double(forY[i]) , data: hotspotNames as AnyObject?)
             dataEntries.append(dataEntry)
         }
+        
+        print(dataEntries.count)
         
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
         chartDataSet.colors = [UIColor(red: 255/255, green: 119/255, blue: 119/255, alpha: 1)]
@@ -402,7 +417,11 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         barChart.xAxis.labelPosition = .bottom
         
         // Don't skip x-axis values
-        // barChart.xAxis.setLabelCount(12, force: true)
+        barChart.xAxis.setLabelCount(hotspotNames.count, force: true)
+        barChart.xAxis.avoidFirstLastClippingEnabled = true
+        barChart.xAxis.centerAxisLabelsEnabled = true
+        barChart.fitBars = true
+
         xAxisValue.valueFormatter = axisFormatDelegate
     }
     
@@ -553,7 +572,7 @@ extension personInfoViewController : MKLocalSearchCompleterDelegate {
 extension personInfoViewController: IAxisValueFormatter {
     
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        return months[Int(value)]
+        return hotspotNames[Int(value)]
     }
 }
 
