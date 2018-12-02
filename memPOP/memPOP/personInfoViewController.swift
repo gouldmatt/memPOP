@@ -245,6 +245,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         self.searchBar.returnKeyType = UIReturnKeyType.done
         self.searchBar.searchBarStyle = .minimal
         
+        axisFormatDelegate = self
         // fetch any existing user information 
         do {
             let userFetch = try PersistenceService.context.fetch(fetchUser)
@@ -304,7 +305,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         }
         
         // Fetch Statistics
-        axisFormatDelegate = self
         loadBarChart(dataEntryX: hotspotNames, dataEntryY: hotspotsCount)
     }
     
@@ -408,21 +408,27 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         chartDataSet.colors = [UIColor(red: 255/255, green: 119/255, blue: 119/255, alpha: 1)]
         let chartData = BarChartData(dataSet: chartDataSet)
         barChart.data = chartData
+        barChart.setScaleEnabled(true) //remove if it doesnt work
         
         // Set up some chart configurations
         barChart.chartDescription?.text = ""
         barChart.rightAxis.enabled = false
         barChart.legend.enabled = false
-        let xAxisValue = barChart.xAxis
         barChart.xAxis.labelPosition = .bottom
         
         // Don't skip x-axis values
-        barChart.xAxis.setLabelCount(hotspotNames.count, force: true)
-        barChart.xAxis.avoidFirstLastClippingEnabled = true
-        barChart.xAxis.centerAxisLabelsEnabled = true
-        barChart.fitBars = true
+        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: forX)
 
-        xAxisValue.valueFormatter = axisFormatDelegate
+        barChart.xAxis.granularityEnabled = true
+        barChart.xAxis.granularity = 1
+        barChart.xAxis.wordWrapEnabled = true
+        
+        // barChart.xAxis.axisMinimum = 0.0
+        // barChart.xAxis.avoidFirstLastClippingEnabled = false
+        // barChart.xAxis.centerAxisLabelsEnabled = true
+        // barChart.xAxis.setLabelCount(hotspotNames.count, force: true)
+        // let xAxisValue = barChart.xAxis
+        // xAxisValue.valueFormatter = axisFormatDelegate add back
     }
     
     // Create the pie chart showing categories division
