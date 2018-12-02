@@ -31,7 +31,6 @@ class settingsViewController: UIViewController {
     var dateAddNotif = DateComponents()
     var dateActivitiesNotif = DateComponents()
     var user: PersonInfoMO?
-    var timer = Timer()
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -181,7 +180,7 @@ class settingsViewController: UIViewController {
      3 = ON, Monthly
     */
     
-    // Configure the notification settings for Add Hotspot
+    // Configure the notification settings for Add Hotspot on the settings page
     func configAddHotspotNotif(){
         do {
             let userFetch = try PersistenceService.context.fetch(self.fetchUser)
@@ -234,6 +233,7 @@ class settingsViewController: UIViewController {
         }
     }
     
+    // Configure the notification settings for being active on the settings page
     func configActivityNotif(){
         if (activitiesNotif.selectedSegmentIndex == 0){ // activitiesNotif - ON
             print("Add notif process for activitiesNotif")
@@ -275,9 +275,10 @@ class settingsViewController: UIViewController {
         }
     }
     
+    // Alert message function when permission for notificaitons is denied. Appears in settings page if attempting to change notification setting without granted permission.
     func alertPermissionDisabled() {
         // Create the alert
-        let alert = UIAlertController(title: "Request for Notifications Permission Denied", message: "memPOP needs to be able to have permission to notify you of things to do.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled and Temporary banner.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Request for Notifications Permission Denied", message: "memPOP needs to be able to have permission to notify you of things to do.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled.", preferredStyle: .alert)
         
         // Create the actions
         let okAction = UIAlertAction(title: "Okay", style: .cancel) {
@@ -328,9 +329,6 @@ class settingsViewController: UIViewController {
             let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
             return alertBody
         }
-        
-        //let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
-        //return alertBody
     }
     
     // Used to update the notification body message for addHotspot when changes are made to the number of hotspots and category
