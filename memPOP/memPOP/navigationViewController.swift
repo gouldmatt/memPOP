@@ -52,6 +52,10 @@
     var incrementOnce: Bool = true
     var hotspotRegion: CLCircularRegion?
     
+    var mapLoaded = false
+    var routeLoaded = false
+    var noRoute = true
+    
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -65,10 +69,14 @@
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
-
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        noRoute = true
+        mapLoaded = false
+        routeLoaded = false
         
         // Pass the number of times visited
         timesVisit = selectedHotspot?.timesVisit
@@ -209,6 +217,12 @@
                 renderer.lineDashPattern = [0, 7]
             }
             
+            routeLoaded = true
+            if(mapLoaded && !noRoute) {
+                print("renderer")
+                activityIndicator.stopAnimating()
+            }
+            
             return renderer
         }
         else if overlay is MKCircle {
@@ -256,8 +270,10 @@
             
             for route in unwrappedResponse.routes {
                 
-                self.mapkitView.add(route.polyline)
-        
+                if(route.steps.count > 1) {
+                    self.mapkitView.add(route.polyline)
+                }
+
                 self.route = route
                 
                 for step in route.steps {
@@ -266,11 +282,7 @@
                 }
                 
             }
-            
-            // draw a circle for debugging on map
-//            let circle = MKCircle(center: (self.hotspotRegion?.center)!, radius: (self.hotspotRegion?.radius)!)
-//            self.mapkitView.add(circle)
-            
+
             
             // if in overview layout zoom to show whole map
             if(self.mapOrDirectionsControl.selectedSegmentIndex == 0){
@@ -336,6 +348,7 @@
         }
         else {
             count = 1
+            
         }
         
         return count!
@@ -358,7 +371,9 @@
             cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
             image = UIImage(named: "location")!
             
-            if(route?.polyline == nil) {
+            if(route?.polyline == nil && !doOnce) {
+                noRoute = true
+                activityIndicator.stopAnimating()
                 if(takeCar) {
                     cell?.textLabel?.text = "No driving directions to " + (selectedHotspot?.name)!
                 }
@@ -367,6 +382,7 @@
                 }
             }
             else {
+                noRoute = false
                 cell?.textLabel?.text = "Directions to " + (selectedHotspot?.name)!
             }
         
@@ -454,9 +470,14 @@
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         
-        // When the map finishes loading, stop animating activity indicator button
-        activityIndicator.stopAnimating()
+        mapLoaded = true
+        if(routeLoaded && !noRoute) {
+            // When the map finishes loading, stop animating activity indicator button
+            activityIndicator.stopAnimating()
+        }
         
+        directionsTableView.reloadData()
+       
         // Set everything to back to true
         mapkitView.isRotateEnabled = true
         mapkitView.isPitchEnabled = true
