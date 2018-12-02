@@ -25,6 +25,14 @@ class settingsViewController: UIViewController {
     
     // Notification Content
     let addNotifContent = UNMutableNotificationContent()
+    
+    //AddHotspot notif Times
+    let hourAddHotspotNotif = 14 // Default 18:00 or 6 PM
+    let minuteAddHotspotNotif = 6
+    //Activities Notif times
+    let hourActivitiesNotif = 8 // Default 08:00 or 8 AM
+    let minuteActivitiesNotif = 0
+    
     //===================================================================================================
     // MARK: Variables
     //===================================================================================================
@@ -199,17 +207,19 @@ class settingsViewController: UIViewController {
             if (addHotspotNotifFreq.selectedSegmentIndex == 1){ // Weekly Freq
                 print("weekly")
                 dateAddNotif.weekday = 6 // Friday - end of week
-                dateAddNotif.hour = 18 // 18:00 or 6 PM
+                dateAddNotif.hour = hourAddHotspotNotif
+                dateAddNotif.minute = minuteAddHotspotNotif
                 user?.addHotspotNotifSetting = 2; // Set notification setting
             } else if (addHotspotNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
                 print("monthly")
                 dateAddNotif.weekOfMonth = 3 // Third week of the month
-                dateAddNotif.hour = 18 // 18:00 or 6 PM
+                dateAddNotif.hour = hourAddHotspotNotif
+                dateAddNotif.minute = minuteAddHotspotNotif
                 user?.addHotspotNotifSetting = 3; // Set notification setting
             } else { // Daily Freq
                 print("Daily")
-                dateAddNotif.hour = 18 // 18:00 or 6 PM
-                //dateAddNotif.minute = 07
+                dateAddNotif.hour = hourAddHotspotNotif
+                dateAddNotif.minute = minuteAddHotspotNotif
                 user?.addHotspotNotifSetting = 1; // Set notification setting
             }
             
@@ -242,16 +252,19 @@ class settingsViewController: UIViewController {
             if (activitiesNotifFreq.selectedSegmentIndex == 1){ // Weekly Freq
                 print("weekly")
                 dateActivitiesNotif.weekday = 2 // Monday - first weekday
-                dateActivitiesNotif.hour = 8 // 8:00 or 8 AM
+                dateActivitiesNotif.hour = hourActivitiesNotif
+                dateActivitiesNotif.minute = minuteActivitiesNotif
                 user?.activitiesNotifSetting = 2; // Set notification setting
             } else if (activitiesNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
                 print("monthly")
                 dateActivitiesNotif.weekOfMonth = 1 // First week of the month
-                dateActivitiesNotif.hour = 8 // 8:00 or 8 AM
+                dateActivitiesNotif.hour = hourActivitiesNotif
+                dateActivitiesNotif.minute = minuteActivitiesNotif
                 user?.activitiesNotifSetting = 3; // Set notification setting
             } else { // Daily Freq
                 print("Daily")
-                dateActivitiesNotif.hour = 8 // 8:00 or 8 AM
+                dateActivitiesNotif.hour = hourActivitiesNotif
+                dateActivitiesNotif.minute = minuteActivitiesNotif
                 user?.activitiesNotifSetting = 1; // Set notification setting
             }
             
@@ -313,15 +326,15 @@ class settingsViewController: UIViewController {
         print((user?.funNum)!)
         print((user?.taskNum)!)
         
-        if ((user?.foodNum)! < (user?.funNum)! && (user?.foodNum)! < (user?.taskNum)!){
+        if ((user?.foodNum)! <= (user?.funNum)! && (user?.foodNum)! <= (user?.taskNum)!){
             let alertBody = "Looks like there aren't many Food-related Hotspots (There are only " + String((user?.foodNum)!) + " Food Hotspots). Enter some more!"
             return alertBody
         } // Fewest Fun hotspots message
-        else if ((user?.funNum)! < (user?.foodNum)! && (user?.funNum)! < (user?.taskNum)!){
+        else if ((user?.funNum)! <= (user?.foodNum)! && (user?.funNum)! <= (user?.taskNum)!){
             let alertBody = "Looks like there aren't many Fun-related Hotspots (There are only " + String((user?.funNum)!) + " Fun Hotspots). Enter some more!"
             return alertBody
         } // Fewest task hotspot message
-        else if ((user?.taskNum)! < (user?.foodNum)! && (user?.taskNum)! < (user?.funNum)!){
+        else if ((user?.taskNum)! <= (user?.foodNum)! && (user?.taskNum)! <= (user?.funNum)!){
             let alertBody = "Looks like there aren't many Task-related Hotspots (There are only " + String((user?.taskNum)!) + " Task Hotspots). Enter some more!"
             return alertBody
         } // Default hotspot message
@@ -353,23 +366,26 @@ class settingsViewController: UIViewController {
                 print("failed user fetch")
             }
             
+            
             if (self.user?.addHotspotNotifSetting != 0){ // addHotspotNotif is on, then do below
                 print("Modify notif process for addHotspot")
                 self.dateAddNotif.calendar = Calendar.current
                 if (self.user?.addHotspotNotifSetting == 2){ // Weekly Freq setting
                     print("weekly")
                     self.dateAddNotif.weekday = 6 // Friday - end of week
-                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
+                    self.dateAddNotif.hour = self.hourAddHotspotNotif
+                    self.dateAddNotif.minute = self.minuteAddHotspotNotif
                     self.user?.addHotspotNotifSetting = 2; // Set notification setting
                 } else if (self.user?.addHotspotNotifSetting == 3){ // Monthly Freq setting
                     print("monthly")
                     self.dateAddNotif.weekOfMonth = 3 // Third week of the month
-                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
+                    self.dateAddNotif.hour = self.hourAddHotspotNotif
+                    self.dateAddNotif.minute = self.minuteAddHotspotNotif
                     self.user?.addHotspotNotifSetting = 3; // Set notification setting
                 } else { // Daily Freq setting
                     print("Daily")
-                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
-                    //self.dateAddNotif.minute = 07
+                    self.dateAddNotif.hour = self.hourAddHotspotNotif
+                    self.dateAddNotif.minute = self.minuteAddHotspotNotif
                     self.user?.addHotspotNotifSetting = 1; // Set notification setting
                 }
                 
