@@ -490,13 +490,6 @@
                                 <rect key="frame" x="177" y="253" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vd9-M6-0tC">
-                                <rect key="frame" x="166" y="59" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -519,7 +512,6 @@
                     </view>
                     <connections>
                         <outlet property="activityIndicator" destination="AiJ-hv-kBo" id="eE5-8o-ImJ"/>
-                        <outlet property="debugLabel" destination="Vd9-M6-0tC" id="w5c-sd-vLN"/>
                         <outlet property="directionsTableView" destination="8sC-f9-17U" id="YoF-4G-08D"/>
                         <outlet property="mapOrDirectionsControl" destination="B3n-o5-Wgv" id="RgV-5U-TzZ"/>
                         <outlet property="mapkitView" destination="Zoz-a9-t3l" id="qMl-Vi-YgI"/>

@@ -60,8 +60,6 @@
     
     @IBOutlet var directionsTableView: UITableView!
     
-    @IBOutlet weak var debugLabel: UILabel!
-    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //===================================================================================================
@@ -71,8 +69,6 @@
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
-        debugLabel.text = selectedHotspot?.timesVisit.description
         
         // Pass the number of times visited
         timesVisit = selectedHotspot?.timesVisit
@@ -135,7 +131,6 @@
             takeCar = false
         }
         
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -180,10 +175,10 @@
         
         print(userLocal!.coordinate)
         if(!doOnce) {
-            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: (selectedHotspot?.latitude)!, longitude: (selectedHotspot?.longitude)!), radius: 200, identifier: "hotspot")
-            let circle = MKCircle(center: region.center, radius: region.radius)
+            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: (selectedHotspot?.latitude)!, longitude: (selectedHotspot?.longitude)!), radius: 75, identifier: "hotspot")
             
-            self.mapkitView.add(circle)
+            //let circle = MKCircle(center: region.center, radius: region.radius)
+            //self.mapkitView.add(circle)
             if(incrementOnce && region.contains((userLocal!.coordinate))) {
                 
                 print("At hotspot")
@@ -191,8 +186,6 @@
                 incrementOnce = false
                 selectedHotspot?.timesVisit = timesVisit!
                 PersistenceService.saveContext()
-                
-                debugLabel.text = selectedHotspot?.timesVisit.description
                 
             }
         }
@@ -338,11 +331,11 @@
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         var count: Int?
-        if(!doOnce) {
+        if(!doOnce && route?.steps.count != nil) {
             count = route?.steps.count
         }
         else {
-            count = 0
+            count = 1
         }
         
         return count!
@@ -440,7 +433,6 @@
             print("Increment\n\n")
             print(locationManager.monitoredRegions.count)
             timesVisit = timesVisit! + Int32(1)
-            debugLabel.text = timesVisit?.description
             incrementOnce = false
         }
     
