@@ -173,6 +173,14 @@ class settingsViewController: UIViewController {
     // MARK: Functions
     //===================================================================================================
     
+    /*
+     Notification Setting values for addHotspotNotifSetting and activitiesNotifSetting
+     0 = OFF
+     1 = ON, Daily
+     2 = ON, Weekly
+     3 = ON, Monthly
+    */
+    
     // Configure the notification settings for Add Hotspot
     func configAddHotspotNotif(){
         do {
@@ -201,8 +209,8 @@ class settingsViewController: UIViewController {
                 user?.addHotspotNotifSetting = 3; // Set notification setting
             } else { // Daily Freq
                 print("Daily")
-                dateAddNotif.hour = 16 // 18:00 or 6 PM
-                dateAddNotif.minute = 07
+                dateAddNotif.hour = 18 // 18:00 or 6 PM
+                //dateAddNotif.minute = 07
                 user?.addHotspotNotifSetting = 1; // Set notification setting
             }
             
@@ -362,8 +370,8 @@ class settingsViewController: UIViewController {
                     self.user?.addHotspotNotifSetting = 3; // Set notification setting
                 } else { // Daily Freq setting
                     print("Daily")
-                    self.dateAddNotif.hour = 16 // 18:00 or 6 PM
-                    self.dateAddNotif.minute = 07
+                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
+                    //self.dateAddNotif.minute = 07
                     self.user?.addHotspotNotifSetting = 1; // Set notification setting
                 }
                 
