@@ -296,8 +296,19 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     barChartHeight.constant = 212
                     barChartLabelHeight.constant = 31
                 }
+            }
+            else {
                 
+                // hide everything
+                pieChart.isHidden = true
+                pieChartHeight.constant = 0
+                pieChartLabel.isHidden = true
+                pieChartLabelHeight.constant = 0
                 
+                barChart.isHidden = true
+                barChartHeight.constant = 0
+                barChartLabel.isHidden = true
+                barChartLabelHeight.constant = 0
             }
         }
         catch {
