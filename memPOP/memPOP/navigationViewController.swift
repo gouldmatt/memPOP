@@ -48,9 +48,10 @@
     var currentLongitude:Double?
     var locationManager = CLLocationManager()
     var route:MKRoute?
-    var routeStepsArr = [String]()
-    var routeDistanceArr = [Int]()
-
+    var timesVisit:Int32?
+    var incrementOnce: Bool = true
+    var hotspotRegion: CLCircularRegion?
+    
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -59,7 +60,9 @@
     
     @IBOutlet var directionsTableView: UITableView!
     
+    @IBOutlet weak var debugLabel: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //===================================================================================================
     // MARK: Override Functions
@@ -68,12 +71,28 @@
     override func viewDidLoad() {
         
         super.viewDidLoad()
+
+        debugLabel.text = selectedHotspot?.timesVisit.description
+        
+        // Pass the number of times visited
+        timesVisit = selectedHotspot?.timesVisit
+        
+        // Start animating activity indicator
+        activityIndicator.startAnimating()
+        
+        activityIndicator.hidesWhenStopped = true
         
         directionsTableView.isHidden = true
+        incrementOnce = true
         doOnce = true
         
-        mapkitView.isRotateEnabled = true
-        mapkitView.isPitchEnabled = true
+        mapkitView.isRotateEnabled = false
+        mapkitView.isPitchEnabled = false
+        
+        // Disable segmented control while loading
+        mapOrDirectionsControl.isEnabled = false
+        
+        self.activityIndicator.transform = CGAffineTransform(scaleX: 3, y: 3)
         
         // Change appearance for segmented control
         mapOrDirectionsControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
@@ -87,8 +106,6 @@
         
         // Request the user permission to use their location
         //self.locationManager.requestWhenInUseAuthorization()
-        
- 
         
         // Check if permission is granted by the user
         let status = CLLocationManager.authorizationStatus()
@@ -117,6 +134,8 @@
         else {
             takeCar = false
         }
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -148,7 +167,8 @@
              mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
         }
         
-
+        print(locationManager.monitoredRegions.count)
+    
         // For debugging
         //print(currentLatitude!)
         
@@ -156,6 +176,25 @@
         if(doOnce){
             layoutWalkingRoute()
             doOnce = false
+        }
+        
+        print(userLocal!.coordinate)
+        if(!doOnce) {
+            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: (selectedHotspot?.latitude)!, longitude: (selectedHotspot?.longitude)!), radius: 200, identifier: "hotspot")
+            let circle = MKCircle(center: region.center, radius: region.radius)
+            
+            self.mapkitView.add(circle)
+            if(incrementOnce && region.contains((userLocal!.coordinate))) {
+                
+                print("At hotspot")
+                timesVisit = timesVisit! + Int32(1)
+                incrementOnce = false
+                selectedHotspot?.timesVisit = timesVisit!
+                PersistenceService.saveContext()
+                
+                debugLabel.text = selectedHotspot?.timesVisit.description
+                
+            }
         }
     }
     
@@ -176,6 +215,7 @@
                 renderer.lineWidth = 5.0
                 renderer.lineDashPattern = [0, 7]
             }
+            
             return renderer
         }
         else if overlay is MKCircle {
@@ -186,6 +226,7 @@
             
             return renderer
         }
+        
         return MKOverlayRenderer()
     }
     
@@ -229,27 +270,14 @@
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
-                    self.routeDistanceArr.append(Int(step.distance))
-                    self.routeStepsArr.append(step.instructions)
-
                 }
                 
-                self.routeStepsArr[0] = "Directions to " + (self.selectedHotspot?.name)!
-                
-                 // create the destination region
-                let step = route.steps.last
-                
-                
-                let region = CLCircularRegion(center: (step?.polyline.coordinate)!, radius: 30, identifier: (step?.instructions)!)
-                region.notifyOnEntry = true
-                region.notifyOnExit = true
-                self.locationManager.startMonitoring(for: region)
-                
-                // draw a circle for debugging on map
-                let circle = MKCircle(center: region.center, radius: region.radius)
-                                self.mapkitView.add(circle)
-                
             }
+            
+            // draw a circle for debugging on map
+//            let circle = MKCircle(center: (self.hotspotRegion?.center)!, radius: (self.hotspotRegion?.radius)!)
+//            self.mapkitView.add(circle)
+            
             
             // if in overview layout zoom to show whole map
             if(self.mapOrDirectionsControl.selectedSegmentIndex == 0){
@@ -257,12 +285,7 @@
             }
             
         }
-        
-        if(route?.polyline == nil){
-            print("No available directions")
-            self.routeStepsArr.append("No available directions to " + (self.selectedHotspot?.name)!)
-        }
-        
+    
         // remove existing annotations
         let annotations = self.mapkitView.annotations
         for annotation in annotations {
@@ -318,7 +341,15 @@
     // https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-       return (routeStepsArr.count)
+        var count: Int?
+        if(!doOnce) {
+            count = route?.steps.count
+        }
+        else {
+            count = 0
+        }
+        
+        return count!
     }
     
     // https://www.youtube.com/watch?v=LrCqXmHenJY
@@ -337,14 +368,24 @@
             
             cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
             image = UIImage(named: "location")!
-            cell?.textLabel?.text = routeStepsArr[0]
-            cell?.backgroundColor = UIColor.lightGray
+            
+            if(route?.polyline == nil) {
+                if(takeCar) {
+                    cell?.textLabel?.text = "No driving directions to " + (selectedHotspot?.name)!
+                }
+                else {
+                    cell?.textLabel?.text = "No walking directions to " + (selectedHotspot?.name)!
+                }
+            }
+            else {
+                cell?.textLabel?.text = "Directions to " + (selectedHotspot?.name)!
+            }
         
         }
-        else if (indexPath.row == 0){
+        else {
             
-            let currentDirection = routeStepsArr[indexPath.row]
-            var distanceInt =  routeDistanceArr[indexPath.row]
+            let currentDirection = route?.steps[indexPath.row].instructions
+            var distanceInt =  Int((route?.steps[indexPath.row].distance.magnitude)!)
             
             // The rest of the steps show how to the destination
             cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
@@ -352,47 +393,11 @@
            
             
             // Check the direction per step to show the correct image
-            if (currentDirection.range(of: "left") != nil) {
+            if (currentDirection?.range(of: "left") != nil) {
                 image = UIImage(named: "leftTurn")!
                 
             }
-            else if (currentDirection.range(of: "right") != nil) {
-                image = UIImage(named: "rightTurn")!
-            }
-            else {
-                image = UIImage(named: "continue")!
-            }
-            
-            // Check the distance per step
-            if (distanceInt > 1000) {
-                distanceInt = distanceInt / 1000
-                cell?.textLabel?.text = "\(distanceInt) km"
-            }
-            else {
-                cell?.textLabel?.text = "\(distanceInt) m"
-            }
-            
-            // Show the step instruction
-            cell!.detailTextLabel?.text = self.route?.steps[indexPath.row].instructions
-            cell?.backgroundColor = UIColor.lightGray
-        }
-        else {
-            
-            let currentDirection = routeStepsArr[indexPath.row]
-            
-            // The rest of the steps show how to the destination
-            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
-            
-            //let distanceInStep = self.route?.steps[indexPath.row].distance
-           // var distanceInt = Int(distanceInStep!)
-            
-            var distanceInt =  routeDistanceArr[indexPath.row]
-            // Check the direction per step to show the correct image
-            if (currentDirection.range(of: "left") != nil) {
-                image = UIImage(named: "leftTurn")!
-                
-            }
-            else if (currentDirection.range(of: "right") != nil) {
+            else if (currentDirection?.range(of: "right") != nil) {
                 image = UIImage(named: "rightTurn")!
             }
             else {
@@ -430,15 +435,44 @@
         
         // when user selects one of the directions show that step on the map
         let routeStepView = route?.steps[indexPath.row].polyline.boundingMapRect
-        self.mapkitView.setVisibleMapRect(routeStepView!,edgePadding: UIEdgeInsets.init(top: 60, left: 10, bottom: 60, right: 10) ,animated: true)
+        self.mapkitView.setVisibleMapRect(routeStepView!,edgePadding: UIEdgeInsets.init(top: 70, left: 20, bottom: 70, right: 20) ,animated: true)
     }
     
     //Consulted https://www.youtube.com/watch?v=8m-duJ9X_Hs for detecting user entry/exit of regions
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if(region.identifier == "hotspot") {
+            print("Increment\n\n")
+            print(locationManager.monitoredRegions.count)
+            timesVisit = timesVisit! + Int32(1)
+            debugLabel.text = timesVisit?.description
+            incrementOnce = false
+        }
+    
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if(!incrementOnce) {
+            locationManager.stopMonitoring(for: hotspotRegion!)
+        }
+    }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("Leaving")
+        selectedHotspot?.timesVisit = timesVisit!
+        incrementOnce = true
+        PersistenceService.saveContext()
+    }
+    
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         
+        // When the map finishes loading, stop animating activity indicator button
+        activityIndicator.stopAnimating()
         
-        
+        // Set everything to back to true
+        mapkitView.isRotateEnabled = true
+        mapkitView.isPitchEnabled = true
+        mapOrDirectionsControl.isEnabled = true
     }
     
     // add the images for each custom pin annotation
@@ -474,6 +508,7 @@
                     return view
                     
                 }
+                
             }
         }
         return nil
