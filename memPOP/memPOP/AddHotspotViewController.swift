@@ -381,7 +381,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         else {
             // Create the alert
-            let alert = UIAlertController(title: "Deleting Hotspot", message: "Are you sure you wish to delete this Hotspot? Changes will not be saved.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Deleting Hotspot", message: "Are you sure you want to delete this Hotspot?", preferredStyle: .alert)
             
             // Create the actions
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) {
@@ -634,6 +634,19 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+       
+        var isEditable = true
+        
+        if(tableView == self.tableView) {
+            if(indexPath.row == 0) {
+                isEditable = false
+            }
+        }
+        
+        return isEditable
     }
     
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

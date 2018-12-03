@@ -339,7 +339,7 @@ class settingsViewController: UIViewController {
     // Alert message function when permission for notificaitons is denied. Appears in settings page if attempting to change notification setting without granted permission.
     func alertPermissionDisabled() {
         // Create the alert
-        let alert = UIAlertController(title: "Request for Notifications Permission Denied", message: "memPOP needs to be able to have permission to notify you of things to do.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Request for Notifications Permission Denied", message: "Mem-POP requires your permission to enable push notifications.\nTo use this feature, go to Settings > memPOP > Notifications", preferredStyle: .alert)
         
         // Create the actions
         let okAction = UIAlertAction(title: "Okay", style: .cancel) {
@@ -375,19 +375,19 @@ class settingsViewController: UIViewController {
         print((user?.taskNum)!)
         
         if ((user?.foodNum)! <= (user?.funNum)! && (user?.foodNum)! <= (user?.taskNum)!){
-            let alertBody = "Looks like there aren't many Food-related Hotspots (There are only " + String((user?.foodNum)!) + " Food Hotspots). Enter some more!"
+            let alertBody = "Looks like there aren't many Food-related Hotspots (There are " + String((user?.foodNum)!) + " Food Hotspots). Enter some more!"
             return alertBody
         } // Fewest Fun hotspots message
         else if ((user?.funNum)! <= (user?.foodNum)! && (user?.funNum)! <= (user?.taskNum)!){
-            let alertBody = "Looks like there aren't many Fun-related Hotspots (There are only " + String((user?.funNum)!) + " Fun Hotspots). Enter some more!"
+            let alertBody = "Looks like there aren't many Fun-related Hotspots (There are " + String((user?.funNum)!) + " Fun Hotspots). Enter some more!"
             return alertBody
         } // Fewest task hotspot message
         else if ((user?.taskNum)! <= (user?.foodNum)! && (user?.taskNum)! <= (user?.funNum)!){
-            let alertBody = "Looks like there aren't many Task-related Hotspots (There are only " + String((user?.taskNum)!) + " Task Hotspots). Enter some more!"
+            let alertBody = "Looks like there aren't many Task-related Hotspots (There are " + String((user?.taskNum)!) + " Task Hotspots). Enter some more!"
             return alertBody
         } // Default hotspot message
         else {
-            let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
+            let alertBody = "If you haven't already input your latest memories, enter some now!"
             return alertBody
         }
     }
