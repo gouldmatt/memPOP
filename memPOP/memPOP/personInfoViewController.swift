@@ -119,6 +119,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             
             // Move the scroll view to the top
             self.scrollView.setContentOffset(top, animated: true)
+            
+            return
         }
         else if (!(emergencyTextField.text?.isNumber)!){
             
@@ -155,19 +157,9 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             
             // Create a new user or update existing user info
             if (user == nil) {
-                // Creating a new user
-                let newUser = PersonInfoMO(context: PersistenceService.context)
-                newUser.name = nameField.text
-                newUser.contactName = emergencyTextField.text
                 
-                // Set the default values for the notification setting to off.
-                newUser.activitiesNotifSetting = 0
-                newUser.addHotspotNotifSetting = 0
-                
-                let newHotspot = HotspotMO(context: PersistenceService.context)
-
                 // Check for a valid address
-                if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
+                if (!changedAddress || (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
                     dialogCheck.text = "Please select a valid address"
                     dialogCheck.isHidden = false
                     
@@ -177,6 +169,17 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     self.scrollView.setContentOffset(top, animated: true)
                 }
                 else {
+                    
+                    // Creating a new user
+                    let newUser = PersonInfoMO(context: PersistenceService.context)
+                    newUser.name = nameField.text
+                    newUser.contactName = emergencyTextField.text
+                    
+                    // Set the default values for the notification setting to off.
+                    newUser.activitiesNotifSetting = 0
+                    newUser.addHotspotNotifSetting = 0
+                    
+                    let newHotspot = HotspotMO(context: PersistenceService.context)
                     newHotspot.name = "Home"
                     newHotspot.address = searchAddressChosen
                     newHotspot.longitude = searchAddressLongitude
@@ -185,6 +188,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     
                     // Move back to start screen
                     self.navigationController?.popToRootViewController(animated: false)
+ 
+                    PersistenceService.saveContext()
                 }
             }
             else {
@@ -193,6 +198,16 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 user?.contactName = emergencyTextField.text
                 
                 // Check if the address has been changed, if not then no need to update it
+                if (changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
+                    dialogCheck.text = "Please select a valid address"
+                    dialogCheck.isHidden = false
+                    
+                    self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                    
+                    // Move the scroll view to the top
+                    self.scrollView.setContentOffset(top, animated: true)
+                    return
+                }
                 if (changedAddress) {
                     do{
                         let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
@@ -205,7 +220,11 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                         print("failed hotspot fetch")
                     }
                     changedAddress = false
+                    
+                    
                 }
+                
+                PersistenceService.saveContext()
                 
                 // Move back to start screen
                 let viewControllers: [UIViewController] = self.navigationController!.viewControllers
@@ -214,9 +233,10 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                         self.navigationController!.popViewController(animated: true)
                     }
                 }
+                
             }
 
-            PersistenceService.saveContext()
+            //PersistenceService.saveContext()
         }
     }
     

@@ -168,6 +168,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         else {
             
+            hotspotName.layer.borderWidth = 0.0
             dialogCheck.isHidden = true
 
             // Create a new hotspot
@@ -176,6 +177,17 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 let address = searchAddressChosen
                 let longitude = searchAddressLongitude
                 let latitude = searchAddressLatitude
+                
+                if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
+                    dialogCheck.text = "Please select a valid address"
+                    dialogCheck.isHidden = false
+                    
+                    self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                    
+                    // Move the scroll view to the top
+                    self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
+                    return
+                }
         
                 let newHotspot = HotspotMO(context: PersistenceService.context)
                 var newPhotos = [PhotosMO(context: PersistenceService.context)]
@@ -241,6 +253,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                     
                     changedAddress = false
                     
+                    // Once all changes have been checked, save the hotspot object with all its relationships
+                    print("Creating new one")
+                    PersistenceService.saveContext()
+                    
+                    // Add to the list of created hotspots
+                    self.hotspots.append(newHotspot)
+                    
                     // Update the navigation bar back button so that when back is pressed on the main display screen
                     // it will take the user to the start screen instead of the add hotspot view controller again
                     let viewControllers: [UIViewController] = self.navigationController!.viewControllers
@@ -250,26 +269,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                         }
                     }
                 }
-                else {
-                    // Check for a valid address
-                    if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
-                        dialogCheck.text = "Please select a valid address"
-                        dialogCheck.isHidden = false
-                        
-                        self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
-                        
-                        // Move the scroll view to the top
-                        self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
-                    }
-                }
-            
-                // Once all changes have been checked, save the hotspot object with all its relationships
-                print("Creating new one")
-                PersistenceService.saveContext()
-                
-                // Add to the list of created hotspots
-                self.hotspots.append(newHotspot)
-    
             }
             else {
                 // Updating the hotspot selected
@@ -279,6 +278,17 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 var newToDos = updateHotspot.toDo as! [ToDoMO]
                 var newPhotos = updateHotspot.photos as! [PhotosMO]
                 var index: Int = 0
+                
+                if (changedAddress && ( searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0)) {
+                    dialogCheck.text = "Please select a valid address"
+                    dialogCheck.isHidden = false
+                    
+                    self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                    
+                    // Move the scroll view to the top
+                    self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
+                    return
+                }
                 
                 updateHotspot.name = hotspotName.text!
                 
@@ -354,6 +364,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                     changedAddress = false
                 }
                 
+                // Save all the changes made to the hotspot selected
+                PersistenceService.saveContext()
+                
                 // Update the navigation bar back button so that when back is pressed on the main display screen
                 // it will take the user to the start screen instead of the add hotspot view controller again
                 let viewControllers: [UIViewController] = self.navigationController!.viewControllers
@@ -362,9 +375,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                         self.navigationController!.popViewController(animated: true)
                     }
                 }
-                
-                // Save all the changes made to the hotspot selected
-                PersistenceService.saveContext()
             }
             
         }

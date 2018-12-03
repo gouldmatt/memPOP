@@ -102,6 +102,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
     }
     
     override func viewWillAppear(_ animated:Bool) {
+        super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = false
         
         // Everytime the view appears, reload data stored in the collection view
@@ -146,11 +147,11 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
                 var foodNum:Int16 = 0
                 var taskNum:Int16 = 0
                 var funNum:Int16 = 0
-                var index:Int = 0
+                //var index:Int = 0
                 
                 // Fetch both the user and all the hotspots from coredata
                 let person = try PersistenceService.context.fetch(fetchRequestPerson)
-                var allHotspots = try PersistenceService.context.fetch(fetchRequestHotspot)
+                let allHotspots = try PersistenceService.context.fetch(fetchRequestHotspot)
                 
                 // Remove exisiting hotspots in case hotspots have changed category
                 foodHotspots.removeAll()
@@ -159,13 +160,15 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
                 self.hotspots.removeAll()
                 
                 // Go through hotspots and append to the correct category array, also counting the number
+                
+                print(allHotspots.count)
                 for hotspotItem in (allHotspots) {
                     
                     // Remove hotspots with empty names
-                    if(hotspotItem.name == nil || (hotspotItem.name?.isEmpty)!) {
-                        allHotspots.remove(at: index)
-                    }
-                    index += 1
+//                    if(hotspotItem.name == nil || (hotspotItem.name?.isEmpty)!) {
+//                        allHotspots.remove(at: index)
+//                    }
+//                    index += 1
                     
                     if (hotspotItem.category == "Food") {
                         foodHotspots.append(hotspotItem)
@@ -188,6 +191,9 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
                     
                     PersistenceService.saveContext()
                 }
+                
+                
+                
                 
                 // Modify the addHotspot Notification
                 settingsViewController().modifyAddHotspotNotif()

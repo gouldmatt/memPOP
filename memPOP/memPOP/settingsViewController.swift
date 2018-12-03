@@ -16,6 +16,7 @@ import UserNotifications
 import CoreData
 
 class settingsViewController: UIViewController {
+    
     //===================================================================================================
     // MARK: Constants
     //===================================================================================================
@@ -258,13 +259,15 @@ class settingsViewController: UIViewController {
                 dateAddNotif.hour = hourAddHotspotNotif
                 dateAddNotif.minute = minuteAddHotspotNotif
                 user?.addHotspotNotifSetting = 2; // Set notification setting
-            } else if (addHotspotNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
+            }
+            else if (addHotspotNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
                 print("monthly")
                 dateAddNotif.weekOfMonth = 3 // Third week of the month
                 dateAddNotif.hour = hourAddHotspotNotif
                 dateAddNotif.minute = minuteAddHotspotNotif
                 user?.addHotspotNotifSetting = 3; // Set notification setting
-            } else { // Daily Freq
+            }
+            else { // Daily Freq
                 print("Daily")
                 dateAddNotif.hour = hourAddHotspotNotif
                 dateAddNotif.minute = minuteAddHotspotNotif
@@ -284,7 +287,8 @@ class settingsViewController: UIViewController {
             
             // Add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
             notifCentre.add(addNotifReq)
-        } else { // addHotspotNotif - OFF
+        }
+        else { // addHotspotNotif - OFF
             print("Turn off AddHotspot Notif")
             notifCentre.removePendingNotificationRequests(withIdentifiers: [addNotifID])
             user?.addHotspotNotifSetting = 0;
@@ -303,13 +307,15 @@ class settingsViewController: UIViewController {
                 dateActivitiesNotif.hour = hourActivitiesNotif
                 dateActivitiesNotif.minute = minuteActivitiesNotif
                 user?.activitiesNotifSetting = 2; // Set notification setting
-            } else if (activitiesNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
+            }
+            else if (activitiesNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
                 print("monthly")
                 dateActivitiesNotif.weekOfMonth = 1 // First week of the month
                 dateActivitiesNotif.hour = hourActivitiesNotif
                 dateActivitiesNotif.minute = minuteActivitiesNotif
                 user?.activitiesNotifSetting = 3; // Set notification setting
-            } else { // Daily Freq
+            }
+            else { // Daily Freq
                 print("Daily")
                 dateActivitiesNotif.hour = hourActivitiesNotif
                 dateActivitiesNotif.minute = minuteActivitiesNotif
@@ -329,7 +335,8 @@ class settingsViewController: UIViewController {
             
             // Add Activities Notif request to notification centre. This will overwrite existing reminder if it exists.
             notifCentre.add(addNotifReq)
-        } else { // activitiesNotif - OFF
+        }
+        else { // activitiesNotif - OFF
             print("Turn off Activities Notif")
             notifCentre.removePendingNotificationRequests(withIdentifiers: [activitiesNotifID])
             user?.activitiesNotifSetting = 0; // Set notification setting
@@ -424,13 +431,15 @@ class settingsViewController: UIViewController {
                     self.dateAddNotif.hour = self.hourAddHotspotNotif
                     self.dateAddNotif.minute = self.minuteAddHotspotNotif
                     self.user?.addHotspotNotifSetting = 2; // Set notification setting
-                } else if (self.user?.addHotspotNotifSetting == 3){ // Monthly Freq setting
+                }
+                else if (self.user?.addHotspotNotifSetting == 3){ // Monthly Freq setting
                     print("monthly")
                     self.dateAddNotif.weekOfMonth = 3 // Third week of the month
                     self.dateAddNotif.hour = self.hourAddHotspotNotif
                     self.dateAddNotif.minute = self.minuteAddHotspotNotif
                     self.user?.addHotspotNotifSetting = 3; // Set notification setting
-                } else { // Daily Freq setting
+                }
+                else { // Daily Freq setting
                     print("Daily")
                     self.dateAddNotif.hour = self.hourAddHotspotNotif
                     self.dateAddNotif.minute = self.minuteAddHotspotNotif
@@ -450,7 +459,8 @@ class settingsViewController: UIViewController {
                 
                 // Add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
                 self.notifCentre.add(addNotifReq)
-            } else {
+            }
+            else {
                 print("doing nothing since notificaiton addHotspot not enabled.")
             }
         }

@@ -74,6 +74,43 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //===================================================================================================
+    // MARK: Actions
+    //===================================================================================================
+    // Check when user changes navigation modes
+    @IBAction func changedNavMode(_ sender: Any){
+        
+        // Always check for empty route
+        if(route?.polyline != nil) {
+            // If in overview mode, show whole map and route between start and end points
+            if(mapOrDirectionsControl.selectedSegmentIndex == 0){
+                print("map")
+                self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
+                directionsTableView.isHidden = true
+            }
+            else {
+                // If in on-screen directions mode, show route and zoom in and follow the user's current location
+                print("directions")
+                mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
+                directionsTableView.reloadData()
+                directionsTableView.isHidden = false
+            }
+        }
+        else {
+            // If no routes were found, hide and show text letting the user know that there are no routes available
+            if(mapOrDirectionsControl.selectedSegmentIndex == 0){
+                print("map")
+                directionsTableView.isHidden = true
+            }
+            else {
+                print("directions")
+                mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
+                directionsTableView.reloadData()
+                directionsTableView.isHidden = false
+            }
+        }
+    }
+    
+    //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
     override func viewDidLoad() {
@@ -98,7 +135,7 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         directionsTableView.isHidden = true
       
         // Ignore interaction events until map and route finish loading
-        UIApplication.shared.beginIgnoringInteractionEvents()
+        //UIApplication.shared.beginIgnoringInteractionEvents()
         
         // Change appearance for segmented control
         mapOrDirectionsControl.setTitleTextAttributes([NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18),NSAttributedStringKey.foregroundColor: UIColor.white
@@ -146,6 +183,13 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("Leaving")
+        selectedHotspot?.timesVisit = timesVisit!
+        incrementOnce = true
+        PersistenceService.saveContext()
     }
     
     //===================================================================================================
@@ -262,7 +306,9 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         
         // Create where to store the directions
         let directions = MKDirections(request: request)
-
+        
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
         // Fetch the directions
         directions.calculate{ [unowned self] response, error in
             guard let unwrappedResponse = response else {
@@ -272,13 +318,9 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
                 
                 self.routeLoaded = true
                 
-                if (self.mapLoaded) {
-                    // When the map finishes loading, stop animating activity indicator button
-                    self.activityIndicator.stopAnimating()
-                    
-                    // Can re-enable user interactions with this View controller
-                    UIApplication.shared.endIgnoringInteractionEvents()
-                }
+                self.activityIndicator.stopAnimating()
+                
+                UIApplication.shared.endIgnoringInteractionEvents()
                 return
             }
             
@@ -311,6 +353,8 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
             if(self.mapOrDirectionsControl.selectedSegmentIndex == 0){
                    self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: false)
             }
+            
+            UIApplication.shared.endIgnoringInteractionEvents()
         }
 
         // Remove existing annotations
@@ -326,39 +370,6 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         self.mapkitView.addAnnotation(destPin)
     }
     
-    // Check when user changes navigation modes
-    @IBAction func changedNavMode(_ sender: Any){
-        
-        // Always check for empty route
-        if(route?.polyline != nil) {
-            // If in overview mode, show whole map and route between start and end points
-            if(mapOrDirectionsControl.selectedSegmentIndex == 0){
-                print("map")
-                self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
-                directionsTableView.isHidden = true
-            }
-            else {
-                // If in on-screen directions mode, show route and zoom in and follow the user's current location
-                print("directions")
-                mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
-                directionsTableView.reloadData()
-                directionsTableView.isHidden = false
-            }
-        }
-        else {
-            // If no routes were found, hide and show text letting the user know that there are no routes available
-            if(mapOrDirectionsControl.selectedSegmentIndex == 0){
-                print("map")
-                directionsTableView.isHidden = true
-            }
-            else {
-                print("directions")
-                mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
-                directionsTableView.reloadData()
-                directionsTableView.isHidden = false
-            }
-        }
-    }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         // Return the number of sections in directionsTableView, always 1
@@ -458,31 +469,6 @@ class navigationViewController: UIViewController, CLLocationManagerDelegate, MKM
         // When user selects one of the directions show and zoom into that step on the map for a period of time
         let routeStepView = route?.steps[indexPath.row].polyline.boundingMapRect
         self.mapkitView.setVisibleMapRect(routeStepView!,edgePadding: UIEdgeInsets.init(top: 70, left: 20, bottom: 70, right: 20) ,animated: true)
-    }
-    
-    //////////// I dont think we are doing this anymore ////////////
-    //Consulted https://www.youtube.com/watch?v=8m-duJ9X_Hs for detecting user entry/exit of regions
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if(region.identifier == "hotspot") {
-            print("Increment\n\n")
-            print(locationManager.monitoredRegions.count)
-            timesVisit = timesVisit! + Int32(1)
-            incrementOnce = false
-        }
-    
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if(!incrementOnce) {
-            locationManager.stopMonitoring(for: hotspotRegion!)
-        }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("Leaving")
-        selectedHotspot?.timesVisit = timesVisit!
-        incrementOnce = true
-        PersistenceService.saveContext()
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
