@@ -78,7 +78,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         
         // Check that name and address are filled before saving
         if (nameField.text!.isEmpty || searchBar.text!.isEmpty || emergencyTextField.text!.isEmpty){
-            
             dialogCheck.text = "Please complete the highlighted fields"
             dialogCheck.isHidden = false
             dialogCheck.layer.borderWidth = 0.0
@@ -156,13 +155,10 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 newUser.addHotspotNotifSetting = 0
                 
                 let newHotspot = HotspotMO(context: PersistenceService.context)
-                //let newPhoto = PhotosMO(context: PersistenceService.context)
-                
-                //newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "defaultPhoto"))!, 1)! as NSData
+
                 
                 // Check for a valid address
                 if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
-                    
                     dialogCheck.text = "Please select a valid address"
                     dialogCheck.isHidden = false
                     
@@ -172,11 +168,20 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     self.scrollView.setContentOffset(top, animated: true)
                 }
                 else {
+                    print("Here")
                     newHotspot.name = "Home"
                     newHotspot.address = searchAddressChosen
                     newHotspot.longitude = searchAddressLongitude
                     newHotspot.latitude = searchAddressLatitude
                     //newHotspot.addToPhotos(newPhoto)
+                    
+                    // move back to start screen
+                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+                    for aViewController in viewControllers {
+                        if aViewController is personInfoViewController {
+                            self.navigationController!.popViewController(animated: true)
+                        }
+                    }
                 }
             }
             else {
@@ -186,22 +191,17 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 if(changedAddress){
                     do{
                         let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
-                        
-                        // Check for a valid address
-                        if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
-                            
-                            dialogCheck.text = "Please select a valid address"
-                            dialogCheck.isHidden = false
-                            
-                            self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
-                            
-                            // Move the scroll view to the top
-                            self.scrollView.setContentOffset(top, animated: true)
-                        }
-                        else {
-                            homeHotspot.address = searchAddressChosen
-                            homeHotspot.longitude = searchAddressLongitude
-                            homeHotspot.latitude = searchAddressLatitude
+
+                        homeHotspot.address = searchAddressChosen
+                        homeHotspot.longitude = searchAddressLongitude
+                        homeHotspot.latitude = searchAddressLatitude
+                    
+                        // move back to start screen
+                        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+                        for aViewController in viewControllers {
+                            if aViewController is personInfoViewController {
+                                self.navigationController!.popViewController(animated: true)
+                            }
                         }
                     }
                     catch {
@@ -209,17 +209,22 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     }
                     changedAddress = false
                 }
+                else {
+                    // Check for a valid address
+                    if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
+                        print("Hello")
+                        dialogCheck.text = "Please select a valid address"
+                        dialogCheck.isHidden = false
+                        
+                        self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                        
+                        // Move the scroll view to the top
+                        self.scrollView.setContentOffset(top, animated: true)
+                    }
+                }
             }
 
             PersistenceService.saveContext()
-            
-            // move back to start screen
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-            for aViewController in viewControllers {
-                if aViewController is personInfoViewController {
-                    self.navigationController!.popViewController(animated: true)
-                }
-            }
         }
     }
     
@@ -230,6 +235,10 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         super.viewDidLoad()
         
         dialogCheck.isHidden = true
+        
+        searchAddressLatitude = 0.0
+        searchAddressLongitude = 0.0
+        changedAddress = false
         
         // For autocomplete table view
         searchResultsTableView.dataSource = self
