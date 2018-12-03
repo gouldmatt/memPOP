@@ -184,11 +184,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
      
                 var index: Int = 0
                 
-                // Update the attribute values of the hotspot object
-                newHotspot.name = name
-                newHotspot.address = address
-                newHotspot.latitude = latitude
-                newHotspot.longitude = longitude
                 
                 // Check the category selected
                 if(hotspotCategory.selectedSegmentIndex == 1) {
@@ -236,6 +231,40 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                         index = index + 1
                     }
                 }
+                
+                // Check if the address has been changed, if not then no need to update it
+                if (changedAddress){
+                    
+                    // Update the attribute values of the hotspot object
+                    newHotspot.name = name
+                    newHotspot.address = address
+                    newHotspot.latitude = latitude
+                    newHotspot.longitude = longitude
+                    
+                    changedAddress = false
+                    
+                    // Update the navigation bar back button so that when back is pressed on the main display screen
+                    // it will take the user to the start screen instead of the add hotspot view controller again
+                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+                    for aViewController in viewControllers {
+                        if aViewController is AddHotspotViewController {
+                            self.navigationController!.popViewController(animated: true)
+                        }
+                    }
+                }
+                else {
+                    // Check for a valid address
+                    if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
+                        print("Hello")
+                        dialogCheck.text = "Please select a valid address"
+                        dialogCheck.isHidden = false
+                        
+                        self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                        
+                        // Move the scroll view to the top
+                        self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
+                    }
+                }
             
                 // Once all changes have been checked, save the hotspot object with all its relationships
                 print("Creating new one")
@@ -243,6 +272,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 
                 // Add to the list of created hotspots
                 self.hotspots.append(newHotspot)
+    
             }
             else {
                 
@@ -255,14 +285,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 var index: Int = 0
                 
                 updateHotspot.name = hotspotName.text!
-                
-                // Check if the address has been changed, if not then no need to update it
-                if (changedAddress){
-                    updateHotspot.address = searchAddressChosen
-                    updateHotspot.latitude = searchAddressLatitude
-                    updateHotspot.longitude = searchAddressLongitude
-                    changedAddress = false
-                }
                 
                 // Check the category selected
                 if(hotspotCategory.selectedSegmentIndex == 1) {
@@ -328,18 +350,27 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                     index = index + 1
                 }
                 
+                // Check if the address has been changed, if not then no need to update it
+                if (changedAddress){
+                    updateHotspot.address = searchAddressChosen
+                    updateHotspot.latitude = searchAddressLatitude
+                    updateHotspot.longitude = searchAddressLongitude
+                    changedAddress = false
+                }
+                
+                // Update the navigation bar back button so that when back is pressed on the main display screen
+                // it will take the user to the start screen instead of the add hotspot view controller again
+                let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+                for aViewController in viewControllers {
+                    if aViewController is AddHotspotViewController {
+                        self.navigationController!.popViewController(animated: true)
+                    }
+                }
+                
                 // Save all the changes made to the hotspot selected
                 PersistenceService.saveContext()
             }
             
-            // Update the navigation bar back button so that when back is pressed on the main display screen
-            // it will take the user to the start screen instead of the add hotspot view controller again
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-            for aViewController in viewControllers {
-                if aViewController is AddHotspotViewController {
-                    self.navigationController!.popViewController(animated: true)
-                }
-            }
         }
     }
     
@@ -418,6 +449,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         descriptionTextView.layer.borderColor = UIColor.black.cgColor
         hotspotName.delegate = self
         todoItem.delegate = self
+        
+        changedAddress = false
         
         if(selectedHotspot == nil) {
             

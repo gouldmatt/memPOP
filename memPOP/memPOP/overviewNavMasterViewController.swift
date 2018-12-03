@@ -42,7 +42,7 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     @IBOutlet var overviewNavControl: UISegmentedControl!
     @IBOutlet weak var overviewContainer: UIView!
     @IBOutlet var navigationContainer: UIView!
-    @IBOutlet weak var emergency: UIButton!
+    //@IBOutlet weak var emergency: UIButton!
     
     //===================================================================================================
     // MARK: Actions
@@ -75,7 +75,7 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
                 self.present(alert,animated: true, completion: nil)
             }
         }
-    }
+    } 
     
     // Call the emergency contact when the emergency button is pressed
     @IBAction func emergencyPressed(_ sender: Any) {
@@ -92,6 +92,7 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
             print("failed user fetch")
         }
         
+        
         contactNumber = (user?.contactName)!
         let url = URL(string: "tel://\(contactNumber)")
         UIApplication.shared.open(url!)
@@ -100,6 +101,7 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -118,9 +120,10 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
         
         // Add Emergency Contact Button to navigation bar
         let eImage = UIImage(named: "emergency")!.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-        let eButton: UIBarButtonItem = UIBarButtonItem(image: eImage, style: .plain, target: self, action: #selector(emergencyPressed(_:)))
+        let eButton = UIBarButtonItem(image: eImage, style: .plain, target: self, action: #selector(emergencyPressed(_:)))
+        
         self.navigationItem.rightBarButtonItem = eButton
-      
+        
 
         let hotspot = selectedHotspot
         if ((hotspot?.info == nil || (hotspot?.info?.isEmpty)!) && hotspot?.toDo?.count == 0 && hotspot?.photos?.count == 0){

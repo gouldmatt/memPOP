@@ -52,6 +52,10 @@
     var incrementOnce: Bool = true
     var hotspotRegion: CLCircularRegion?
     
+    var mapLoaded = false
+    var routeLoaded = false
+    var noRoute = true
+    
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -60,19 +64,19 @@
     
     @IBOutlet var directionsTableView: UITableView!
     
-    @IBOutlet weak var debugLabel: UILabel!
-    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
-
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
-        debugLabel.text = selectedHotspot?.timesVisit.description
+        
+        noRoute = true
+        mapLoaded = false
+        routeLoaded = false
         
         // Pass the number of times visited
         timesVisit = selectedHotspot?.timesVisit
@@ -86,11 +90,9 @@
         incrementOnce = true
         doOnce = true
         
-        mapkitView.isRotateEnabled = false
-        mapkitView.isPitchEnabled = false
-        
-        // Disable segmented control while loading
-        mapOrDirectionsControl.isEnabled = false
+      
+        UIApplication.shared.beginIgnoringInteractionEvents()
+
         
         self.activityIndicator.transform = CGAffineTransform(scaleX: 3, y: 3)
         
@@ -135,7 +137,6 @@
             takeCar = false
         }
         
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -174,16 +175,16 @@
         
         // Only show the route once
         if(doOnce){
-            layoutWalkingRoute()
+            layoutRoute()
             doOnce = false
         }
         
         print(userLocal!.coordinate)
         if(!doOnce) {
-            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: (selectedHotspot?.latitude)!, longitude: (selectedHotspot?.longitude)!), radius: 200, identifier: "hotspot")
-            let circle = MKCircle(center: region.center, radius: region.radius)
+            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: (selectedHotspot?.latitude)!, longitude: (selectedHotspot?.longitude)!), radius: 75, identifier: "hotspot")
             
-            self.mapkitView.add(circle)
+            //let circle = MKCircle(center: region.center, radius: region.radius)
+            //self.mapkitView.add(circle)
             if(incrementOnce && region.contains((userLocal!.coordinate))) {
                 
                 print("At hotspot")
@@ -191,8 +192,6 @@
                 incrementOnce = false
                 selectedHotspot?.timesVisit = timesVisit!
                 PersistenceService.saveContext()
-                
-                debugLabel.text = selectedHotspot?.timesVisit.description
                 
             }
         }
@@ -234,7 +233,7 @@
     
     // Get walking or driving directions
     // Consulted https://www.youtube.com/watch?v=nhUHzst6x1U for route directions
-    func layoutWalkingRoute() {
+    func layoutRoute() {
         
         // remove any existing things from map
         self.locationManager.monitoredRegions.forEach({self.locationManager.stopMonitoring(for: $0)})
@@ -256,35 +255,56 @@
             request.transportType = .walking
         }
         
-        let directions = MKDirections(request: request)
+
         
-        directions.calculate { [unowned self] response, error in
-            guard let unwrappedResponse = response else { return }
-            
+        let directions = MKDirections(request: request)
+
+        
+        directions.calculate{ [unowned self] response, error in
+            guard let unwrappedResponse = response else {
+                
+                print("failed")
+                
+                self.routeLoaded = true
+                if(self.mapLoaded) {
+                    // When the map finishes loading, stop animating activity indicator button
+                    self.activityIndicator.stopAnimating()
+                    
+                    UIApplication.shared.endIgnoringInteractionEvents()
+                }
+                
+                return
+            }
+        
             for route in unwrappedResponse.routes {
                 
-                self.mapkitView.add(route.polyline)
-        
+                if(route.steps.count > 1) {
+                    self.mapkitView.add(route.polyline)
+                }
+                
                 self.route = route
                 
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
                 }
-                
+ 
+                self.routeLoaded = true
+                if(self.mapLoaded) {
+                    // When the map finishes loading, stop animating activity indicator button
+                    self.activityIndicator.stopAnimating()
+                    UIApplication.shared.endIgnoringInteractionEvents()
+                    
+                }
             }
-            
-            // draw a circle for debugging on map
-//            let circle = MKCircle(center: (self.hotspotRegion?.center)!, radius: (self.hotspotRegion?.radius)!)
-//            self.mapkitView.add(circle)
-            
-            
+
             // if in overview layout zoom to show whole map
             if(self.mapOrDirectionsControl.selectedSegmentIndex == 0){
-                   self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
+                   self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: false)
             }
             
         }
+
     
         // remove existing annotations
         let annotations = self.mapkitView.annotations
@@ -306,13 +326,11 @@
         if(route?.polyline != nil) {
             if(mapOrDirectionsControl.selectedSegmentIndex == 0){
                 print("map")
-                //layoutWalkingRoute()
                 self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: true)
                 directionsTableView.isHidden = true
             }
             else {
                 print("directions")
-                //layoutWalkingRoute()
                 mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
                 directionsTableView.reloadData()
                 directionsTableView.isHidden = false
@@ -321,12 +339,10 @@
         else {
             if(mapOrDirectionsControl.selectedSegmentIndex == 0){
                 print("map")
-                //layoutWalkingRoute()
                 directionsTableView.isHidden = true
             }
             else {
                 print("directions")
-                //layoutWalkingRoute()
                 mapkitView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
                 directionsTableView.reloadData()
                 directionsTableView.isHidden = false
@@ -342,11 +358,11 @@
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         var count: Int?
-        if(!doOnce) {
+        if(!doOnce && route?.steps.count != nil) {
             count = route?.steps.count
         }
         else {
-            count = 0
+            count = 1
         }
         
         return count!
@@ -369,7 +385,8 @@
             cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
             image = UIImage(named: "location")!
             
-            if(route?.polyline == nil) {
+            if(route?.polyline == nil && !doOnce) {
+                noRoute = true
                 if(takeCar) {
                     cell?.textLabel?.text = "No driving directions to " + (selectedHotspot?.name)!
                 }
@@ -378,6 +395,7 @@
                 }
             }
             else {
+                noRoute = false
                 cell?.textLabel?.text = "Directions to " + (selectedHotspot?.name)!
             }
         
@@ -444,7 +462,6 @@
             print("Increment\n\n")
             print(locationManager.monitoredRegions.count)
             timesVisit = timesVisit! + Int32(1)
-            debugLabel.text = timesVisit?.description
             incrementOnce = false
         }
     
@@ -466,13 +483,13 @@
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         
-        // When the map finishes loading, stop animating activity indicator button
-        activityIndicator.stopAnimating()
-        
-        // Set everything to back to true
-        mapkitView.isRotateEnabled = true
-        mapkitView.isPitchEnabled = true
-        mapOrDirectionsControl.isEnabled = true
+        mapLoaded = true
+        if(routeLoaded) {
+            // When the map finishes loading, stop animating activity indicator button
+            activityIndicator.stopAnimating()
+            UIApplication.shared.endIgnoringInteractionEvents()
+        }
+    
     }
     
     // add the images for each custom pin annotation
@@ -513,6 +530,7 @@
         }
         return nil
     }
+    
     
 }
    
