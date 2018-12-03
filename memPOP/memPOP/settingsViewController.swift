@@ -18,6 +18,7 @@ class settingsViewController: UIViewController {
     //===================================================================================================
     let notifCentre = UNUserNotificationCenter.current()
     let fetchUser: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
+    let fetchHotspot: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
     
     // Notification IDs
     let addNotifID = "AddNotifReq"
@@ -41,6 +42,44 @@ class settingsViewController: UIViewController {
     //===================================================================================================
     // MARK: Actions
     //===================================================================================================
+    @IBAction func resetStats(_ sender: UIButton) {
+        do {
+            let hotspotFetch = try PersistenceService.context.fetch(fetchHotspot)
+            let userFetch = try PersistenceService.context.fetch(fetchUser)
+            
+            if(userFetch.count == 1) {
+                // Create the alert
+                let alert = UIAlertController(title: "Reset Statistics", message: "Are you sure you want to reset all statistics collected?", preferredStyle: .alert)
+                
+                // Create the actions
+                let deleteAction = UIAlertAction(title: "Reset", style: .destructive) {
+                    (action:UIAlertAction) in
+                    print ("pressed Reset")
+                    for hotspot in hotspotFetch {
+                        hotspot.timesVisit = 0
+                        PersistenceService.saveContext()
+                    }
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {
+                    (action:UIAlertAction) in
+                    print ("pressed Cancel")
+                }
+                
+                // Add actions to alert
+                alert.addAction(deleteAction)
+                alert.addAction(cancelAction)
+                
+                // Show the alert
+                self.present(alert,animated: true, completion: nil)
+            }
+        }
+        catch {
+            print("failed user fetch")
+        }
+        
+    }
+    
     @IBAction func changeAddHotspotNotif(_ sender: Any) {
         print("received action")
         // check if permission granted. Do not add notif otherwise
