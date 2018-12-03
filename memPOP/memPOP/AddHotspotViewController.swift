@@ -24,6 +24,12 @@
 // Editing mode fetches all the information of the selected hotspot and displays it to the user
 // Editing mode allows the user to make changes and save them
 
+//===================================================================================================
+// Changes that have been made in v3.0
+// Modified address field to now have the option to search using the MapKit API
+// Added multiple checks to ensure users inputs required information with its correct format
+// Added authorization checks when using the user's photo library
+
 import CoreData
 import UIKit
 import MapKit
@@ -67,31 +73,26 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     // MARK: Outlets
     //===================================================================================================
     @IBOutlet weak var descriptionTextView: UITextView!
-
     @IBOutlet weak var doneButton: UIButton!
-    
     @IBOutlet weak var hotspotName: UITextField!
     @IBOutlet weak var hotspotTransportation: UISegmentedControl!
     @IBOutlet weak var hotspotCategory: UISegmentedControl!
     @IBOutlet weak var hotspotInfo: UITextView!
-    
     @IBOutlet var collectionView: UICollectionView!
-
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var todoItem: UITextField!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var dialogCheck: UITextField!
-    
     @IBOutlet weak var searchResultsTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
     @IBOutlet var scrollView: UIScrollView!
+    
     //===================================================================================================
     // MARK: Actions
     //===================================================================================================
     @IBAction func ImportPhoto(_ sender: Any) {
         
-        // Request Photos Permissions
+        // Request Photos Permissions when we access the user's photo library
         PHPhotoLibrary.requestAuthorization { (status) in
             switch status {
             case .authorized:
@@ -102,7 +103,8 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 print("default")
             }
         }
-
+        
+        // Check for authorization status, if false, create an alert to remind the user to allow access
         let status = PHPhotoLibrary.authorizationStatus()
         if (status == PHAuthorizationStatus.authorized) {
             // Open the camera library and show the user their photos
@@ -129,7 +131,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
     
     @IBAction func addToDo(_ sender: Any) {
-        
         // Adding a ToDO item in the table view
         if (todoItem.text != "") {
             list.append("- " + todoItem.text!)
@@ -139,7 +140,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
     
     @IBAction func donePressed(_ sender: UIButton) {
-        
         // Action needed to save or update all the attributes for a single hotspot and their relationships
         
         // Check that name and address are filled before saving
@@ -150,12 +150,12 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 hotspotName.layer.borderWidth = 1.0
                 let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
                 hotspotName.layer.borderColor = layerColor.cgColor
-                
             }
             else {
                 hotspotName.layer.borderWidth = 0.0
             }
             
+            // Crete a red border around the search bar field if empty
             if (searchBar.text!.isEmpty) {
                 self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
             }
@@ -165,10 +165,10 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             
             // Move the scroll view to the top
             self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
-            
         }
         else {
             
+            hotspotName.layer.borderWidth = 0.0
             dialogCheck.isHidden = true
 
             // Create a new hotspot
@@ -177,13 +177,23 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 let address = searchAddressChosen
                 let longitude = searchAddressLongitude
                 let latitude = searchAddressLatitude
+                
+                if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
+                    dialogCheck.text = "Please select a valid address"
+                    dialogCheck.isHidden = false
+                    
+                    self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                    
+                    // Move the scroll view to the top
+                    self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
+                    return
+                }
         
                 let newHotspot = HotspotMO(context: PersistenceService.context)
                 var newPhotos = [PhotosMO(context: PersistenceService.context)]
                 var newToDos = [ToDoMO(context: PersistenceService.context)]
      
                 var index: Int = 0
-                
                 
                 // Check the category selected
                 if(hotspotCategory.selectedSegmentIndex == 1) {
@@ -233,7 +243,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                 }
                 
                 // Check if the address has been changed, if not then no need to update it
-                if (changedAddress){
+                if (changedAddress) {
                     
                     // Update the attribute values of the hotspot object
                     newHotspot.name = name
@@ -242,6 +252,13 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                     newHotspot.longitude = longitude
                     
                     changedAddress = false
+                    
+                    // Once all changes have been checked, save the hotspot object with all its relationships
+                    print("Creating new one")
+                    PersistenceService.saveContext()
+                    
+                    // Add to the list of created hotspots
+                    self.hotspots.append(newHotspot)
                     
                     // Update the navigation bar back button so that when back is pressed on the main display screen
                     // it will take the user to the start screen instead of the add hotspot view controller again
@@ -252,37 +269,26 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                         }
                     }
                 }
-                else {
-                    // Check for a valid address
-                    if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
-                        print("Hello")
-                        dialogCheck.text = "Please select a valid address"
-                        dialogCheck.isHidden = false
-                        
-                        self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
-                        
-                        // Move the scroll view to the top
-                        self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
-                    }
-                }
-            
-                // Once all changes have been checked, save the hotspot object with all its relationships
-                print("Creating new one")
-                PersistenceService.saveContext()
-                
-                // Add to the list of created hotspots
-                self.hotspots.append(newHotspot)
-    
             }
             else {
-                
-                // Updating a hotspot selected
+                // Updating the hotspot selected
                 print("Updating one")
                 
                 let updateHotspot = selectedHotspot as! HotspotMO
                 var newToDos = updateHotspot.toDo as! [ToDoMO]
                 var newPhotos = updateHotspot.photos as! [PhotosMO]
                 var index: Int = 0
+                
+                if (changedAddress && ( searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0)) {
+                    dialogCheck.text = "Please select a valid address"
+                    dialogCheck.isHidden = false
+                    
+                    self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                    
+                    // Move the scroll view to the top
+                    self.scrollView.setContentOffset(CGPoint(x:0, y: -self.scrollView.contentInset.top), animated: true)
+                    return
+                }
                 
                 updateHotspot.name = hotspotName.text!
                 
@@ -358,6 +364,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                     changedAddress = false
                 }
                 
+                // Save all the changes made to the hotspot selected
+                PersistenceService.saveContext()
+                
                 // Update the navigation bar back button so that when back is pressed on the main display screen
                 // it will take the user to the start screen instead of the add hotspot view controller again
                 let viewControllers: [UIViewController] = self.navigationController!.viewControllers
@@ -366,9 +375,6 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
                         self.navigationController!.popViewController(animated: true)
                     }
                 }
-                
-                // Save all the changes made to the hotspot selected
-                PersistenceService.saveContext()
             }
             
         }
@@ -385,7 +391,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         else {
             // Create the alert
-            let alert = UIAlertController(title: "Deleting Hotspot", message: "Are you sure you wish to delete this Hotspot? Changes will not be saved.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Deleting Hotspot", message: "Are you sure you want to delete this Hotspot?", preferredStyle: .alert)
             
             // Create the actions
             let deleteAction = UIAlertAction(title: "Delete", style: .destructive) {
@@ -442,6 +448,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         self.searchBar.returnKeyType = UIReturnKeyType.done
         self.searchBar.searchBarStyle = .minimal
         
+        // Hide the warning message by default
         dialogCheck.isHidden = true
  
         // Add a border around the description UI textfield, and image view
@@ -450,9 +457,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         hotspotName.delegate = self
         todoItem.delegate = self
         
-        changedAddress = false
-        
-        if(selectedHotspot == nil) {
+        if (selectedHotspot == nil) {
             
             // Adding a new hotpost mode
             print("Adding")
@@ -483,7 +488,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
             print("Editing")
             
             // Check if editing the home hotspot, if so, disable change for the title and delete button
-            if(isHomeHotspot){
+            if (isHomeHotspot) {
                  hotspotName.isEnabled = false
                  deleteButton.isHidden = true 
             }
@@ -550,9 +555,9 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     }
     
     override func viewWillAppear(_ animated:Bool) {
+        // Shwo the navigation bar
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.setHidesBackButton(true, animated: true)
-       
     }
 
     override func didReceiveMemoryWarning() {
@@ -600,7 +605,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         return sectionNum!
     }
     
-    // https://www.youtube.com/watch?v=LrCqXmHenJY
+    // Consulted https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // Return the number of items for each tableview
@@ -619,7 +624,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         
     }
     
-    // https://www.youtube.com/watch?v=LrCqXmHenJY
+    // Consulted https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Return the cell template for each table view
@@ -639,6 +644,19 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         }
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+       
+        var isEditable = true
+        
+        if(tableView == self.tableView) {
+            if(indexPath.row == 0) {
+                isEditable = false
+            }
+        }
+        
+        return isEditable
     }
     
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -682,8 +700,7 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
         return indexPath
     }
     
-    // Delete a ToDo item by a left swipe
-    // https://www.youtube.com/watch?v=LrCqXmHenJY
+    // Delete a ToDo item by a left swipe, consulted https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.delete {

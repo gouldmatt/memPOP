@@ -14,7 +14,6 @@
 import Foundation
 import CoreData
 
-
 extension HotspotMO {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<HotspotMO> {

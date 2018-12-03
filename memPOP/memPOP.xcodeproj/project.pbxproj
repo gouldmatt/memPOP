@@ -188,9 +188,9 @@
 				4788F2B6218CBA870041BE71 /* CollectionViewPhotoDelete.swift */,
 				EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */,
 				47C260F121856278003AF531 /* CollectionViewPhotoLabel.swift */,
+				EB718C7021B4D54100108FBD /* tutorialViewController.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
-				EB718C7021B4D54100108FBD /* tutorialViewController.swift */,
 				A0B63CC7217F9C560072A82F /* Info.plist */,
 				A0B63CBF217F9C560072A82F /* memPOP.xcdatamodeld */,
 			);

@@ -2,8 +2,12 @@
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by nla52 on 10/23/18.
-//  Programmers: Emily Chen, Matthew Gould
+//  Programmers: Emily Chen, Matthew Gould, Trevor Sclater
 //  Copyright © 2018 Iota Inc. All rights reserved.
+
+//===================================================================================================
+// Changes that have been made in v3.0
+// Added a tutorial VC that will only appear once when the app is first installed
 
 //===================================================================================================
 // App entry point

@@ -2,7 +2,7 @@
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Matthew Gould on 2018-11-10.
-//  Programmers: Matthew Gould
+//  Programmers: Emily Chen, Matthew Gould, Diego Martin Marcelo
 //  Copyright © 2018 Iota Inc. All rights reserved.
 
 //===================================================================================================
@@ -10,6 +10,11 @@
 // Created Master view controller to handle the switching of view between overview and navigation mode
 // Added buttons to handle the transition events
 // Added fetching support for passing information about hotspot selected between the views
+
+//===================================================================================================
+// Changes that have been made in v3.0
+// Checked if location permissions were allowed by the user
+// Checked for empty overview fields such as infor/toDos/photos and skip to navigation container
 
 import CoreData
 import UIKit
@@ -29,10 +34,8 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     var addedToDos = [NSManagedObject]()
     var addedImages = [NSManagedObject]()
     var selectedHotspot: HotspotMO?
-    
     var latitude:Double = 0.0
     var longitude:Double = 0.0
-    
     var user:PersonInfoMO?
     var contactNumber:String = ""
     
@@ -42,7 +45,6 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     @IBOutlet var overviewNavControl: UISegmentedControl!
     @IBOutlet weak var overviewContainer: UIView!
     @IBOutlet var navigationContainer: UIView!
-    //@IBOutlet weak var emergency: UIButton!
     
     //===================================================================================================
     // MARK: Actions
@@ -79,9 +81,7 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
     
     // Call the emergency contact when the emergency button is pressed
     @IBAction func emergencyPressed(_ sender: Any) {
-        print("entered")
         // Retrieve emergency contact information
-        // fetch any existing user information
         do {
             let userFetch = try PersistenceService.context.fetch(fetchUser)
             if(userFetch.count == 1){
@@ -92,16 +92,15 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
             print("failed user fetch")
         }
         
-        
+        // Call the phone number entered by the user
         contactNumber = (user?.contactName)!
         let url = URL(string: "tel://\(contactNumber)")
         UIApplication.shared.open(url!)
     }
     
     //===================================================================================================
-    // MARK: Functions
+    // MARK: Override Functions
     //===================================================================================================
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -123,8 +122,8 @@ class overviewNavMasterViewController: UIViewController, CLLocationManagerDelega
         let eButton = UIBarButtonItem(image: eImage, style: .plain, target: self, action: #selector(emergencyPressed(_:)))
         
         self.navigationItem.rightBarButtonItem = eButton
-        
 
+        // Check if the hotspot has no info/toDos/photos to avoid displaying an empty overview, skips to the navigation
         let hotspot = selectedHotspot
         if ((hotspot?.info == nil || (hotspot?.info?.isEmpty)!) && hotspot?.toDo?.count == 0 && hotspot?.photos?.count == 0){
 
