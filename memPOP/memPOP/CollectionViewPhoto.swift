@@ -13,6 +13,9 @@
 // Changes that have been made in v2.0
 // Updated the file name to a more accurate representation of the class
 
+//===================================================================================================
+// No changes have been made in v3.0
+
 import UIKit
 
 class CollectionViewPhoto: UICollectionViewCell {

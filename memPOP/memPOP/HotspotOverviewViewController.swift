@@ -19,6 +19,9 @@
 // Created a Master view controller to switch between overview and navigation mode
 // Updated collection view to scroll within the entire view
 
+//===================================================================================================
+// Changes that have been made in v3.0
+// Added constraint variables to hide/show different UI elements within the code
 
 import CoreData
 import UIKit
@@ -49,6 +52,7 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     @IBOutlet var photosSpace: NSLayoutConstraint!
     @IBOutlet var descriptionSpace: NSLayoutConstraint!
     @IBOutlet var descriptionSpaceTrailing: NSLayoutConstraint!
+    
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
@@ -109,8 +113,6 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     
     override func viewWillAppear(_ animated:Bool) {
         self.navigationController?.isNavigationBarHidden = false
-        //collectionView.reloadData()
-        //toDoTable.reloadData()
     }
     
     override func didReceiveMemoryWarning() {

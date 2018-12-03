@@ -2,13 +2,20 @@
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Emily on 2018-10-24.
-//  Programmers: Matthew Gould
+//  Programmers: Emily Chen, Matthew Gould, Diego Martin Marcelo
 //  Copyright © 2018 Iota Inc. All rights reserved.
 
 //===================================================================================================
 // Changes that have been made in v2.0
 // Added name textfield and autofill address
 
+//===================================================================================================
+// Changes that have been made in v3.0
+// Added multiple checks to ensure users inputs required information with its correct format
+// Added warning message and scrolling to top when user puts invalid inputs
+// Added a way to manage hiding/showing sections based on the user's statistics
+// Implemented Pie and Bar charts using Cocopoads/Charts library for displaying statistics
+// Updated contraints and UI elements such as colors and sizes for the view controller
 
 import CoreData
 import UIKit
@@ -18,13 +25,13 @@ import Charts
 class personInfoViewController: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
     
     //===================================================================================================
-    // Constants
+    // MARK: Constants
     //===================================================================================================
     let fetchHotspot: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
     let fetchUser: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
     
     //===================================================================================================
-    // Variables declaration
+    // MARK: Variables declaration
     //===================================================================================================
     var user: PersonInfoMO?
     
@@ -44,7 +51,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     weak var axisFormatDelegate: IAxisValueFormatter?
 
     //===================================================================================================
-    // Outlets
+    // MARK: Outlets
     //===================================================================================================
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var searchResultsTableView: UITableView!
@@ -68,12 +75,14 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet var barChartHeight: NSLayoutConstraint!
     
     //===================================================================================================
-    // Actions
+    // MARK: Actions
     //===================================================================================================
     @IBAction func donePressed(_ sender: Any) {
     
+        // Reference color used for warning messages
         let layerColor : UIColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1)
         
+        // Reference to the top of the view controller for scrolling
         let top = CGPoint.init(x: 0.0, y: -(self.scrollView.contentInset.top))
         
         // Check that name and address are filled before saving
@@ -140,23 +149,23 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             
         }
         else {
-            
+            // Once all checks have passed, clear the borders
             emergencyTextField.layer.borderWidth = 0.0
             nameField.layer.borderWidth = 0.0
             
-            // create a new user or update existing user info
-            if(user == nil){
+            // Create a new user or update existing user info
+            if (user == nil) {
+                // Creating a new user
                 let newUser = PersonInfoMO(context: PersistenceService.context)
                 newUser.name = nameField.text
                 newUser.contactName = emergencyTextField.text
                 
-                // set the default values for the notification setting to off.
+                // Set the default values for the notification setting to off.
                 newUser.activitiesNotifSetting = 0
                 newUser.addHotspotNotifSetting = 0
                 
                 let newHotspot = HotspotMO(context: PersistenceService.context)
 
-                
                 // Check for a valid address
                 if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
                     dialogCheck.text = "Please select a valid address"
@@ -168,22 +177,23 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     self.scrollView.setContentOffset(top, animated: true)
                 }
                 else {
-                    print("Here")
                     newHotspot.name = "Home"
                     newHotspot.address = searchAddressChosen
                     newHotspot.longitude = searchAddressLongitude
                     newHotspot.latitude = searchAddressLatitude
                     //newHotspot.addToPhotos(newPhoto)
                     
-                    // move back to start screen
+                    // Move back to start screen
                     self.navigationController?.popToRootViewController(animated: false)
                 }
             }
             else {
+                // Updating an existing user
                 user?.name = nameField.text
                 user?.contactName = emergencyTextField.text
                 
-                if(changedAddress){
+                // Check if the address has been changed, if not then no need to update it
+                if (changedAddress) {
                     do{
                         let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
 
@@ -197,14 +207,13 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     changedAddress = false
                 }
                 
-                // move back to start screen
+                // Move back to start screen
                 let viewControllers: [UIViewController] = self.navigationController!.viewControllers
                 for aViewController in viewControllers {
                     if aViewController is personInfoViewController {
                         self.navigationController!.popViewController(animated: true)
                     }
                 }
-                
             }
 
             PersistenceService.saveContext()
@@ -212,16 +221,18 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     }
     
     //===================================================================================================
-    // Override Functions
+    // MARK: Override Functions
     //===================================================================================================
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dialogCheck.isHidden = true
-        
+        // Initiliaze variables need to be reset
         searchAddressLatitude = 0.0
         searchAddressLongitude = 0.0
         changedAddress = false
+        
+        // Hide the warning message by default
+        dialogCheck.isHidden = true
         
         // For autocomplete table view
         searchResultsTableView.dataSource = self
@@ -238,7 +249,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         self.searchBar.searchBarStyle = .minimal
         
         axisFormatDelegate = self
-        // fetch any existing user information 
+        
+        // Fetch any existing user information
         do {
             let userFetch = try PersistenceService.context.fetch(fetchUser)
             let hotspotFetch = try PersistenceService.context.fetch(fetchHotspot)
@@ -248,8 +260,11 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 nameField.text = user?.name
                 emergencyTextField.text = user?.contactName
                 searchBar.text = hotspotFetch[0].address
+                
+                // Load Pie Chart with information collected from all hotspots
                 loadPieChart(foodCount: Double((user?.foodNum)!), funCount: Double((user?.funNum)!), taskCount: Double((user?.taskNum)!))
                 
+                // Check if no categories are available and hide that section
                 if(user?.foodNum == 0 && user?.funNum == 0 && user?.taskNum == 0){
                     pieChart.isHidden = true
                     pieChartHeight.constant = 0
@@ -261,23 +276,26 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     pieChartLabelHeight.constant = 31
                 }
                 
+                // Reset variable
                 var noVisits:Bool = true
                 
+                // Clear arrays from their previous values
                 hotspotNames.removeAll()
                 hotspotsCount.removeAll()
                 
+                // Cycle through all hotspots and store their name and timesVisit into arrays
                 for hotspot in hotspotFetch {
                     if(hotspot.timesVisit != 0) {
-                        //let hotspotName = hotspot.name?.description
-                        
                         hotspotNames.append(hotspot.name!)
                         hotspotsCount.append(Int(hotspot.timesVisit))
                         noVisits = false
                     }
                 }
                 
+                // For debugging
                 print(hotspotNames.count)
                 
+                // If no hotspot has yet been visited, hide that section
                 if(noVisits){
                     barChart.isHidden = true
                     barChartHeight.constant = 0
@@ -291,7 +309,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             }
             else {
                 
-                // hide everything
+                // Hide everything
                 pieChart.isHidden = true
                 pieChartHeight.constant = 0
                 pieChartLabel.isHidden = true
@@ -307,7 +325,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
             print("failed user fetch")
         }
         
-        // Fetch Statistics
+        // Load Bar Chart with information collected from all hotspots
         loadBarChart(dataEntryX: hotspotNames, dataEntryY: hotspotsCount)
     }
     
@@ -322,9 +340,9 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     }
     
     //===================================================================================================
-    // Functions
+    // MARK: Functions
     //===================================================================================================
-    // https://www.youtube.com/watch?v=LrCqXmHenJY
+    // Consulted https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         // Return the number of items for each tableview
@@ -334,7 +352,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         return count!
     }
     
-    // https://www.youtube.com/watch?v=LrCqXmHenJY
+    // Consulted https://www.youtube.com/watch?v=LrCqXmHenJY
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         var cell : UITableViewCell?
@@ -359,7 +377,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         changedAddress = true 
         
         // Check which item is selected for each table view
-        
         print("did select:  \(indexPath.row)    ")
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -399,19 +416,21 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     func loadBarChart(dataEntryX forX:[String],dataEntryY forY: [Int]) {
         
         var dataEntries:[BarChartDataEntry] = []
+
+        // For debugging
         print(forX.count)
+        
+        // Create each data entry and append to array
         for i in 0..<forX.count{
             let dataEntry = BarChartDataEntry(x: Double(i), y: Double(forY[i]) , data: hotspotNames as AnyObject?)
             dataEntries.append(dataEntry)
         }
         
-        print(dataEntries.count)
-        
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
         chartDataSet.colors = [UIColor(red: 255/255, green: 119/255, blue: 119/255, alpha: 1)]
         let chartData = BarChartData(dataSet: chartDataSet)
         barChart.data = chartData
-        barChart.setScaleEnabled(true) //remove if it doesnt work
+        barChart.setScaleEnabled(true) // Remove if it doesnt work
         
         // Set up some chart configurations
         barChart.chartDescription?.text = ""
@@ -438,8 +457,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     func loadPieChart(foodCount: Double, funCount: Double, taskCount: Double) {
         
         var dataEntries:[PieChartDataEntry] = []
-
         
+        // Append only valid statistics to the array
         if(foodCount > 0) {
             let food = PieChartDataEntry(value: foodCount)
             food.label = "Food"
@@ -469,7 +488,11 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
     }
 }
 
+//===================================================================================================
+// MARK: Extensions
+//===================================================================================================
 extension String {
+    // Check if the string contains only numbers
     var isNumber:Bool {
         let characters = CharacterSet.decimalDigits.inverted
         return !self.isEmpty && rangeOfCharacter(from: characters) == nil

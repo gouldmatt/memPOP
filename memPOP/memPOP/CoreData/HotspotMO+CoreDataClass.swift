@@ -5,10 +5,8 @@
 //  Programmers:
 //  Copyright © 2018 Iota Inc. All rights reserved.
 
-
 import Foundation
 import CoreData
-
 
 public class HotspotMO: NSManagedObject {
 

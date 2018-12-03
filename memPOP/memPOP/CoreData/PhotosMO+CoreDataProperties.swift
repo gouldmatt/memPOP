@@ -15,7 +15,6 @@
 import Foundation
 import CoreData
 
-
 extension PhotosMO {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PhotosMO> {

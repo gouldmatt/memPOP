@@ -2,11 +2,14 @@
 //  memPOP
 //  Group 9, Iota Inc.
 //  Created by Emily on 2018-10-24.
-//  Programmers: Nicholas Lau
+//  Programmers: Nicholas Lau, Emily Chen, Matthew Gould, Diego Martin Marcelo
 //  Copyright © 2018 Iota Inc. All rights reserved.
 
 //===================================================================================================
-// Implementation coming in v3.0
+// Changes that have been made in v3.0
+// Implemented a notification system to remind the user to add new hotspots
+// Added a way for user to disable notifications
+// Implemented a reset statistics action
 
 import UIKit
 import UserNotifications
@@ -27,7 +30,7 @@ class settingsViewController: UIViewController {
     // Notification Content
     let addNotifContent = UNMutableNotificationContent()
     
-    //AddHotspot notif Times
+    //AddHotspot Notif Times
     let hourAddHotspotNotif = 14 // Default 18:00 or 6 PM
     let minuteAddHotspotNotif = 6
     //Activities Notif times
@@ -40,6 +43,7 @@ class settingsViewController: UIViewController {
     var dateAddNotif = DateComponents()
     var dateActivitiesNotif = DateComponents()
     var user: PersonInfoMO?
+    
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -47,10 +51,12 @@ class settingsViewController: UIViewController {
     @IBOutlet weak var addHotspotNotifFreq: UISegmentedControl!
     @IBOutlet weak var activitiesNotif: UISegmentedControl!
     @IBOutlet weak var activitiesNotifFreq: UISegmentedControl!
+    
     //===================================================================================================
     // MARK: Actions
     //===================================================================================================
     @IBAction func resetStats(_ sender: UIButton) {
+        // Added action to reset all statistics collected from the user
         do {
             let hotspotFetch = try PersistenceService.context.fetch(fetchHotspot)
             let userFetch = try PersistenceService.context.fetch(fetchUser)
@@ -62,7 +68,11 @@ class settingsViewController: UIViewController {
                 // Create the actions
                 let deleteAction = UIAlertAction(title: "Reset", style: .destructive) {
                     (action:UIAlertAction) in
+                    
+                    // For debugging
                     print ("pressed Reset")
+                    
+                    // Reset statistics back to zero for all hotspots
                     for hotspot in hotspotFetch {
                         hotspot.timesVisit = 0
                         PersistenceService.saveContext()
@@ -90,7 +100,7 @@ class settingsViewController: UIViewController {
     
     @IBAction func changeAddHotspotNotif(_ sender: Any) {
         print("received action")
-        // check if permission granted. Do not add notif otherwise
+        // Check if permission granted. Do not add notif otherwise
         notifCentre.getNotificationSettings { (settings) in
                 guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
@@ -103,7 +113,7 @@ class settingsViewController: UIViewController {
     
     @IBAction func changeAddHotspotNotifFreq(_ sender: Any) {
         print("received action")
-        // check if permission granted. Do not add notif otherwise
+        // Check if permission granted. Do not add notif otherwise
         notifCentre.getNotificationSettings { (settings) in
             guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
@@ -116,7 +126,7 @@ class settingsViewController: UIViewController {
     
     @IBAction func changeActivitiesNotif(_ sender: Any) {
         notifCentre.getNotificationSettings { (settings) in
-            // check if permission granted. Do not add notif otherwise
+            // Check if permission granted. Do not add notif otherwise
             guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
                 self.alertPermissionDisabled()
@@ -127,7 +137,7 @@ class settingsViewController: UIViewController {
     }
     
     @IBAction func changeActivitiesNotifFreq(_ sender: Any) {
-        // check if permission granted. Do not add notif otherwise
+        // Check if permission granted. Do not add notif otherwise
         notifCentre.getNotificationSettings { (settings) in
             guard settings.authorizationStatus == .authorized else {
                 print("permission check failed")
@@ -137,6 +147,7 @@ class settingsViewController: UIViewController {
         }
         configActivityNotif()
     }
+    
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
@@ -145,7 +156,7 @@ class settingsViewController: UIViewController {
         notifCentre.requestAuthorization(options: [.sound, .alert, .badge]){ (grantedNotif, err) in
             self.notifCentre.getNotificationSettings(){ (settings) in
                 if (settings.alertSetting == .enabled){
-                    print("check good")
+                    print("notifications: check good")
                     
                     // Check if user data can be fetched
                     do {
@@ -196,15 +207,13 @@ class settingsViewController: UIViewController {
                             self.activitiesNotifFreq.selectedSegmentIndex = 0;
                         }
                     }
-                    
-                } else {
-                    print("check bad")
+                }
+                else {
+                    print("notifications: check bad")
                     self.alertPermissionDisabled()
                 }
             }
         }
-        
-        
     }
     
     override func viewWillAppear(_ animated:Bool) {
@@ -215,10 +224,10 @@ class settingsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
-    
     /*
      Notification Setting values for addHotspotNotifSetting and activitiesNotifSetting
      0 = OFF
@@ -273,7 +282,7 @@ class settingsViewController: UIViewController {
             // Create notif req
             let addNotifReq = UNNotificationRequest(identifier: addNotifID, content: addNotifContent, trigger: addNotifTrigger)
             
-            // add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
+            // Add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
             notifCentre.add(addNotifReq)
         } else { // addHotspotNotif - OFF
             print("Turn off AddHotspot Notif")
@@ -318,7 +327,7 @@ class settingsViewController: UIViewController {
             // Create notif request
             let addNotifReq = UNNotificationRequest(identifier: activitiesNotifID, content: addNotifContent, trigger: addNotifTrigger)
             
-            // add Activities Notif request to notification centre. This will overwrite existing reminder if it exists.
+            // Add Activities Notif request to notification centre. This will overwrite existing reminder if it exists.
             notifCentre.add(addNotifReq)
         } else { // activitiesNotif - OFF
             print("Turn off Activities Notif")
@@ -347,7 +356,7 @@ class settingsViewController: UIViewController {
     
     // Prints the body message for notification alerts to add a new hotspot
     func alertMsgAddHotspot() -> String {
-        // fetch any existing user information
+        // Fetch any existing user information
         do {
             let userFetch = try PersistenceService.context.fetch(fetchUser)
             if(userFetch.count == 1){
@@ -386,7 +395,7 @@ class settingsViewController: UIViewController {
     // Used to update the notification body message for addHotspot when changes are made to the number of hotspots and category
     public func modifyAddHotspotNotif(){
         notifCentre.requestAuthorization(options: [.sound, .alert, .badge]){ (grantedNotif, err) in
-            // check if permission granted. Do not add notif otherwise
+            // Check if permission granted. Do not add notif otherwise
             self.notifCentre.getNotificationSettings { (settings) in
                 guard settings.authorizationStatus == .authorized else {
                     print("permission check failed")
@@ -394,7 +403,7 @@ class settingsViewController: UIViewController {
                     return
                 }
             }
-            // fetch any existing user information
+            // Fetch any existing user information
             do {
                 let userFetch = try PersistenceService.context.fetch(self.fetchUser)
                 if(userFetch.count == 1){
@@ -439,7 +448,7 @@ class settingsViewController: UIViewController {
                 // Create notif req
                 let addNotifReq = UNNotificationRequest(identifier: self.addNotifID, content: self.addNotifContent, trigger: addNotifTrigger)
                 
-                // add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
+                // Add addHotspot Notif request to notification centre. This will overwrite existing reminder if it exists.
                 self.notifCentre.add(addNotifReq)
             } else {
                 print("doing nothing since notificaiton addHotspot not enabled.")

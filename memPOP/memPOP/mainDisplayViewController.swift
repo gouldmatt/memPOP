@@ -22,7 +22,10 @@
 // Changes that have been made in v3.0
 // Update method for sorting the hotspots so that the sort only happens if a hotspot has been added/edited
 // Saved the number of hotspots in each category 
-//
+// Updated contraints and UI elements such as colors and sizes for the view controller
+// Request user permission to user their location services
+// Stored the different number of categories into coredata to display statistics 
+
 import CoreLocation
 import UIKit
 import CoreData
@@ -34,6 +37,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
     //===================================================================================================
     let fetchRequestHotspot: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
     let fetchRequestPerson: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
+    
     //===================================================================================================
     // MARK: Variables declaration
     //===================================================================================================
@@ -90,7 +94,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
             NSAttributedStringKey.foregroundColor: UIColor.white
             ], for: .selected)
         
-        // initial load of the collection view data
+        // Initial load of the collection view data
         load()
         self.collectionView.reloadData()
         
@@ -119,9 +123,8 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
         super.didReceiveMemoryWarning()
     }
     
-    // if the user is adding a hotspot sort the hotspots again when they return
+    // If the user is adding a hotspot sort the hotspots again when they return
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("test")
         if (segue.identifier == "addHotspot"){
             didSortHotspots = false
         }
@@ -130,32 +133,32 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
     //===================================================================================================
     // MARK: Functions
     //===================================================================================================
-    
     // Fetch HotspotMO Entity and store it in array of hotspots
     func load () {
         
         fetchRequestHotspot.returnsObjectsAsFaults = false
 
-        // check if the hotspots are already sorted into category arrays
+        // Check if the hotspots are already sorted into category arrays
         if !(didSortHotspots){
           
             // Do-try block to fetch all the hotspot entities that correspond to the category selected
             do {
-                // counter for the num of each category
+                // Variable counter for the number of each category
                 var foodNum:Int16 = 0
                 var taskNum:Int16 = 0
                 var funNum:Int16 = 0
                 
+                // Fetch both the user and all the hotspots from coredata
                 let person = try PersistenceService.context.fetch(fetchRequestPerson)
                 let allHotspots = try PersistenceService.context.fetch(fetchRequestHotspot)
                 
-                // remove exisiting hotspots in case hotspots have changed category
+                // Remove exisiting hotspots in case hotspots have changed category
                 foodHotspots.removeAll()
                 funHotspots.removeAll()
                 taskHotspots.removeAll()
                 self.hotspots.removeAll()
                 
-                // go through hotspots and append to the correct category array, also counting the number
+                // Go through hotspots and append to the correct category array, also counting the number
                 for hotspotItem in (allHotspots) {
         
                     if (hotspotItem.category == "Food") {
@@ -172,22 +175,19 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
                         taskNum += 1
                     }
                     
-                    // set the values to be saved with the PersonInfoMO
+                    // Set the values to be saved with the PersonInfoMO
                     person[0].foodNum = foodNum
                     person[0].funNum = funNum
                     person[0].taskNum = taskNum
                     
                     PersistenceService.saveContext()
-                    
-                    
                 }
                 
                 // Modify the addHotspot Notification
                 settingsViewController().modifyAddHotspotNotif()
                 
-                // determine which hotspots to display
+                // Determine which hotspots to display
                 if (selectedCategory.selectedSegmentIndex == 1) {
-                    
                     self.hotspots = foodHotspots
                 }
                 else if (selectedCategory.selectedSegmentIndex == 2) {
@@ -207,8 +207,7 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
             }
         }
         else {
-           // if the hotspots are already sorted just display the correct array for the selected cat
-
+           // If the hotspots are already sorted just display the correct array for the selected category
             if (selectedCategory.selectedSegmentIndex == 1) {
                 print(foodHotspots.count)
                 self.hotspots = foodHotspots
@@ -224,7 +223,6 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
         }
     }
 
-    
     // Collection view shows all the hotpots in mainDisplay
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -272,7 +270,6 @@ class mainDisplayViewController: UIViewController, UICollectionViewDelegate,CLLo
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         // For debugging
-        print(String(indexPath.row))
         print("tapped hotspot")
         
         // Check if user intends to edit or view a hostpot based on the button state
