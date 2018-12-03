@@ -21,6 +21,9 @@ sudo gem install cocoapods
  ```
  - Set the simulator to iPhone 8 and click on the run button to build memPOP
 
+### Simulation Testing 
+- Set location of the simulator after building memPop to enable map directions
+
 ### Coding Guidelines
 (coding guidelines follow sections of https://www.mono-project.com/community/contributing/coding-guidelines/)
 - Indentation
