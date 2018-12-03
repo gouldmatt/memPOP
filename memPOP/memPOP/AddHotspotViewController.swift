@@ -767,18 +767,20 @@ class AddHotspotViewController: UIViewController, UINavigationControllerDelegate
     func deletePhoto (index : Int) {
 
         let chosenHotspot = selectedHotspot as! HotspotMO
-        var photosToDelete = chosenHotspot.photos as! [PhotosMO]
-        
-        if(index > fetchedImages.count) {
-            // This means that we have not yet saved any changes to the photos list
-        }
-        else {
-
-            let photoToDelete = photosToDelete[index]
+        if((chosenHotspot.photos?.count)! > 0) {
+            var photosToDelete = chosenHotspot.photos as! [PhotosMO]
             
-            // Delete specific item from database
-            PersistenceService.context.delete(photoToDelete)
-            PersistenceService.saveContext()
+            if(index > fetchedImages.count) {
+                // This means that we have not yet saved any changes to the photos list
+            }
+            else {
+
+                let photoToDelete = photosToDelete[index]
+                
+                // Delete specific item from database
+                PersistenceService.context.delete(photoToDelete)
+                PersistenceService.saveContext()
+            }
         }
     }
     
