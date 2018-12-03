@@ -32,6 +32,7 @@
 		E1D31053219D004D0094C445 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D31052219D004D0094C445 /* CoreLocation.framework */; };
 		EB634B7821A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB634B7621A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift */; };
 		EB634B7921A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB634B7721A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift */; };
+		EB718C7121B4D54100108FBD /* tutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB718C7021B4D54100108FBD /* tutorialViewController.swift */; };
 		EB7423F9218E5695005836A2 /* CollectionViewPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */; };
 		EB93AE1521972F9F00B4B486 /* navigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1421972F9F00B4B486 /* navigationViewController.swift */; };
 		EB93AE1721972FD000B4B486 /* overviewNavMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */; };
@@ -94,6 +95,7 @@
 		E76D886D4979733FCDC85D98 /* Pods_memPOPTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_memPOPTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB634B7621A0E6CF0062E4E9 /* PersonInfoMO+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonInfoMO+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EB634B7721A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersonInfoMO+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EB718C7021B4D54100108FBD /* tutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tutorialViewController.swift; sourceTree = "<group>"; };
 		EB7423F8218E5694005836A2 /* CollectionViewPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPhoto.swift; sourceTree = "<group>"; };
 		EB93AE1421972F9F00B4B486 /* navigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = navigationViewController.swift; sourceTree = "<group>"; };
 		EB93AE1621972FD000B4B486 /* overviewNavMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = overviewNavMasterViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				47C260F121856278003AF531 /* CollectionViewPhotoLabel.swift */,
 				A0B63CBC217F9C560072A82F /* Main.storyboard */,
 				A0B63CC2217F9C560072A82F /* Assets.xcassets */,
+				EB718C7021B4D54100108FBD /* tutorialViewController.swift */,
 				A0B63CC7217F9C560072A82F /* Info.plist */,
 				A0B63CBF217F9C560072A82F /* memPOP.xcdatamodeld */,
 			);
@@ -462,6 +465,7 @@
 				EB634B7921A0E6CF0062E4E9 /* PersonInfoMO+CoreDataProperties.swift in Sources */,
 				A0B63CC1217F9C560072A82F /* memPOP.xcdatamodeld in Sources */,
 				742E256A218021A8004F5E7E /* AddHotspotViewController.swift in Sources */,
+				EB718C7121B4D54100108FBD /* tutorialViewController.swift in Sources */,
 				EBE8F4C1218B8BFC006A5806 /* PhotosMO+CoreDataProperties.swift in Sources */,
 				EB93AE1721972FD000B4B486 /* overviewNavMasterViewController.swift in Sources */,
 				A0B63CB9217F9C560072A82F /* AppDelegate.swift in Sources */,

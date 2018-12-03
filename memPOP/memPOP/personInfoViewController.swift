@@ -176,12 +176,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     //newHotspot.addToPhotos(newPhoto)
                     
                     // move back to start screen
-                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-                    for aViewController in viewControllers {
-                        if aViewController is personInfoViewController {
-                            self.navigationController!.popViewController(animated: true)
-                        }
-                    }
+                    self.navigationController?.popToRootViewController(animated: false)
                 }
             }
             else {
