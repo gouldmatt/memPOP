@@ -78,6 +78,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         
         // Check that name and address are filled before saving
         if (nameField.text!.isEmpty || searchBar.text!.isEmpty || emergencyTextField.text!.isEmpty){
+            
             dialogCheck.text = "Please complete the highlighted fields"
             dialogCheck.isHidden = false
             dialogCheck.layer.borderWidth = 0.0
@@ -155,10 +156,13 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 newUser.addHotspotNotifSetting = 0
                 
                 let newHotspot = HotspotMO(context: PersistenceService.context)
-
+                //let newPhoto = PhotosMO(context: PersistenceService.context)
+                
+                //newPhoto.photo = UIImageJPEGRepresentation((UIImage(named: "defaultPhoto"))!, 1)! as NSData
                 
                 // Check for a valid address
                 if (!changedAddress && (searchAddressLatitude == 0.0 || searchAddressLongitude == 0.0)) {
+                    
                     dialogCheck.text = "Please select a valid address"
                     dialogCheck.isHidden = false
                     
@@ -168,20 +172,11 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     self.scrollView.setContentOffset(top, animated: true)
                 }
                 else {
-                    print("Here")
                     newHotspot.name = "Home"
                     newHotspot.address = searchAddressChosen
                     newHotspot.longitude = searchAddressLongitude
                     newHotspot.latitude = searchAddressLatitude
                     //newHotspot.addToPhotos(newPhoto)
-                    
-                    // move back to start screen
-                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-                    for aViewController in viewControllers {
-                        if aViewController is personInfoViewController {
-                            self.navigationController!.popViewController(animated: true)
-                        }
-                    }
                 }
             }
             else {
@@ -191,28 +186,45 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                 if(changedAddress){
                     do{
                         let homeHotspot = try PersistenceService.context.fetch(fetchHotspot)[0]
-
-                        homeHotspot.address = searchAddressChosen
-                        homeHotspot.longitude = searchAddressLongitude
-                        homeHotspot.latitude = searchAddressLatitude
+                        
+                        // Check for a valid address
+                        if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
+                            
+                            dialogCheck.text = "Please select a valid address"
+                            dialogCheck.isHidden = false
+                            
+                            self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
+                            
+                            // Move the scroll view to the top
+                            self.scrollView.setContentOffset(top, animated: true)
+                        }
+                        else {
+                            homeHotspot.address = searchAddressChosen
+                            homeHotspot.longitude = searchAddressLongitude
+                            homeHotspot.latitude = searchAddressLatitude
+                        }
                     }
                     catch {
                         print("failed hotspot fetch")
                     }
                     changedAddress = false
                 }
-                
-                // move back to start screen
-                let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-                for aViewController in viewControllers {
-                    if aViewController is personInfoViewController {
-                        self.navigationController!.popViewController(animated: true)
-                    }
-                }
-                
             }
 
             PersistenceService.saveContext()
+            
+            self.navigationController?.popToRootViewController(animated: false)
+//            // move back to start screen
+//            let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+//            for aViewController in viewControllers {
+//
+////                if aViewController is personInfoViewController {
+////                    self.navigationController!.popViewController(animated: true)
+////                }
+////                if aViewController is tutorialViewController {
+////                    self.navigationController!.popViewController(animated: true)
+////                }
+//            }
         }
     }
     
@@ -223,10 +235,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         super.viewDidLoad()
         
         dialogCheck.isHidden = true
-        
-        searchAddressLatitude = 0.0
-        searchAddressLongitude = 0.0
-        changedAddress = false
         
         // For autocomplete table view
         searchResultsTableView.dataSource = self
@@ -242,7 +250,6 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         self.searchBar.returnKeyType = UIReturnKeyType.done
         self.searchBar.searchBarStyle = .minimal
         
-        axisFormatDelegate = self
         // fetch any existing user information 
         do {
             let userFetch = try PersistenceService.context.fetch(fetchUser)
@@ -293,19 +300,8 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                     barChartHeight.constant = 212
                     barChartLabelHeight.constant = 31
                 }
-            }
-            else {
                 
-                // hide everything
-                pieChart.isHidden = true
-                pieChartHeight.constant = 0
-                pieChartLabel.isHidden = true
-                pieChartLabelHeight.constant = 0
                 
-                barChart.isHidden = true
-                barChartHeight.constant = 0
-                barChartLabel.isHidden = true
-                barChartLabelHeight.constant = 0
             }
         }
         catch {
@@ -313,6 +309,7 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         }
         
         // Fetch Statistics
+        axisFormatDelegate = self
         loadBarChart(dataEntryX: hotspotNames, dataEntryY: hotspotsCount)
     }
     
@@ -416,27 +413,21 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
         chartDataSet.colors = [UIColor(red: 255/255, green: 119/255, blue: 119/255, alpha: 1)]
         let chartData = BarChartData(dataSet: chartDataSet)
         barChart.data = chartData
-        barChart.setScaleEnabled(true) //remove if it doesnt work
         
         // Set up some chart configurations
         barChart.chartDescription?.text = ""
         barChart.rightAxis.enabled = false
         barChart.legend.enabled = false
+        let xAxisValue = barChart.xAxis
         barChart.xAxis.labelPosition = .bottom
         
         // Don't skip x-axis values
-        barChart.xAxis.valueFormatter = IndexAxisValueFormatter(values: forX)
+        barChart.xAxis.setLabelCount(hotspotNames.count, force: true)
+        barChart.xAxis.avoidFirstLastClippingEnabled = true
+        barChart.xAxis.centerAxisLabelsEnabled = true
+        barChart.fitBars = true
 
-        barChart.xAxis.granularityEnabled = true
-        barChart.xAxis.granularity = 1
-        barChart.xAxis.wordWrapEnabled = true
-        
-        // barChart.xAxis.axisMinimum = 0.0
-        // barChart.xAxis.avoidFirstLastClippingEnabled = false
-        // barChart.xAxis.centerAxisLabelsEnabled = true
-        // barChart.xAxis.setLabelCount(hotspotNames.count, force: true)
-        // let xAxisValue = barChart.xAxis
-        // xAxisValue.valueFormatter = axisFormatDelegate add back
+        xAxisValue.valueFormatter = axisFormatDelegate
     }
     
     // Create the pie chart showing categories division

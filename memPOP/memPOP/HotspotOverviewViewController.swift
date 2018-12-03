@@ -48,7 +48,6 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
     @IBOutlet var descriptionHeight: NSLayoutConstraint!
     @IBOutlet var photosSpace: NSLayoutConstraint!
     @IBOutlet var descriptionSpace: NSLayoutConstraint!
-    @IBOutlet var descriptionSpaceTrailing: NSLayoutConstraint!
     //===================================================================================================
     // MARK: Override Functions
     //===================================================================================================
@@ -81,18 +80,15 @@ class HotspotOverviewViewController: UIViewController,UITableViewDelegate, UITab
             descriptionLabel.isHidden = true
             descriptionHeight.constant = 0
             photosSpace.constant = 0
-            descriptionSpaceTrailing.constant = 0
         }
         else if(descriptionView.text?.isEmpty)!{
             descriptionLabel.isHidden = true
             descriptionHeight.constant = 0
             photosSpace.constant = 0
-            descriptionSpaceTrailing.constant = 0
         }
         else {
             photosSpace.constant = 30
             descriptionHeight.constant = 40
-            descriptionSpaceTrailing.constant = 10 
         }
         
         collectionView.bounces = false

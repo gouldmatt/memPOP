@@ -22,24 +22,12 @@ class startViewController: UIViewController {
             let hotspots = try PersistenceService.context.fetch(fetchRequest)
             
             // Check if user is using the app for the first time
-            if(hotspots.count == 0){
+            if(hotspots.count == 0) {
+                // Instantiate a tutorialVC and make a transition
+                let tutorialVC = storyboard?.instantiateViewController(withIdentifier: "tutorialViewController") as! tutorialViewController
                 
-                // Create the alert
-                let alert = UIAlertController(title: "Welcome to Mem-POP!", message: "Let's Set Up Your Personal Information", preferredStyle: .alert)
-                
-                // Create the actions
-                let startAction = UIAlertAction(title: "Get Started", style: .default) {
-                    (action:UIAlertAction) in
-                    print ("Get Started")
-                
-                    self.performSegue(withIdentifier: "personInfo", sender: self)
-                }
-                
-                // Add actions to alert
-                alert.addAction(startAction)
-                
-                // Show the alert
-                self.present(alert,animated: true, completion: nil)
+                // Change view controller
+                navigationController?.pushViewController(tutorialVC, animated: true)
             }
         }
         catch {

@@ -18,7 +18,6 @@ class settingsViewController: UIViewController {
     //===================================================================================================
     let notifCentre = UNUserNotificationCenter.current()
     let fetchUser: NSFetchRequest<PersonInfoMO> = PersonInfoMO.fetchRequest()
-    let fetchHotspot: NSFetchRequest<HotspotMO> = HotspotMO.fetchRequest()
     
     // Notification IDs
     let addNotifID = "AddNotifReq"
@@ -26,20 +25,13 @@ class settingsViewController: UIViewController {
     
     // Notification Content
     let addNotifContent = UNMutableNotificationContent()
-    
-    //AddHotspot notif Times
-    let hourAddHotspotNotif = 14 // Default 18:00 or 6 PM
-    let minuteAddHotspotNotif = 6
-    //Activities Notif times
-    let hourActivitiesNotif = 8 // Default 08:00 or 8 AM
-    let minuteActivitiesNotif = 0
-    
     //===================================================================================================
     // MARK: Variables
     //===================================================================================================
     var dateAddNotif = DateComponents()
     var dateActivitiesNotif = DateComponents()
     var user: PersonInfoMO?
+    var timer = Timer()
     //===================================================================================================
     // MARK: Outlets
     //===================================================================================================
@@ -50,44 +42,6 @@ class settingsViewController: UIViewController {
     //===================================================================================================
     // MARK: Actions
     //===================================================================================================
-    @IBAction func resetStats(_ sender: UIButton) {
-        do {
-            let hotspotFetch = try PersistenceService.context.fetch(fetchHotspot)
-            let userFetch = try PersistenceService.context.fetch(fetchUser)
-            
-            if(userFetch.count == 1) {
-                // Create the alert
-                let alert = UIAlertController(title: "Reset Statistics", message: "Are you sure you want to reset all statistics collected?", preferredStyle: .alert)
-                
-                // Create the actions
-                let deleteAction = UIAlertAction(title: "Reset", style: .destructive) {
-                    (action:UIAlertAction) in
-                    print ("pressed Reset")
-                    for hotspot in hotspotFetch {
-                        hotspot.timesVisit = 0
-                        PersistenceService.saveContext()
-                    }
-                }
-                
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {
-                    (action:UIAlertAction) in
-                    print ("pressed Cancel")
-                }
-                
-                // Add actions to alert
-                alert.addAction(deleteAction)
-                alert.addAction(cancelAction)
-                
-                // Show the alert
-                self.present(alert,animated: true, completion: nil)
-            }
-        }
-        catch {
-            print("failed user fetch")
-        }
-        
-    }
-    
     @IBAction func changeAddHotspotNotif(_ sender: Any) {
         print("received action")
         // check if permission granted. Do not add notif otherwise
@@ -227,7 +181,7 @@ class settingsViewController: UIViewController {
      3 = ON, Monthly
     */
     
-    // Configure the notification settings for Add Hotspot on the settings page
+    // Configure the notification settings for Add Hotspot
     func configAddHotspotNotif(){
         do {
             let userFetch = try PersistenceService.context.fetch(self.fetchUser)
@@ -246,19 +200,17 @@ class settingsViewController: UIViewController {
             if (addHotspotNotifFreq.selectedSegmentIndex == 1){ // Weekly Freq
                 print("weekly")
                 dateAddNotif.weekday = 6 // Friday - end of week
-                dateAddNotif.hour = hourAddHotspotNotif
-                dateAddNotif.minute = minuteAddHotspotNotif
+                dateAddNotif.hour = 18 // 18:00 or 6 PM
                 user?.addHotspotNotifSetting = 2; // Set notification setting
             } else if (addHotspotNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
                 print("monthly")
                 dateAddNotif.weekOfMonth = 3 // Third week of the month
-                dateAddNotif.hour = hourAddHotspotNotif
-                dateAddNotif.minute = minuteAddHotspotNotif
+                dateAddNotif.hour = 18 // 18:00 or 6 PM
                 user?.addHotspotNotifSetting = 3; // Set notification setting
             } else { // Daily Freq
                 print("Daily")
-                dateAddNotif.hour = hourAddHotspotNotif
-                dateAddNotif.minute = minuteAddHotspotNotif
+                dateAddNotif.hour = 18 // 18:00 or 6 PM
+                //dateAddNotif.minute = 07
                 user?.addHotspotNotifSetting = 1; // Set notification setting
             }
             
@@ -282,7 +234,6 @@ class settingsViewController: UIViewController {
         }
     }
     
-    // Configure the notification settings for being active on the settings page
     func configActivityNotif(){
         if (activitiesNotif.selectedSegmentIndex == 0){ // activitiesNotif - ON
             print("Add notif process for activitiesNotif")
@@ -291,19 +242,16 @@ class settingsViewController: UIViewController {
             if (activitiesNotifFreq.selectedSegmentIndex == 1){ // Weekly Freq
                 print("weekly")
                 dateActivitiesNotif.weekday = 2 // Monday - first weekday
-                dateActivitiesNotif.hour = hourActivitiesNotif
-                dateActivitiesNotif.minute = minuteActivitiesNotif
+                dateActivitiesNotif.hour = 8 // 8:00 or 8 AM
                 user?.activitiesNotifSetting = 2; // Set notification setting
             } else if (activitiesNotifFreq.selectedSegmentIndex == 2){ // Monthly Freq
                 print("monthly")
                 dateActivitiesNotif.weekOfMonth = 1 // First week of the month
-                dateActivitiesNotif.hour = hourActivitiesNotif
-                dateActivitiesNotif.minute = minuteActivitiesNotif
+                dateActivitiesNotif.hour = 8 // 8:00 or 8 AM
                 user?.activitiesNotifSetting = 3; // Set notification setting
             } else { // Daily Freq
                 print("Daily")
-                dateActivitiesNotif.hour = hourActivitiesNotif
-                dateActivitiesNotif.minute = minuteActivitiesNotif
+                dateActivitiesNotif.hour = 8 // 8:00 or 8 AM
                 user?.activitiesNotifSetting = 1; // Set notification setting
             }
             
@@ -327,10 +275,9 @@ class settingsViewController: UIViewController {
         }
     }
     
-    // Alert message function when permission for notificaitons is denied. Appears in settings page if attempting to change notification setting without granted permission.
     func alertPermissionDisabled() {
         // Create the alert
-        let alert = UIAlertController(title: "Request for Notifications Permission Denied", message: "memPOP needs to be able to have permission to notify you of things to do.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Request for Notifications Permission Denied", message: "memPOP needs to be able to have permission to notify you of things to do.\nTo use this feature, go to Settings->memPOP->Notifications->Check Allow Notifications with all options enabled and Temporary banner.", preferredStyle: .alert)
         
         // Create the actions
         let okAction = UIAlertAction(title: "Okay", style: .cancel) {
@@ -365,15 +312,15 @@ class settingsViewController: UIViewController {
         print((user?.funNum)!)
         print((user?.taskNum)!)
         
-        if ((user?.foodNum)! <= (user?.funNum)! && (user?.foodNum)! <= (user?.taskNum)!){
+        if ((user?.foodNum)! < (user?.funNum)! && (user?.foodNum)! < (user?.taskNum)!){
             let alertBody = "Looks like there aren't many Food-related Hotspots (There are only " + String((user?.foodNum)!) + " Food Hotspots). Enter some more!"
             return alertBody
         } // Fewest Fun hotspots message
-        else if ((user?.funNum)! <= (user?.foodNum)! && (user?.funNum)! <= (user?.taskNum)!){
+        else if ((user?.funNum)! < (user?.foodNum)! && (user?.funNum)! < (user?.taskNum)!){
             let alertBody = "Looks like there aren't many Fun-related Hotspots (There are only " + String((user?.funNum)!) + " Fun Hotspots). Enter some more!"
             return alertBody
         } // Fewest task hotspot message
-        else if ((user?.taskNum)! <= (user?.foodNum)! && (user?.taskNum)! <= (user?.funNum)!){
+        else if ((user?.taskNum)! < (user?.foodNum)! && (user?.taskNum)! < (user?.funNum)!){
             let alertBody = "Looks like there aren't many Task-related Hotspots (There are only " + String((user?.taskNum)!) + " Task Hotspots). Enter some more!"
             return alertBody
         } // Default hotspot message
@@ -381,6 +328,9 @@ class settingsViewController: UIViewController {
             let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
             return alertBody
         }
+        
+        //let alertBody = "If you haven't already input the latest memories, be sure to do so now in case you forget!"
+        //return alertBody
     }
     
     // Used to update the notification body message for addHotspot when changes are made to the number of hotspots and category
@@ -405,26 +355,23 @@ class settingsViewController: UIViewController {
                 print("failed user fetch")
             }
             
-            
             if (self.user?.addHotspotNotifSetting != 0){ // addHotspotNotif is on, then do below
                 print("Modify notif process for addHotspot")
                 self.dateAddNotif.calendar = Calendar.current
                 if (self.user?.addHotspotNotifSetting == 2){ // Weekly Freq setting
                     print("weekly")
                     self.dateAddNotif.weekday = 6 // Friday - end of week
-                    self.dateAddNotif.hour = self.hourAddHotspotNotif
-                    self.dateAddNotif.minute = self.minuteAddHotspotNotif
+                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
                     self.user?.addHotspotNotifSetting = 2; // Set notification setting
                 } else if (self.user?.addHotspotNotifSetting == 3){ // Monthly Freq setting
                     print("monthly")
                     self.dateAddNotif.weekOfMonth = 3 // Third week of the month
-                    self.dateAddNotif.hour = self.hourAddHotspotNotif
-                    self.dateAddNotif.minute = self.minuteAddHotspotNotif
+                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
                     self.user?.addHotspotNotifSetting = 3; // Set notification setting
                 } else { // Daily Freq setting
                     print("Daily")
-                    self.dateAddNotif.hour = self.hourAddHotspotNotif
-                    self.dateAddNotif.minute = self.minuteAddHotspotNotif
+                    self.dateAddNotif.hour = 18 // 18:00 or 6 PM
+                    //self.dateAddNotif.minute = 07
                     self.user?.addHotspotNotifSetting = 1; // Set notification setting
                 }
                 
