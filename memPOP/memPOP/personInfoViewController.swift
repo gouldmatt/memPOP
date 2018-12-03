@@ -195,33 +195,21 @@ class personInfoViewController: UIViewController, UINavigationControllerDelegate
                         homeHotspot.address = searchAddressChosen
                         homeHotspot.longitude = searchAddressLongitude
                         homeHotspot.latitude = searchAddressLatitude
-                    
-                        // move back to start screen
-                        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
-                        for aViewController in viewControllers {
-                            if aViewController is personInfoViewController {
-                                self.navigationController!.popViewController(animated: true)
-                            }
-                        }
                     }
                     catch {
                         print("failed hotspot fetch")
                     }
                     changedAddress = false
                 }
-                else {
-                    // Check for a valid address
-                    if (searchAddressLongitude == 0.0 || searchAddressLatitude == 0.0) {
-                        print("Hello")
-                        dialogCheck.text = "Please select a valid address"
-                        dialogCheck.isHidden = false
-                        
-                        self.searchBar.setTextFieldColor(color: UIColor.red.withAlphaComponent(1))
-                        
-                        // Move the scroll view to the top
-                        self.scrollView.setContentOffset(top, animated: true)
+                
+                // move back to start screen
+                let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+                for aViewController in viewControllers {
+                    if aViewController is personInfoViewController {
+                        self.navigationController!.popViewController(animated: true)
                     }
                 }
+                
             }
 
             PersistenceService.saveContext()
