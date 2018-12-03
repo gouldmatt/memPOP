@@ -90,11 +90,9 @@
         incrementOnce = true
         doOnce = true
         
-        mapkitView.isRotateEnabled = false
-        mapkitView.isPitchEnabled = false
-        
-        // Disable segmented control while loading
-        mapOrDirectionsControl.isEnabled = false
+      
+        UIApplication.shared.beginIgnoringInteractionEvents()
+
         
         self.activityIndicator.transform = CGAffineTransform(scaleX: 3, y: 3)
         
@@ -217,12 +215,6 @@
                 renderer.lineDashPattern = [0, 7]
             }
             
-            routeLoaded = true
-            if(mapLoaded && !noRoute) {
-                print("renderer")
-                activityIndicator.stopAnimating()
-            }
-            
             return renderer
         }
         else if overlay is MKCircle {
@@ -263,33 +255,56 @@
             request.transportType = .walking
         }
         
-        let directions = MKDirections(request: request)
+
         
-        directions.calculate { [unowned self] response, error in
-            guard let unwrappedResponse = response else { return }
-            
+        let directions = MKDirections(request: request)
+
+        
+        directions.calculate{ [unowned self] response, error in
+            guard let unwrappedResponse = response else {
+                
+                print("failed")
+                
+                self.routeLoaded = true
+                if(self.mapLoaded) {
+                    // When the map finishes loading, stop animating activity indicator button
+                    self.activityIndicator.stopAnimating()
+                    
+                    UIApplication.shared.endIgnoringInteractionEvents()
+                }
+                
+                return
+            }
+        
             for route in unwrappedResponse.routes {
                 
                 if(route.steps.count > 1) {
                     self.mapkitView.add(route.polyline)
                 }
-
+                
                 self.route = route
                 
                 for step in route.steps {
                     // Print the directions in the output window
                     print(step.instructions)
                 }
-                
+ 
+                self.routeLoaded = true
+                if(self.mapLoaded) {
+                    // When the map finishes loading, stop animating activity indicator button
+                    self.activityIndicator.stopAnimating()
+                    UIApplication.shared.endIgnoringInteractionEvents()
+                    
+                }
             }
 
-            
             // if in overview layout zoom to show whole map
             if(self.mapOrDirectionsControl.selectedSegmentIndex == 0){
                    self.mapkitView.setVisibleMapRect((self.route?.polyline.boundingMapRect)!,edgePadding: UIEdgeInsets.init(top: 60, left: 15, bottom: 60, right: 15) ,animated: false)
             }
             
         }
+
     
         // remove existing annotations
         let annotations = self.mapkitView.annotations
@@ -348,7 +363,6 @@
         }
         else {
             count = 1
-            
         }
         
         return count!
@@ -373,7 +387,6 @@
             
             if(route?.polyline == nil && !doOnce) {
                 noRoute = true
-                activityIndicator.stopAnimating()
                 if(takeCar) {
                     cell?.textLabel?.text = "No driving directions to " + (selectedHotspot?.name)!
                 }
@@ -471,17 +484,12 @@
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         
         mapLoaded = true
-        if(routeLoaded && !noRoute) {
+        if(routeLoaded) {
             // When the map finishes loading, stop animating activity indicator button
             activityIndicator.stopAnimating()
+            UIApplication.shared.endIgnoringInteractionEvents()
         }
-        
-        directionsTableView.reloadData()
-       
-        // Set everything to back to true
-        mapkitView.isRotateEnabled = true
-        mapkitView.isPitchEnabled = true
-        mapOrDirectionsControl.isEnabled = true
+    
     }
     
     // add the images for each custom pin annotation
@@ -522,6 +530,7 @@
         }
         return nil
     }
+    
     
 }
    
